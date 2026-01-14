@@ -1,0 +1,10 @@
+nogood, https://investimenti.bnpparibas.it/product-details/
+-- START
+marex, https://certificati.marex.com/it/products/
+
+
+bad line
+bad_line
+bnp, https://investimenti.bnpparibas.it/product-details/
+-- END
+bad, https://investimenti.bnpparibas.it/product-details/
