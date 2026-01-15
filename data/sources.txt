@@ -1,11 +1,14 @@
-nogood, https://investimenti.bnpparibas.it/product-details/
+
 -- START
+nogood, https://investimenti.bnpparibas.it/product-details/
 marex, https://certificati.marex.com/it/products/
-pippo, https://certificati.marex.com/it/products/
+vontobel, https://markets.vontobel.com/it-it/prodotti/investment/multi-cash-collect-certificate-con-barriera/
+borsaitaliana, https://www.borsaitaliana.it/borsa/cw-e-certificates/dati-mercato.html?isin=
+bnp, https://investimenti.bnpparibas.it/product-details/
 -- END
 
 bad line
 bad_line
-bnp, https://investimenti.bnpparibas.it/product-details/
+
 
 bad, https://investimenti.bnpparibas.it/product-details/

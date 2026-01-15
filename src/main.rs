@@ -6,7 +6,6 @@ use std::collections::HashMap;
 use std::fs::{self, File};
 use std::io::{BufReader, prelude::*};
 use std::path::Path;
-use std::ptr::null;
 // use std::result;
 use std::{env, error::Error, time::Duration};
 use tokio; // Async runtime
@@ -14,13 +13,23 @@ use std::sync::{Arc, Mutex};
 
 // type QuotesSharedState = Arc<Mutex<Vec<HashMap<String, String>>>>;
 
-fn get_selector(site: &str) -> Result<Selector, &'static str> {
+fn get_ask_price_selector(site: &str) -> Result<Selector, &'static str> {
     match site.trim() {
         "" => Err("invalid site"),
         "marex" => Ok(Selector::parse("#product-ask-price").unwrap()),
-        "bnp" => Ok(Selector::parse(".data-ask").unwrap()),
+        "bnp" => Ok(Selector::parse(r#"span[data-field="ask"]"#).unwrap()),
+        "vontobel" => Ok(Selector::parse(r#"h2[data-testid="buy_price_label"]"#).unwrap()),
         _ => Err("site not found"),
     }
+}
+
+fn price_formatter(price: &str) -> String {
+    let mut p = price.trim().to_string();
+    if p.contains(",") && p.contains(".") {
+        p = p.replace(",", "");
+    }
+    p = p.replace(",", ".");
+    p
 }
 
 pub fn read_sources(source_path: &str) -> Vec<HashMap<String, String>> {
@@ -79,12 +88,11 @@ pub async fn get_data_from_site(
         base_url: &str,
         isin_filepath: &str,
     ) -> Result<Vec<HashMap<String, String>>, std::io::Error>  {
-    println!("\n----------------------\nWorking on...{}\n----------------------\n", site);
+    println!("\n--> init for Site: {} URL: {}", site, base_url);
 
     let path = Path::new(isin_filepath);
-    //let display = path.display();
 
-    let file = File::open(path)?;
+    let file = File::open(&path)?;
     // let file = match File::open(&path) {
     //     Err(why) => println!("couldn't open {}: {}", display, why),
     //     Ok(file) => file,
@@ -130,20 +138,20 @@ pub async fn get_data_from_site(
                             if response.status().is_success() {
                                 let html_content = response.text().await?;
                                 let document = Html::parse_document(&html_content);
-                                let result = get_selector(&site);
+                                let result = get_ask_price_selector(&site);
                                 match result {
                                     Ok(product_ask_price_sel) => {
                                         for product_ask_price in document.select(&product_ask_price_sel) {
                                             let price = product_ask_price.text().collect::<Vec<_>>();
-                                            println!("Price {}: {}", line.to_string(), price[0]);
+                                            println!("Price (Raw) {}: {}", line.to_string(), price[0]);
                                             let mut data: HashMap<String, String> = HashMap::new();
                                             data.insert("isin".to_string(), line.to_string());
-                                            data.insert("price".to_string(), price[0].to_string()); 
+                                            data.insert("price".to_string(), price_formatter(&price[0])); 
                                             let mut r = r.lock().unwrap();
                                             r.push(data.clone());
                                         }
                                     },
-                                    Err(e) => println!("error parsing site {site}: {e:?}"),
+                                    Err(e) => eprintln!("error parsing site {site}: {e:?}"),
                                 }
                                 
                             } else {
@@ -185,7 +193,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let sources = read_sources(&fp);
     println!("Sources: {:?}", sources);
     for source in sources {
-        println!("--> init for Site: {} URL: {}", source["site"], source["url"]);
+        println!("\n----------------------\nWorking on...{}\n----------------------\n", source["site"]);
         let quotes = get_data_from_site(
             &source["site"],
             &source["url"],
@@ -196,7 +204,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 eprintln!("Get Data Error: {:?}", e);
                 continue;
             },
-            Ok(quotes) => quotes;
+            Ok(quotes) => quotes,
         };
         print!("Quotes: {:?}", quotes);
         // Write results to CSV
@@ -209,7 +217,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             ".csv",
         ].concat();
         print!("Writing quotes to {}", csv_filepath);
-        fs::create_dir_all(&output_path_prefix);
+        let _ = fs::create_dir_all(&output_path_prefix);
         let mut wtr = csv::Writer::from_path(csv_filepath).unwrap();
         wtr.write_record(&[&"isin", &"price"]).unwrap();
         for quote in quotes {
