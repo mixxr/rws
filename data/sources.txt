@@ -1,10 +1,11 @@
+site, content_type, extractor_type, base_url
 
+nogood, html, https://investimenti.bnpparibas.it/product-details/
+
+marex, html, selector, https://certificati.marex.com/it/products/
+bnp, html, selector, https://investimenti.bnpparibas.it/product-details/
 -- START
-nogood, https://investimenti.bnpparibas.it/product-details/
-marex, https://certificati.marex.com/it/products/
-vontobel, https://markets.vontobel.com/it-it/prodotti/investment/multi-cash-collect-certificate-con-barriera/
-borsaitaliana, https://www.borsaitaliana.it/borsa/cw-e-certificates/dati-mercato.html?isin=
-bnp, https://investimenti.bnpparibas.it/product-details/
+vontobel, html, pattern, https://markets.vontobel.com/it-it/prodotti/investment/multi-cash-collect-certificate-con-barriera/
 -- END
 
 bad line
