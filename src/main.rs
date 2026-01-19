@@ -1,3 +1,11 @@
+
+mod definitions;
+mod utils;
+
+use definitions::globals::DEF_PRICE;
+use definitions::types::*;
+use utils::price_formatter;
+
 use chrono;
 // use csv::Writer;
 use reqwest::Client;
@@ -11,29 +19,6 @@ use std::sync::{Arc, Mutex};
 use std::{env, error::Error, time::Duration};
 use tokio; // Async runtime
 
-// const
-const DEF_PRICE: &str = "0.00";
-const DEF_DATA_FOLDER: &str = "data";
-
-// type QuotesSharedState = Arc<Mutex<Vec<HashMap<String, String>>>>;
-
-// types
-// Define a custom struct
-#[derive(Debug, Clone)]
-struct Source {
-    site: String,
-    base_url: String,
-    content_type: String,
-    extractor: String,
-}
-
-#[derive(Debug, Clone)]
-struct Quote {
-    isin: String,
-    ask: String,
-    bid: String,
-    currency: String,
-}
 
 fn get_ask_price_selector(site: &str) -> Result<Selector, &'static str> {
     match site.trim() {
@@ -54,14 +39,7 @@ fn get_ask_price_pattern(site: &str) -> Result<Regex, &'static str> {
     }
 }
 
-fn price_formatter(price: &str) -> String {
-    let mut p = price.trim().to_string();
-    if p.contains(",") && p.contains(".") {
-        p = p.replace(",", "");
-    }
-    p = p.replace(",", ".");
-    p
-}
+
 
 fn read_sources(source_path: &str) -> Vec<Source> {
     let path = env::current_dir().unwrap();
@@ -223,7 +201,7 @@ async fn get_quotes_from_source(
 
     println!("Await all tasks to complete...");
     for task in tasks {
-        let r = task.await.unwrap();
+        let r = task.await;
         println!("task Result:{:?}", r);
     }
 
