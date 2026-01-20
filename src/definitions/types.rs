@@ -13,6 +13,7 @@ pub struct Source {
 #[derive(Debug, Clone)]
 pub struct Quote {
     pub isin: String,
+    pub name: String,
     pub ask: String,
     pub bid: String,
     pub currency: String,
@@ -21,6 +22,6 @@ pub struct Quote {
 #[derive(Debug, Clone)]
 pub struct ISIN {
     pub isin: String,
-    // pub market: Option<String>,
+    pub name: String,
     // pub url: Option<String>,
 }

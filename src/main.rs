@@ -42,8 +42,6 @@ fn get_ask_price_pattern(site: &str) -> Result<Regex, &'static str> {
 }
 
 fn read_sources_from_file(source_path: &str) -> Vec<Source> {
-    let path = env::current_dir().unwrap();
-    println!("The current directory is {}", path.display());
     let path = Path::new(source_path);
     let display = path.display();
 
@@ -113,10 +111,9 @@ fn get_price_by_pattern(html_content: &str, source_site: &str) -> Result<String,
 }
 
 fn read_isins_from_file(isin_path: &str) -> Result<Vec<ISIN>, std::io::Error> {
-    let path = env::current_dir().unwrap();
-    println!("The current directory is {}", path.display());
+    //let path = env::current_dir().unwrap();
     let path = Path::new(isin_path);
-    let display = path.display();
+    // let display = path.display();
 
     // Open the path in read-only mode, returns `io::Result<File>`
     let file = File::open(&path)?; //{
@@ -138,8 +135,14 @@ fn read_isins_from_file(isin_path: &str) -> Result<Vec<ISIN>, std::io::Error> {
             if line.contains("-- END") {
                 start = false;
             } else {
+                let line = line.split(",").collect::<Vec<&str>>();
+                if line.len() < 2 {
+                    println!("[ISIN] discarding line: {:?}", line);
+                    continue;
+                }
                 isins.push(ISIN {
-                    isin: line.to_string(),
+                    isin: line[0].trim().to_string(),
+                    name: line[1].trim().to_string(),
                 });
             }
         } else {
@@ -192,6 +195,7 @@ async fn extract_quotes_from_source(
                         let mut r = r.lock().unwrap();
                         r.push(Quote {
                             isin: isin.isin.clone(),
+                            name: isin.name.clone(),
                             ask: price.unwrap(),
                             bid: DEF_PRICE.to_string(),
                             currency: "EUR".to_string(),
@@ -223,9 +227,9 @@ async fn extract_quotes_from_source(
 
 fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str) -> Result<(), Box<dyn Error>> {
     let mut wtr = csv::Writer::from_path(output_filepath)?;
-    wtr.write_record(&[&"isin", &"ask", &"bid", &"currency"])?;
+    wtr.write_record(&[&"isin", &"name", &"ask", &"bid", &"currency"])?;
     for quote in quotes {
-        wtr.write_record(&[&quote.isin, &quote.ask, &quote.bid, &quote.currency])?;
+        wtr.write_record(&[&quote.isin, &quote.name, &quote.ask, &quote.bid, &quote.currency])?;
     }
     wtr.flush()?;
     Ok(())
@@ -235,8 +239,11 @@ fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str) -> Result<(),
 async fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     let fp = &args.source_fp;
+    let path = env::current_dir().unwrap();
 
-    println!("Configuration: {:?}...", args);
+    println!("Configuration: {:?}", args);
+    println!("The current directory is {}", path.display());
+
     // System check
     let sources = read_sources_from_file(&fp);
     println!("Sources: {:?}", sources);

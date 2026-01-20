@@ -1,5 +1,5 @@
 -- START
-it0006771353
+it0006771353, STMicroelectronics NV Intel Corp Advanced Micro Devices Inc Broadcom Inc 
 it0006768870
 IT0006772153
 IT0006772146
