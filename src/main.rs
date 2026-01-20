@@ -1,8 +1,10 @@
 mod definitions;
 mod utils;
 
+use clap::Parser;
 use definitions::globals::*;
 use definitions::types::*;
+use definitions::args::Args;
 use utils::price_formatter;
 
 use chrono;
@@ -17,8 +19,6 @@ use regex::Regex;
 use std::sync::{Arc, Mutex};
 use std::{env, error::Error, time::Duration};
 use tokio;
-
-use iif::iif;
 
 use crate::definitions::globals::OUTPUT_PATH_PREFIX; // Async runtime
 
@@ -233,12 +233,10 @@ fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str) -> Result<(),
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    println!("USAGE: rws -- [sources_filepath]\n");
-    let args: Vec<String> = env::args().collect();
-    dbg!(&args);
-    let fp = iif!(args.len() > 1, &args[1].clone(), &[DATA_PATH_PREFIX, "sources.txt"].concat());
+    let args = Args::parse();
+    let fp = &args.source_fp;
 
-    println!("Reading sources from {fp}...");
+    println!("Configuration: {:?}...", args);
     // System check
     let sources = read_sources_from_file(&fp);
     println!("Sources: {:?}", sources);
