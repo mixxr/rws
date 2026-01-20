@@ -6,7 +6,7 @@
 pub struct Source {
     pub site: String,
     pub base_url: String,
-    pub content_type: String,
+    // pub content_type: String,
     pub extractor: String,
 }
 
@@ -16,4 +16,11 @@ pub struct Quote {
     pub ask: String,
     pub bid: String,
     pub currency: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct ISIN {
+    pub isin: String,
+    // pub market: Option<String>,
+    // pub url: Option<String>,
 }
