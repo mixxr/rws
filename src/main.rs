@@ -18,6 +18,8 @@ use std::sync::{Arc, Mutex};
 use std::{env, error::Error, time::Duration};
 use tokio;
 
+use iif::iif;
+
 use crate::definitions::globals::OUTPUT_PATH_PREFIX; // Async runtime
 
 fn get_ask_price_selector(site: &str) -> Result<Selector, &'static str> {
@@ -231,7 +233,12 @@ fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str) -> Result<(),
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let fp = [DATA_PATH_PREFIX, "sources.txt"].concat();
+    println!("USAGE: rws -- [sources_filepath]\n");
+    let args: Vec<String> = env::args().collect();
+    dbg!(&args);
+    let fp = iif!(args.len() > 1, &args[1].clone(), &[DATA_PATH_PREFIX, "sources.txt"].concat());
+
+    println!("Reading sources from {fp}...");
     // System check
     let sources = read_sources_from_file(&fp);
     println!("Sources: {:?}", sources);

@@ -395,6 +395,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "csv",
+ "iif",
  "regex",
  "reqwest",
  "scraper",
@@ -659,6 +660,12 @@ dependencies = [
  "icu_normalizer",
  "icu_properties",
 ]
+
+[[package]]
+name = "iif"
+version = "1.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8fcea67483689f4a68b3dadbf88d45a998cc0c54bb557af44aeea987a70892e"
 
 [[package]]
 name = "indexmap"

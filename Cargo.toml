@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 chrono = "0.4.42"
 csv = "1.4.0"
+iif = "1.2.1"
 regex = "1.12.2"
 reqwest = { version = "0.12.7" }
 scraper = "0.20.0"

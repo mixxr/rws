@@ -6,7 +6,7 @@
 pub struct Source {
     pub site: String,
     pub base_url: String,
-    // pub content_type: String,
+    pub content_type: String,
     pub extractor: String,
 }
 
