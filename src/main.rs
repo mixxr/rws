@@ -20,7 +20,7 @@ use std::sync::{Arc, Mutex};
 use std::{env, error::Error, time::Duration};
 use tokio;
 
-use crate::definitions::globals::OUTPUT_PATH_PREFIX; // Async runtime
+//use crate::definitions::globals::OUTPUT_PATH_PREFIX; // Async runtime
 
 fn get_ask_price_selector(site: &str) -> Result<Selector, &'static str> {
     match site.trim() {
@@ -241,8 +241,25 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let fp = &args.source_fp;
     let path = env::current_dir().unwrap();
 
-    println!("Configuration: {:?}", args);
     println!("The current directory is {}", path.display());
+    println!("CLI Configuration: {:?}", args);
+
+    let isin_path_prefix = env::var("ISIN_PATH_PREFIX");
+    let isin_path_prefix = match isin_path_prefix {
+        Err(_e)=> &args.isin_fp_prefix,
+        Ok(isin_path_prefix) => &isin_path_prefix.clone()
+    };
+    let source_path = env::var("SOURCE_PATH");
+    let source_path = match source_path {
+        Err(_e)=> &args.source_fp,
+        Ok(source_path) => &source_path.clone()
+    };
+    let output_path_prefix = env::var("OUTPUT_PATH_PREFIX");
+    let output_path_prefix = match output_path_prefix {
+        Err(_e)=> &args.output_fp_prefix,
+        Ok(output_path_prefix) => &output_path_prefix.clone()
+    };
+    println!("ENV Configuration: {isin_path_prefix}, {output_path_prefix}, {source_path}");
 
     // System check
     let sources = read_sources_from_file(&fp);
@@ -253,7 +270,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             source.site
         );
         let isins =
-            read_isins_from_file(&[DATA_PATH_PREFIX, &source.site, ".txt"].concat().as_str());
+            read_isins_from_file(&[isin_path_prefix, &source.site, ".txt"].concat().as_str());
         let isins = match isins {
             Err(e) => {
                 eprintln!("ISIN Read Error: {:?}", e);
@@ -272,7 +289,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         println!("Quotes: {:?}", quotes);
         // Write results to CSV
         let csv_filepath = [
-            OUTPUT_PATH_PREFIX,
+            output_path_prefix,
             &source.site,
             &chrono::offset::Local::now()
                 .format("-%Y-%m-%d-%H-%M-%S")
@@ -281,7 +298,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         ]
         .concat();
         println!("> Writing quotes to {}", csv_filepath);
-        let _ = fs::create_dir_all(&OUTPUT_PATH_PREFIX);
+        let _ = fs::create_dir_all(&output_path_prefix);
         write_quotes_to_csv(&quotes, &csv_filepath)?;
     }
     Ok(())
