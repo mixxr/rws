@@ -1,0 +1,42 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  annotations:
+    run.googleapis.com/creator: digital.posture.info@gmail.com
+    run.googleapis.com/lastModifier: digital.posture.info@gmail.com
+  labels:
+    cloud.googleapis.com/location: europe-west1
+  name: rws-cli
+  namespace: '600125851897'
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/client-name: cloud-console
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      taskCount: 1
+      template:
+        spec:
+          containers:
+          - env:
+            - name: OUTPUT_PATH_PREFIX
+              value: /data/output/
+            image: europe-west1-docker.pkg.dev/invcerts/cloud-run-source-deploy/rws/rws@sha256:5ac5066c12ab17fe4ac765e029b8f71a45bb2af24e3c557c25a263f64df4755c
+            name: rws-1
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 512Mi
+            volumeMounts:
+            - mountPath: /data
+              name: gcs-1
+          maxRetries: 3
+          serviceAccountName: 600125851897-compute@developer.gserviceaccount.com
+          timeoutSeconds: '600'
+          volumes:
+          - csi:
+              driver: gcsfuse.run.googleapis.com
+              volumeAttributes:
+                bucketName: rws-data
+            name: gcs-1
