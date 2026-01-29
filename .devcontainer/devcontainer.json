@@ -10,9 +10,9 @@
             ]
         }
     },
-    "postCreateCommand": "rustup component add clippy rustfmt",
+    "postCreateCommand": "rustup component add clippy rustfmt && ./.devcontainer/setup.sh",
     "features": {
-        "ghcr.io/devcontainers/features/rust:1": {},
-        "ghcr.io/dhoeric/features/google-cloud-cli": {}
+        "ghcr.io/devcontainers/features/rust:1": {}
+        // "ghcr.io/dhoeric/features/google-cloud-cli": {}
     }
 }    
