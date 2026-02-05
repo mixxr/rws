@@ -1,4 +1,3 @@
-
 use std::{error::Error, fs::File};
 use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
@@ -8,6 +7,9 @@ use actix_web::middleware::Logger;
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
 //use serde::Serialize;
 use env_logger::Env;
+
+mod ic_csv;
+use ic_csv::*;
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -54,6 +56,7 @@ async fn main() -> std::io::Result<()> {
 async fn root() -> &'static str {
     "IC Data Extraction Service is running."
 }
+
 
 #[get("/sources")]
 async fn get_sources(
