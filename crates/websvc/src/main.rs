@@ -38,7 +38,10 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .app_data(web::Data::new(shared_state.clone()))
             .service(root)
+            .service(get_sources)
+            .service(get_source)
             .service(get_all_by_date)
+            .service(get_by_isin)
     })
     .bind(("0.0.0.0", port))?
     .run()
@@ -49,20 +52,49 @@ async fn main() -> std::io::Result<()> {
 // handler for GET /
 #[get("/")]
 async fn root() -> &'static str {
-    "Hello, world!"
+    "IC Data Extraction Service is running."
 }
 
-#[get("/quotes/{source}/{obsdate}")]
+#[get("/sources")]
+async fn get_sources(
+    data: web::Data<SharedMap>,
+) -> impl Responder { 
+    let map = data.lock().unwrap(); // Lock for read
+    let sources: Vec<String> = map.files.keys().cloned().collect();
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(sources)
+}
+
+#[get("/sources/{source}")]
+async fn get_source(
+    data: web::Data<SharedMap>,
+    path: web::Path<String>,
+) -> impl Responder {
+    let source = path.into_inner();
+    let map = data.lock().unwrap(); // Lock for read
+    if let Some(_) = map.files.get(&source) {
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(source)
+    } else {
+        HttpResponse::NotFound()
+            .content_type("application/json")
+            .json(["not found"])
+    }
+}
+
+#[get("/sources/{source}/{obsdatetime}")]
 async fn get_all_by_date(
     data: web::Data<SharedMap>,
     path: web::Path<(String, String)>
 ) -> impl Responder { 
-    let (source, obsdate) = path.into_inner();
-    let file_path = &["/workspaces/rws/crates/estractor/data/output/",&source,"-",&obsdate,".csv"].concat(); // Change to your file path
-    println!("{source},{obsdate}, File is {} :", file_path);
+    let (source, obsdatetime) = path.into_inner();
+    let file_path = &["/workspaces/rws/crates/estractor/data/output/",&source,"-",&obsdatetime,".csv"].concat(); // Change to your file path
+    println!("{source},{obsdatetime}, File is {} :", file_path);
 
     let mut map = data.lock().unwrap(); // Lock for write
-    map.lastDate = obsdate;
+    map.lastDate = obsdatetime;
     
     match read_file_lines(file_path, "all") {
         Ok(lines) => {
@@ -76,6 +108,36 @@ async fn get_all_by_date(
         }
         Err(e) => {
              HttpResponse::BadRequest()
+                .content_type("application/json")
+                .json(["not found"])
+        },
+    }
+}
+
+#[get("/sources/{source}/{obsdatetime}/{isin}")]
+async fn get_by_isin(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String, String, String)>
+) -> impl Responder {
+    let (source, obsdatetime, isin) = path.into_inner();
+    let file_path = &["/workspaces/rws/crates/estractor/data/output/",&source,"-",&obsdatetime,".csv"].concat(); // Change to your file path
+    println!("{source},{obsdatetime}, File is {} :", file_path);
+
+    let mut map = data.lock().unwrap(); // Lock for write
+    map.lastDate = obsdatetime;
+
+    match read_file_lines(file_path, &isin) {
+        Ok(lines) => {
+            println!("File has {} lines:", lines.len());
+            for (i, line) in lines.iter().enumerate() {
+                println!("{}: {}", i + 1, line);
+            }
+            HttpResponse::Ok()
+                .content_type("application/json")
+                .json(lines)
+        }
+        Err(e) => {
+            HttpResponse::BadRequest()
                 .content_type("application/json")
                 .json(["not found"])
         },
