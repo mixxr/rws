@@ -57,94 +57,93 @@ async fn root() -> &'static str {
     "IC Data Extraction Service is running."
 }
 
+fn check_dtime(dt: &str) -> String {
+    if dt.to_lowercase() == "latest" {
+        return "1900-01-01-00-00-00".to_string();
+    }
+    return dt.to_string();
+}
+
+fn get_ds_name(source: Option<&str>, obsdatetime: Option<&str>) -> String {
+    let mut dt = "".to_string();
+    let output_path = if obsdatetime.is_some() {
+        dt = check_dtime(&obsdatetime.unwrap());
+        "/output"
+    } else {
+        ""
+    };
+    
+    format!("../estractor/data{}/{}-{}.csv", output_path, source.unwrap_or("sources"), dt)
+}
+
+// fn get_ds(key: &str, map: &SharedMap) -> File {
+//    /*
+// Return the file associated with the key if exists, otherwise open the file and add to map
+// */
+//    match map.lock().unwrap().files.get(key) {
+//        Some(file) => file.try_clone().unwrap(),
+//        None => {
+//            let file = File::open(key).unwrap();
+//            map.lock().unwrap().files.insert(key.to_string(), Arc::new(Mutex::new(file)));
+//            file
+//        }
+//    }
+   
+// }
 
 #[get("/sources")]
+/* returns list of sources */
 async fn get_sources(
     data: web::Data<SharedMap>,
-) -> impl Responder { 
-    let map = data.lock().unwrap(); // Lock for read
-    let sources: Vec<String> = map.files.keys().cloned().collect();
+) -> impl Responder {
+    let ds_path = get_ds_name(None, None);
+    // let ds_file = get_ds(ds_path, &data);
+    let sources: Vec<String> = read_csv(&ds_path, None, true).await;
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
 }
 
 #[get("/sources/{source}")]
+/* returns list of ISINs per source */
 async fn get_source(
     data: web::Data<SharedMap>,
     path: web::Path<String>,
 ) -> impl Responder {
     let source = path.into_inner();
-    let map = data.lock().unwrap(); // Lock for read
-    if let Some(_) = map.files.get(&source) {
-        HttpResponse::Ok()
-            .content_type("application/json")
-            .json(source)
-    } else {
-        HttpResponse::NotFound()
-            .content_type("application/json")
-            .json(["not found"])
-    }
+    let ds_path = get_ds_name(Some(&source), None);
+    let sources: Vec<String> = read_csv(&ds_path, None, false).await;
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(sources)
 }
 
-#[get("/sources/{source}/{obsdatetime}")]
+#[get("/quotes/{source}/{obsdatetime}")]
+/* returns list of quotes (all ISINs) per source and observation date */
 async fn get_all_by_date(
     data: web::Data<SharedMap>,
     path: web::Path<(String, String)>
 ) -> impl Responder { 
     let (source, obsdatetime) = path.into_inner();
-    let file_path = &["/workspaces/rws/crates/estractor/data/output/",&source,"-",&obsdatetime,".csv"].concat(); // Change to your file path
-    println!("{source},{obsdatetime}, File is {} :", file_path);
-
-    let mut map = data.lock().unwrap(); // Lock for write
-    map.lastDate = obsdatetime;
-    
-    match read_file_lines(file_path, "all") {
-        Ok(lines) => {
-            println!("File has {} lines:", lines.len());
-            for (i, line) in lines.iter().enumerate() {
-                println!("{}: {}", i + 1, line);
-            }
-             HttpResponse::Ok()
-            .content_type("application/json")
-            .json(lines)
-        }
-        Err(e) => {
-             HttpResponse::BadRequest()
-                .content_type("application/json")
-                .json(["not found"])
-        },
-    }
+    let ds_path = get_ds_name(Some(&source), Some(&obsdatetime));
+    let sources: Vec<String> = read_csv(&ds_path, None, true).await;
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(sources)
 }
 
-#[get("/sources/{source}/{obsdatetime}/{isin}")]
+#[get("/quotes/{source}/{obsdatetime}/{isin}")]
+/* returns a specific quote (ISIN) per source and observation date */
 async fn get_by_isin(
     data: web::Data<SharedMap>,
     path: web::Path<(String, String, String)>
 ) -> impl Responder {
     let (source, obsdatetime, isin) = path.into_inner();
-    let file_path = &["/workspaces/rws/crates/estractor/data/output/",&source,"-",&obsdatetime,".csv"].concat(); // Change to your file path
-    println!("{source},{obsdatetime}, File is {} :", file_path);
-
-    let mut map = data.lock().unwrap(); // Lock for write
-    map.lastDate = obsdatetime;
-
-    match read_file_lines(file_path, &isin) {
-        Ok(lines) => {
-            println!("File has {} lines:", lines.len());
-            for (i, line) in lines.iter().enumerate() {
-                println!("{}: {}", i + 1, line);
-            }
-            HttpResponse::Ok()
-                .content_type("application/json")
-                .json(lines)
-        }
-        Err(e) => {
-            HttpResponse::BadRequest()
-                .content_type("application/json")
-                .json(["not found"])
-        },
-    }
+    let ds_path = get_ds_name(Some(&source), Some(&obsdatetime));
+    let sources: Vec<String> = read_csv(&ds_path, Some(&isin), true).await;
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(sources)
 }
 
 fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {

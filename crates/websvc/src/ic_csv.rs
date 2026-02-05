@@ -2,13 +2,13 @@ use std::{error::Error, io};
 
 use tokio::{fs::{self, File}, io::{AsyncBufReadExt, AsyncWriteExt, BufReader}};
 
-pub async fn read_csv(file_path: &str, isin: &str, has_header: bool) -> Vec<String> {
-    let isin = isin.trim(); // TODO: sanification
+pub async fn read_csv(file_path: &str, isin: Option<&str>, has_header: bool) -> Vec<String> {
+    let isin = isin.unwrap_or("").trim(); 
     let mut is_header = has_header;
     match File::open(file_path).await {
         Err(why) => {
             eprintln!("couldn't open {}: {}", file_path, why);
-            return Vec::new();
+            return vec!["No source found"].into_iter().map(|s| s.to_owned()).collect();
         }
         Ok(file) => {
             let mut rv: Vec<String> = Vec::new();
@@ -19,12 +19,13 @@ pub async fn read_csv(file_path: &str, isin: &str, has_header: bool) -> Vec<Stri
                 if line.len() <= 0 {
                     continue;
                 }
-                if !is_header {
+                if is_header {
+                    is_header = false;
+                } else {
                     let cols = line.split(",").collect::<Vec<&str>>();
                     if isin.len() > 0 && isin != cols[0] {
                         continue;
                     }
-                    is_header = false;
                 }
                 rv.push(line.to_string());
             }
