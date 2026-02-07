@@ -84,25 +84,6 @@ fn get_latest_dtime(source: &str, arg: &str) -> String {
     latest_time
 }
 
-fn get_latest_observations(source: &str, maxobs: usize) -> String {
-    let mut latest_time = "1900-01-01-00-00-00".to_string();
-
-    for entry in std::fs::read_dir(arg).unwrap() {
-        // file format is <source>-<obsdatetime>.csv
-        let entry = entry.unwrap(); 
-        // get observation datetime from filename
-        let filename = entry.file_name().into_string().unwrap();
-        let obsdatetime = filename.split('-').nth(1).unwrap_or("").to_string();
-        // observation datetime is in format YYYY-MM-DD-HH-MM-SS
-        // check if source matches and if obsdatetime is greater than latest_time
-        if filename.starts_with(source) && obsdatetime > latest_time {
-            latest_time = obsdatetime;
-        }
-    }
-    // return latest time  
-    latest_time
-}
-
 fn get_ds_name(source: Option<&str>, obsdatetime: Option<&str>) -> String {
     let mut dt = "".to_string();
     let output_path = if obsdatetime.is_some() {
