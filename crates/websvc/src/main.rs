@@ -57,17 +57,56 @@ async fn root() -> &'static str {
     "IC Data Extraction Service is running."
 }
 
-fn check_dtime(dt: &str) -> String {
-    if dt.to_lowercase() == "latest" {
-        return "1900-01-01-00-00-00".to_string();
+fn check_dtime(source: &str, dt: &str) -> String {
+    if dt.to_lowercase().trim() == "latest" {
+        // read directory and get latest file
+        return get_latest_dtime(source, "../estractor/data/output");
     }
     return dt.to_string();
+}
+
+fn get_latest_dtime(source: &str, arg: &str) -> String {
+    let mut latest_time = "1900-01-01-00-00-00".to_string();
+
+    for entry in std::fs::read_dir(arg).unwrap() {
+        // file format is <source>-<obsdatetime>.csv
+        let entry = entry.unwrap(); 
+        // get observation datetime from filename
+        let filename = entry.file_name().into_string().unwrap();
+        let obsdatetime = filename.split('-').nth(1).unwrap_or("").to_string();
+        // observation datetime is in format YYYY-MM-DD-HH-MM-SS
+        // check if source matches and if obsdatetime is greater than latest_time
+        if filename.starts_with(source) && obsdatetime > latest_time {
+            latest_time = obsdatetime;
+        }
+    }
+    // return latest time  
+    latest_time
+}
+
+fn get_latest_observations(source: &str, maxobs: usize) -> String {
+    let mut latest_time = "1900-01-01-00-00-00".to_string();
+
+    for entry in std::fs::read_dir(arg).unwrap() {
+        // file format is <source>-<obsdatetime>.csv
+        let entry = entry.unwrap(); 
+        // get observation datetime from filename
+        let filename = entry.file_name().into_string().unwrap();
+        let obsdatetime = filename.split('-').nth(1).unwrap_or("").to_string();
+        // observation datetime is in format YYYY-MM-DD-HH-MM-SS
+        // check if source matches and if obsdatetime is greater than latest_time
+        if filename.starts_with(source) && obsdatetime > latest_time {
+            latest_time = obsdatetime;
+        }
+    }
+    // return latest time  
+    latest_time
 }
 
 fn get_ds_name(source: Option<&str>, obsdatetime: Option<&str>) -> String {
     let mut dt = "".to_string();
     let output_path = if obsdatetime.is_some() {
-        dt = check_dtime(&obsdatetime.unwrap());
+        dt = check_dtime(&source.unwrap_or("sources"), &obsdatetime.unwrap());
         "/output"
     } else {
         ""
