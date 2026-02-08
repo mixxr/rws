@@ -7,9 +7,13 @@ use actix_web::middleware::Logger;
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
 //use serde::Serialize;
 use env_logger::Env;
+use glob::glob_with;
+use glob::MatchOptions;
 
 mod ic_csv;
 use ic_csv::*;
+
+
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -42,6 +46,7 @@ async fn main() -> std::io::Result<()> {
             .service(root)
             .service(get_sources)
             .service(get_source)
+            .service(get_sources_observations)
             .service(get_all_by_date)
             .service(get_by_isin)
     })
@@ -82,6 +87,33 @@ fn get_latest_dtime(source: &str, arg: &str) -> String {
     }
     // return latest time  
     latest_time
+}
+
+fn get_latest_observations(source: &str, maxobs: usize) -> Vec<String> {
+    let options = MatchOptions {
+        case_sensitive: false,
+        require_literal_separator: false,
+        require_literal_leading_dot: false,
+    };
+    let mut obsdatetimes = Vec::new();
+    let mut max_entries = maxobs;
+    for entry in glob_with(&format!("../estractor/data/output/{}-*.csv", source), options).unwrap() {
+        if let Ok(path) = entry {
+            let filename = String::from(path.to_str().unwrap());
+            // filename is in format <source>-<obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
+            let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
+            let obsdatetime = obsdatetime.strip_suffix(".csv").unwrap_or(&obsdatetime).to_string();
+
+            obsdatetimes.push(obsdatetime.clone());
+            max_entries -= 1;
+            if max_entries == 0 {
+                break;
+            }
+        }
+    }
+    // sort obsdatetimes in descending order
+    obsdatetimes.sort_by(|a, b| b.cmp(a));
+    obsdatetimes
 }
 
 fn get_ds_name(source: Option<&str>, obsdatetime: Option<&str>) -> String {
@@ -136,6 +168,23 @@ async fn get_source(
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
+}
+
+#[get("/sources/{source}/observations/{maxobs}")]
+/* returns list of latest (maxobs) observations per source */
+async fn get_sources_observations(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String, usize)>,
+) -> impl Responder {
+    let (source, mut maxobs) = path.into_inner();
+    // TODO: check if maxobs <=0 then return latest 1000 observations
+    if maxobs <= 0 {
+        maxobs = 1000;
+    }
+    let obsdatetimes = get_latest_observations(&source, maxobs);
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(obsdatetimes)
 }
 
 #[get("/quotes/{source}/{obsdatetime}")]

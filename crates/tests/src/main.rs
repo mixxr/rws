@@ -11,7 +11,7 @@ fn main() {
     };
     println!("Hello, world!");
     let source = "bnp";
-    let mut max_entries = 2;
+    let mut max_entries = 5;
     let mut obsdatetimes = Vec::new();
     for entry in glob_with(&format!("../estractor/data/output/{}-*.csv", source), options).unwrap() {
         if let Ok(path) = entry {
