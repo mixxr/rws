@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File};
+use std::{env, fs::File};
 use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
 
@@ -12,12 +12,16 @@ use glob::MatchOptions;
 
 mod ic_csv;
 use ic_csv::*;
-
-
+use clap::Parser;
+mod definitions;
+use definitions::args::Args;
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
     lastDate: String,
+    isin_path_prefix: String,
+    output_path_prefix: String,
+    source_path: String,
     files: HashMap<String, Arc<Mutex<File>>>,
 }
 
@@ -26,18 +30,50 @@ type SharedMap = Arc<Mutex<ContentSystem>>;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let port = 8080;
+    let args = Args::parse();
+    let fp = &args.source_fp;
+    let path = std::env::current_dir().unwrap();
     let log_level = "debug";
+
+    println!("The current directory is {}", path.display());
+    println!("CLI Configuration: {:?}", args);
+
+    // TODO: check trailing slash in path prefixes and add if not present
+    let isin_path_prefix = env::var("ISIN_PATH_PREFIX");
+    let isin_path_prefix = match isin_path_prefix {
+        Err(_e)=> &args.isin_fp_prefix,
+        Ok(isin_path_prefix) => &isin_path_prefix.clone()
+    };
+    let source_path = env::var("SOURCE_PATH");
+    let source_path = match source_path {
+        Err(_e)=> &args.source_fp,
+        Ok(source_path) => &source_path.clone()
+    };
+    let output_path_prefix = env::var("OUTPUT_PATH_PREFIX");
+    let output_path_prefix = match output_path_prefix {
+        Err(_e)=> &args.output_fp_prefix,
+        Ok(output_path_prefix) => &output_path_prefix.clone()
+    };
+    let listen_port = env::var("LISTEN_PORT");
+    let listen_port = match listen_port {
+        Err(_e)=> args.listen_port,
+        Ok(listen_port) => listen_port.parse().unwrap_or(args.listen_port)
+    };
+    println!("ENV Configuration: {isin_path_prefix}, {output_path_prefix}, {source_path}, {listen_port}");
+
     env_logger::init_from_env(Env::default().default_filter_or(log_level));
 
     
 
     let shared_state: SharedMap = Arc::new(Mutex::new(ContentSystem {
         lastDate: "1900-01-01-00-00-00".to_string(),
+        isin_path_prefix: isin_path_prefix.to_string(),
+        output_path_prefix: output_path_prefix.to_string(),
+        source_path: source_path.to_string(),
         files: HashMap::new()
     }));
 
-    println!("Server running at http://127.0.0.1:{port}");
+    println!("Server running at http://127.0.0.1:{listen_port}");
 
     HttpServer::new(move || {
         App::new()
@@ -50,7 +86,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_all_by_date)
             .service(get_by_isin)
     })
-    .bind(("0.0.0.0", port))?
+    .bind(("0.0.0.0", listen_port))?
     .run()
     .await
  
@@ -65,7 +101,7 @@ async fn root() -> &'static str {
 fn check_dtime(source: &str, dt: &str) -> String {
     if dt.to_lowercase().trim() == "latest" {
         // read directory and get latest file
-        return get_latest_dtime(source, "../estractor/data/output");
+        return get_latest_dtime(source, commons::definitions::globals::OUTPUT_PATH_PREFIX);
     }
     return dt.to_string();
 }
@@ -89,7 +125,7 @@ fn get_latest_dtime(source: &str, arg: &str) -> String {
     latest_time
 }
 
-fn get_latest_observations(source: &str, maxobs: usize) -> Vec<String> {
+fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: usize) -> Vec<String> {
     let options = MatchOptions {
         case_sensitive: false,
         require_literal_separator: false,
@@ -97,7 +133,7 @@ fn get_latest_observations(source: &str, maxobs: usize) -> Vec<String> {
     };
     let mut obsdatetimes = Vec::new();
     let mut max_entries = maxobs;
-    for entry in glob_with(&format!("../estractor/data/output/{}-*.csv", source), options).unwrap() {
+    for entry in glob_with(&format!("{}{}-*.csv", shared_state.output_path_prefix, source), options).unwrap() {
         if let Ok(path) = entry {
             let filename = String::from(path.to_str().unwrap());
             // filename is in format <source>-<obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
@@ -112,20 +148,20 @@ fn get_latest_observations(source: &str, maxobs: usize) -> Vec<String> {
         }
     }
     // sort obsdatetimes in descending order
-    obsdatetimes.sort_by(|a, b| b.cmp(a));
+    // obsdatetimes.sort_by(|a, b| b.cmp(a));
     obsdatetimes
 }
 
-fn get_ds_name(source: Option<&str>, obsdatetime: Option<&str>) -> String {
+fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: Option<&str>) -> String {
     let mut dt = "".to_string();
     let output_path = if obsdatetime.is_some() {
         dt = check_dtime(&source.unwrap_or("sources"), &obsdatetime.unwrap());
-        "/output"
+        shared_state.output_path_prefix.clone()
     } else {
-        ""
+        shared_state.isin_path_prefix.clone()
     };
     
-    format!("../estractor/data{}/{}-{}.csv", output_path, source.unwrap_or("sources"), dt)
+    format!("{}{}-{}.csv", output_path, source.unwrap_or("sources"), dt)
 }
 
 // fn get_ds(key: &str, map: &SharedMap) -> File {
@@ -148,7 +184,9 @@ fn get_ds_name(source: Option<&str>, obsdatetime: Option<&str>) -> String {
 async fn get_sources(
     data: web::Data<SharedMap>,
 ) -> impl Responder {
-    let ds_path = get_ds_name(None, None);
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    let ds_path = get_ds_name(&shared_state, None, None);
     // let ds_file = get_ds(ds_path, &data);
     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
     HttpResponse::Ok()
@@ -163,7 +201,9 @@ async fn get_source(
     path: web::Path<String>,
 ) -> impl Responder {
     let source = path.into_inner();
-    let ds_path = get_ds_name(Some(&source), None);
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    let ds_path = get_ds_name(&shared_state, Some(&source), None);
     let sources: Vec<String> = read_csv(&ds_path, None, false).await;
     HttpResponse::Ok()
         .content_type("application/json")
@@ -177,11 +217,13 @@ async fn get_sources_observations(
     path: web::Path<(String, usize)>,
 ) -> impl Responder {
     let (source, mut maxobs) = path.into_inner();
-    // TODO: check if maxobs <=0 then return latest 1000 observations
+    // check if maxobs <=0 then return latest 1000 observations
     if maxobs <= 0 {
         maxobs = 1000;
     }
-    let obsdatetimes = get_latest_observations(&source, maxobs);
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    let obsdatetimes = get_latest_observations(&shared_state, &source, maxobs);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(obsdatetimes)
@@ -194,7 +236,9 @@ async fn get_all_by_date(
     path: web::Path<(String, String)>
 ) -> impl Responder { 
     let (source, obsdatetime) = path.into_inner();
-    let ds_path = get_ds_name(Some(&source), Some(&obsdatetime));
+        // obtain shared state
+    let shared_state = data.lock().unwrap();
+    let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
     HttpResponse::Ok()
         .content_type("application/json")
@@ -208,7 +252,9 @@ async fn get_by_isin(
     path: web::Path<(String, String, String)>
 ) -> impl Responder {
     let (source, obsdatetime, isin) = path.into_inner();
-    let ds_path = get_ds_name(Some(&source), Some(&obsdatetime));
+        // obtain shared state
+    let shared_state = data.lock().unwrap();
+    let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
     let sources: Vec<String> = read_csv(&ds_path, Some(&isin), true).await;
     HttpResponse::Ok()
         .content_type("application/json")

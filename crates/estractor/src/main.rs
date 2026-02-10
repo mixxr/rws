@@ -2,8 +2,8 @@ mod definitions;
 mod utils;
 
 use clap::Parser;
-use definitions::globals::*;
-use definitions::types::*;
+use commons::definitions::globals::*;
+use commons::definitions::types::*;
 use definitions::args::Args;
 use utils::price_formatter;
 
@@ -50,7 +50,7 @@ fn read_sources_from_file(source_path: &str) -> Vec<Source> {
         Err(why) => panic!("couldn't open {}: {}", display, why),
         Ok(file) => file,
     };
-    let mut start = false;
+    //let mut start = false;
     let reader = BufReader::new(file);
     let mut sources: Vec<Source> = Vec::new();
 
@@ -58,32 +58,31 @@ fn read_sources_from_file(source_path: &str) -> Vec<Source> {
         //let line = line_result?;
         let line = line_result.unwrap();
         let line = line.trim(); // Remove leading and trailing whitespace
-        if line.len() <= 0 {
+        if line.len() <= 0 || line.starts_with("source") {
             continue;
         }
-        if start {
-            if line.contains("-- END") {
-                start = false;
-            } else {
-                let cols = line.split(",");
-                let collection = cols.collect::<Vec<&str>>();
-                if collection.len() == 4 {
-                    println!("SOURCE: {:?}", collection);
-                    sources.push(Source {
-                        site: collection[0].trim().to_string(),
-                        content_type: collection[1].trim().to_string(),
-                        extractor: collection[2].trim().to_string(),
-                        base_url: collection[3].trim().to_string(),
-                    });
-                } else {
-                    println!("Source Error: {}", line);
-                }
-                // dbg!(collection);
-            }
+        // if start {
+            // if line.contains("-- END") {
+            //     start = false;
+            // } else {
+        let cols = line.split(",");
+        let collection = cols.collect::<Vec<&str>>();
+        if collection.len() == 4 {
+            println!("SOURCE: {:?}", collection);
+            sources.push(Source {
+                site: collection[0].trim().to_string(),
+                content_type: collection[1].trim().to_string(),
+                extractor: collection[2].trim().to_string(),
+                base_url: collection[3].trim().to_string(),
+            });
         } else {
-            start = line.contains("-- START");
+            println!("Source Error: {}", line);
         }
     }
+        // } else {
+        //     start = line.contains("-- START");
+        // }
+    //}
     sources
 }
 
@@ -120,7 +119,7 @@ fn read_isins_from_file(isin_path: &str) -> Result<Vec<ISIN>, std::io::Error> {
     //     Err(why) => panic!("couldn't open {}: {}", display, why),
     //     Ok(file) => file,
     // };
-    let mut start = false;
+    // let mut start = false;
     let reader = BufReader::new(file);
     let mut isins: Vec<ISIN> = Vec::new();
 
@@ -131,24 +130,24 @@ fn read_isins_from_file(isin_path: &str) -> Result<Vec<ISIN>, std::io::Error> {
         if line.len() <= 0 {
             continue;
         }
-        if start {
-            if line.contains("-- END") {
-                start = false;
-            } else {
-                let line = line.split(",").collect::<Vec<&str>>();
-                if line.len() < 2 {
-                    println!("[ISIN] discarding line: {:?}", line);
-                    continue;
-                }
-                isins.push(ISIN {
-                    isin: line[0].trim().to_string(),
-                    name: line[1].trim().to_string(),
-                });
-            }
-        } else {
-            start = line.contains("-- START");
+        // if start {
+        //     if line.contains("-- END") {
+        //         start = false;
+        //     } else {
+        let line = line.split(",").collect::<Vec<&str>>();
+        if line.len() < 2 {
+            println!("[ISIN] discarding line: {:?}", line);
+            continue;
         }
+        isins.push(ISIN {
+            isin: line[0].trim().to_string(),
+            name: line[1].trim().to_string(),
+        });
     }
+    //     } else {
+    //         start = line.contains("-- START");
+    //     }
+    // }
     Ok(isins)
 }
 
@@ -270,7 +269,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             source.site
         );
         let isins =
-            read_isins_from_file(&[isin_path_prefix, &source.site, ".txt"].concat().as_str());
+            read_isins_from_file(&[isin_path_prefix, &source.site, "-.csv"].concat().as_str());
         let isins = match isins {
             Err(e) => {
                 eprintln!("ISIN Read Error: {:?}", e);

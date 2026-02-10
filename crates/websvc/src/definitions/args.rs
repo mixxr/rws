@@ -6,7 +6,7 @@ pub const OUTPUT_PATH_PREFIX: &str = "data/output/";
 pub const SOURCE_PATH: &str = "data/sources.txt"; 
 */
 #[derive(Parser, Debug)]
-#[command(version, about = "Digital Posture RWS", long_about = None)]
+#[command(version, about = "Digital Posture IC Web Service", long_about = None)]
 pub struct Args {
     /// Source file path 
     #[arg(short, long, default_value = SOURCE_PATH)]
@@ -19,6 +19,10 @@ pub struct Args {
     /// Output file path 
     #[arg(short, long, default_value = OUTPUT_PATH_PREFIX)]
     pub output_fp_prefix: String,
+
+    /// Listen port
+    #[arg(short, long, default_value_t = 8080)] 
+    pub listen_port: u16,
 
     /// Output format
     #[arg(short = 'f', long, default_value = "csv")]
