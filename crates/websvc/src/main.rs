@@ -78,7 +78,8 @@ async fn main() -> std::io::Result<()> {
     println!("Server running at http://127.0.0.1:{listen_port}");
 
     HttpServer::new(move || {
-        let cors = Cors::default().allow_any_origin().send_wildcard().allowed_origin("localhost:4000");
+        //let cors = Cors::default().allow_any_origin().send_wildcard();
+        let cors = Cors::default().send_wildcard();
         App::new()
             .wrap(Logger::default())
             .wrap(cors)
