@@ -1,2 +1,8 @@
 cargo install cargo-watch
 cargo watch -x run
+
+
+cargo run -- --listen-port 8090 --source-fp "c:\_docs\data\sources-.csv" --output-fp-prefix "c:\_docs\data\output\" -i "c:\_docs\data\"
+
+
+ cargo run -- --source-fp "c:\_docs\data\sources-.csv" --output-fp-prefix "c:\_docs\data\output\" 
