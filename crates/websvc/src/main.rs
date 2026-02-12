@@ -3,6 +3,7 @@ use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
 
 use std::sync::{Arc, Mutex};
+use actix_web::http::header;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
 //use serde::Serialize;
@@ -191,6 +192,7 @@ async fn get_sources(
     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
     HttpResponse::Ok()
         .content_type("application/json")
+        .append_header((header::ALLOW, "*"))
         .json(sources)
 }
 
