@@ -3,6 +3,7 @@ use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
 
 use std::sync::{Arc, Mutex};
+use actix_cors::Cors;
 use actix_web::http::header;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
@@ -77,8 +78,10 @@ async fn main() -> std::io::Result<()> {
     println!("Server running at http://127.0.0.1:{listen_port}");
 
     HttpServer::new(move || {
+        let cors = Cors::default().allow_any_origin().send_wildcard().allowed_origin("localhost:4000");
         App::new()
             .wrap(Logger::default())
+            .wrap(cors)
             .app_data(web::Data::new(shared_state.clone()))
             .service(root)
             .service(get_sources)
@@ -192,7 +195,7 @@ async fn get_sources(
     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
     HttpResponse::Ok()
         .content_type("application/json")
-        .append_header((header::ALLOW, "*"))
+        // .append_header((header::ALLOW, "*"))
         .json(sources)
 }
 
