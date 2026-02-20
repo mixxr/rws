@@ -238,7 +238,6 @@ fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str) -> Result<(),
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
-    let fp = &args.source_fp;
     let path = env::current_dir().unwrap();
 
     println!("The current directory is {}", path.display());
@@ -262,7 +261,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("ENV Configuration: {isin_path_prefix}, {output_path_prefix}, {source_path}");
 
     // System check
-    let sources = read_sources_from_file(&fp);
+    let sources = read_sources_from_file(source_path);
     println!("Sources: {:?}", sources);
     for source in sources {
         println!(
