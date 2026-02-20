@@ -5,4 +5,5 @@ cargo watch -x run
 cargo run -- --listen-port 8090 --source-fp "c:\_docs\data\sources-.csv" --output-fp-prefix "c:\_docs\data\output\" -i "c:\_docs\data\"
 cargo run -- --listen-port 8090 --source-fp "../estractor/data/sources-.csv" --output-fp-prefix "../estractor/data/output/" -i "../estractor/data/"
 
- cargo run -- --source-fp "c:\_docs\data\sources-.csv" --output-fp-prefix "c:\_docs\data\output\" 
+cargo run -- --source-fp "c:\_docs\data\sources-.csv" --output-fp-prefix "c:\_docs\data\output\" 
+cargo run -- --source-fp "./data/sources-2.csv"
