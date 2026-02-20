@@ -179,7 +179,7 @@ async fn extract_quotes_from_source(
             // TODO: make user-agent random
             let response = client
                         .get(url)
-                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+                        .header("User-Agent", definitions::client_agents::random_agent())
                         .send().await; //?.text().await?;
             match response {
                 Ok(response) => {
@@ -216,8 +216,9 @@ async fn extract_quotes_from_source(
 
     println!("Await all tasks to complete...");
     for task in tasks {
+        let id = task.id();
         let r = task.await;
-        println!("task Result:{:?}", r);
+        println!("task {} Result:{:?}", id , r);
     }
 
     let r = results.lock().unwrap();
