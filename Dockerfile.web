@@ -4,8 +4,8 @@ WORKDIR /workspaces/rws/crates/websvc
 COPY . .
 
 ENV OUTPUT_PATH_PREFIX="/data/output/"
-ENV SOURCE_PATH="../estractor/data/sources-.csv"
-ENV ISIN_PATH_PREFIX "../estractor/data/"
+ENV SOURCE_PATH="crates/estractor/data/sources-.csv"
+ENV ISIN_PATH_PREFIX "crates/estractor/data/"
 ENV LISTEN_PORT 8080
 EXPOSE 8080
 

@@ -33,7 +33,6 @@ type SharedMap = Arc<Mutex<ContentSystem>>;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let args = Args::parse();
-    let fp = &args.source_fp;
     let path = std::env::current_dir().unwrap();
     let log_level = "debug";
 
