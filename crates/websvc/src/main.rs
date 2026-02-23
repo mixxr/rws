@@ -17,6 +17,7 @@ use ic_csv::*;
 use clap::Parser;
 mod definitions;
 use definitions::args::Args;
+use tracing::info;
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -102,15 +103,22 @@ async fn root() -> &'static str {
     "IC Data Extraction Service is running."
 }
 
-fn check_dtime(source: &str, dt: &str) -> String {
+fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
     if dt.to_lowercase().trim() == "latest" {
+        println!("latest required at {}", output_fp_prefix);
         // read directory and get latest file
-        return get_latest_dtime(source, commons::definitions::globals::OUTPUT_PATH_PREFIX);
+        return get_latest_dtime(source, output_fp_prefix).expect("latest not available");
     }
-    return dt.to_string();
+    // naive format %Y-%m-%d-%H-%M-%S checker
+    // let parts: Vec<&str> = dt.split('-').collect();
+    // if parts.len() == 6 {
+    dt.to_string()
+    // }else{
+    //     Err(anyhow!("observation date format not valid"))
+    // }
 }
 
-fn get_latest_dtime(source: &str, arg: &str) -> String {
+fn get_latest_dtime(source: &str, arg: &str) -> Result<String, io::Error> {
     let mut latest_time = "1900-01-01-00-00-00".to_string();
 
     for entry in std::fs::read_dir(arg).unwrap() {
@@ -118,7 +126,7 @@ fn get_latest_dtime(source: &str, arg: &str) -> String {
         let entry = entry.unwrap(); 
         // get observation datetime from filename
         let filename = entry.file_name().into_string().unwrap();
-        let obsdatetime = filename.split('-').nth(1).unwrap_or("").to_string();
+        let obsdatetime = filename[filename.find('-').unwrap() + 1..filename.rfind('.').unwrap()].to_string();
         // observation datetime is in format YYYY-MM-DD-HH-MM-SS
         // check if source matches and if obsdatetime is greater than latest_time
         if filename.starts_with(source) && obsdatetime > latest_time {
@@ -126,7 +134,7 @@ fn get_latest_dtime(source: &str, arg: &str) -> String {
         }
     }
     // return latest time  
-    latest_time
+    Ok(latest_time)
 }
 
 fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: usize) -> Vec<String> {
@@ -159,7 +167,7 @@ fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: u
 fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: Option<&str>) -> String {
     let mut dt = "".to_string();
     let output_path = if obsdatetime.is_some() {
-        dt = check_dtime(&source.unwrap_or("sources"), &obsdatetime.unwrap());
+        dt = check_dtime(&source.unwrap_or("sources"), &obsdatetime.unwrap(), &shared_state.output_path_prefix);
         shared_state.output_path_prefix.clone()
     } else {
         shared_state.isin_path_prefix.clone()
@@ -183,6 +191,15 @@ fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: 
    
 // }
 
+fn add_info(mut response: Vec<String>, info: String) -> Vec<String> {
+    if response.len() <= 0 
+        || response[0] == ic_csv::NODATA_FOUND 
+        || (response.len() == 1 && response[0].starts_with("isin,")) {
+        response.push(info);
+    }
+    response
+}
+
 #[get("/sources")]
 /* returns list of sources */
 async fn get_sources(
@@ -199,7 +216,7 @@ async fn get_sources(
         .json(sources)
 }
 
-#[get("/sources/{source}")]
+#[get("/isins/{source}")]
 /* returns list of ISINs per source */
 async fn get_source(
     data: web::Data<SharedMap>,
@@ -210,18 +227,20 @@ async fn get_source(
     let shared_state = data.lock().unwrap();
     let ds_path = get_ds_name(&shared_state, Some(&source), None);
     let sources: Vec<String> = read_csv(&ds_path, None, false).await;
+    let sources = add_info(sources, format!("source {} not found", source));
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
 }
 
-#[get("/sources/{source}/observations/{maxobs}")]
+#[get("/observations/{source}/{maxobs}")]
 /* returns list of latest (maxobs) observations per source */
 async fn get_sources_observations(
     data: web::Data<SharedMap>,
-    path: web::Path<(String, usize)>,
+    path: web::Path<(String, String)>,
 ) -> impl Responder {
-    let (source, mut maxobs) = path.into_inner();
+    let (source, maxobsStr) = path.into_inner();
+    let mut maxobs = maxobsStr.trim().parse::<usize>().unwrap_or(1000);
     // check if maxobs <=0 then return latest 1000 observations
     if maxobs <= 0 {
         maxobs = 1000;
@@ -229,6 +248,7 @@ async fn get_sources_observations(
     // obtain shared state
     let shared_state = data.lock().unwrap();
     let obsdatetimes = get_latest_observations(&shared_state, &source, maxobs);
+    let obsdatetimes = add_info(obsdatetimes, format!("source {} not found", source));
     HttpResponse::Ok()
         .content_type("application/json")
         .json(obsdatetimes)
@@ -245,6 +265,7 @@ async fn get_all_by_date(
     let shared_state = data.lock().unwrap();
     let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
+    let sources = add_info(sources, format!("source {} or observation {} not found", source, obsdatetime));
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
@@ -261,6 +282,7 @@ async fn get_by_isin(
     let shared_state = data.lock().unwrap();
     let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
     let sources: Vec<String> = read_csv(&ds_path, Some(&isin), true).await;
+    let sources = add_info(sources, format!("source {} or observation {} or ISIN {} not found", source, obsdatetime, isin));
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)

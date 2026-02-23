@@ -225,11 +225,12 @@ async fn extract_quotes_from_source(
     Ok(r.to_vec())
 }
 
-fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str) -> Result<(), Box<dyn Error>> {
+fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str, dt: &str) -> Result<(), Box<dyn Error>> {
     let mut wtr = csv::Writer::from_path(output_filepath)?;
-    wtr.write_record(&[&"isin", &"name", &"ask", &"bid", &"currency"])?;
+    // TODO: remove dt from rows and return a field in the web svc payload> Benefit: 1 data vs N rows with data replicated
+    wtr.write_record(&[&"isin", &"name", &"ask", &"bid", &"currency", &"dt"])?;
     for quote in quotes {
-        wtr.write_record(&[&quote.isin, &quote.name, &quote.ask, &quote.bid, &quote.currency])?;
+        wtr.write_record(&[&quote.isin, &quote.name, &quote.ask, &quote.bid, &quote.currency, dt])?;
     }
     wtr.flush()?;
     Ok(())
@@ -285,20 +286,22 @@ async fn main() -> Result<(), Box<dyn Error>> {
             }
             Ok(quotes) => quotes,
         };
-        println!("Quotes: {:?}", quotes);
+        let dt = chrono::offset::Local::now()
+                .format("%Y-%m-%d-%H-%M-%S")
+                .to_string();
+        println!("{} Quotes: {:?}", dt, quotes);
         // Write results to CSV
         let csv_filepath = [
             output_path_prefix,
             &source.site,
-            &chrono::offset::Local::now()
-                .format("-%Y-%m-%d-%H-%M-%S")
-                .to_string(),
+            "-",
+            &dt,
             ".csv",
         ]
         .concat();
         println!("> Writing quotes to {}", csv_filepath);
         let _ = fs::create_dir_all(&output_path_prefix);
-        write_quotes_to_csv(&quotes, &csv_filepath)?;
+        write_quotes_to_csv(&quotes, &csv_filepath, &dt)?;
     }
     Ok(())
 }

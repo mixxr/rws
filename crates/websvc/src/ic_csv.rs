@@ -2,13 +2,15 @@ use std::{error::Error, io};
 
 use tokio::{fs::{self, File}, io::{AsyncBufReadExt, AsyncWriteExt, BufReader}};
 
+pub static NODATA_FOUND: &str = "No data found";
+
 pub async fn read_csv(file_path: &str, isin: Option<&str>, has_header: bool) -> Vec<String> {
     let isin = isin.unwrap_or("").trim(); 
     let mut is_header = has_header;
     match File::open(file_path).await {
         Err(why) => {
             eprintln!("couldn't open {}: {}", file_path, why);
-            return vec!["No source found"].into_iter().map(|s| s.to_owned()).collect();
+            return vec![NODATA_FOUND].into_iter().map(|s| s.to_owned()).collect();
         }
         Ok(file) => {
             let mut rv: Vec<String> = Vec::new();
