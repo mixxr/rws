@@ -61,6 +61,7 @@ async fn main() -> std::io::Result<()> {
         Err(_e)=> args.listen_port,
         Ok(listen_port) => listen_port.parse().unwrap_or(args.listen_port)
     };
+    // TO DO: check if {isin_path_prefix}, {output_path_prefix} have trailing slash
     println!("ENV Configuration: {isin_path_prefix}, {output_path_prefix}, {source_path}, {listen_port}");
 
     env_logger::init_from_env(Env::default().default_filter_or(log_level));
@@ -112,25 +113,25 @@ fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
     // naive format %Y-%m-%d-%H-%M-%S checker
     // let parts: Vec<&str> = dt.split('-').collect();
     // if parts.len() == 6 {
-    dt.to_string()
+    [dt,".csv"].concat()
     // }else{
     //     Err(anyhow!("observation date format not valid"))
     // }
 }
 
 fn get_latest_dtime(source: &str, arg: &str) -> Result<String, io::Error> {
-    let mut latest_time = "1900-01-01-00-00-00".to_string();
+    let mut latest_time = "1900-01-01-00-00-00.csv".to_string();
 
-    for entry in std::fs::read_dir(arg).unwrap() {
-        // file format is <source>-<obsdatetime>.csv
+    for entry in std::fs::read_dir([arg, source].concat()).unwrap() {
+        // file format is <obsdatetime>.csv
         let entry = entry.unwrap(); 
         // get observation datetime from filename
         let filename = entry.file_name().into_string().unwrap();
-        let obsdatetime = filename[filename.find('-').unwrap() + 1..filename.rfind('.').unwrap()].to_string();
+        println!("latest: {}", filename);
+        //let obsdatetime = filename[..filename.rfind('.').unwrap()].to_string();
         // observation datetime is in format YYYY-MM-DD-HH-MM-SS
-        // check if source matches and if obsdatetime is greater than latest_time
-        if filename.starts_with(source) && obsdatetime > latest_time {
-            latest_time = obsdatetime;
+        if filename > latest_time {
+            latest_time = filename;
         }
     }
     // return latest time  
@@ -145,14 +146,14 @@ fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: u
     };
     let mut obsdatetimes = Vec::new();
     let mut max_entries = maxobs;
-    for entry in glob_with(&format!("{}{}-*.csv", shared_state.output_path_prefix, source), options).unwrap() {
+    for entry in glob_with(&format!("{}{}/*.csv", shared_state.output_path_prefix, source), options).unwrap() {
         if let Ok(path) = entry {
-            let filename = String::from(path.to_str().unwrap());
-            // filename is in format <source>-<obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
-            let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
-            let obsdatetime = obsdatetime.strip_suffix(".csv").unwrap_or(&obsdatetime).to_string();
+            //let filename = String::from(path.to_str().unwrap());
+            // filename is in format <obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
+            // let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
+            // let obsdatetime = filename.strip_suffix(".csv").unwrap().to_string();//.unwrap_or(&obsdatetime).to_string(); // TODO: return Vec<&str> is better?
 
-            obsdatetimes.push(obsdatetime.clone());
+            obsdatetimes.push(path.file_stem().unwrap().to_str().unwrap().to_string());
             max_entries -= 1;
             if max_entries == 0 {
                 break;
@@ -165,15 +166,18 @@ fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: u
 }
 
 fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: Option<&str>) -> String {
-    let mut dt = "".to_string();
-    let output_path = if obsdatetime.is_some() {
-        dt = check_dtime(&source.unwrap_or("sources"), &obsdatetime.unwrap(), &shared_state.output_path_prefix);
-        shared_state.output_path_prefix.clone()
+    if obsdatetime.is_some() {
+        // means the request is about a specific observation filename => quotes to read
+        let dt = check_dtime(&source.unwrap_or("404"), &obsdatetime.unwrap(), &shared_state.output_path_prefix);
+        // dt should end with .csv
+        return format!("{}{}/{}", shared_state.output_path_prefix, source.unwrap_or("404"), dt);
     } else {
-        shared_state.isin_path_prefix.clone()
+        if source.is_some() {
+            // means a specific source is requested => isins to read
+            return format!("{}{}.csv", shared_state.isin_path_prefix, source.unwrap());
+        } 
+        return shared_state.source_path.clone();
     };
-    
-    format!("{}{}-{}.csv", output_path, source.unwrap_or("sources"), dt)
 }
 
 // fn get_ds(key: &str, map: &SharedMap) -> File {

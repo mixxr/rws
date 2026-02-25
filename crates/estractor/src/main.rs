@@ -259,6 +259,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         Err(_e)=> &args.output_fp_prefix,
         Ok(output_path_prefix) => &output_path_prefix.clone()
     };
+    // TO DO: check if output_path_prefix, isin_path_prefix have trailing slash
+
     println!("ENV Configuration: {isin_path_prefix}, {output_path_prefix}, {source_path}");
 
     // System check
@@ -270,7 +272,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             source.site
         );
         let isins =
-            read_isins_from_file(&[isin_path_prefix, &source.site, "-.csv"].concat().as_str());
+            read_isins_from_file(&[isin_path_prefix, &source.site, ".csv"].concat().as_str()); // TO DO: remove - 
         let isins = match isins {
             Err(e) => {
                 eprintln!("ISIN Read Error: {:?}", e);
@@ -290,17 +292,16 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 .format("%Y-%m-%d-%H-%M-%S")
                 .to_string();
         println!("{} Quotes: {:?}", dt, quotes);
-        // Write results to CSV
+        // Write results to CSV: <output_path_prefix><source name>/<dt>.csv
+        let csv_path = [output_path_prefix, &source.site, "/"].concat();
         let csv_filepath = [
-            output_path_prefix,
-            &source.site,
-            "-",
+            &csv_path,
             &dt,
             ".csv",
         ]
         .concat();
         println!("> Writing quotes to {}", csv_filepath);
-        let _ = fs::create_dir_all(&output_path_prefix);
+        let _ = fs::create_dir_all(&csv_path);
         write_quotes_to_csv(&quotes, &csv_filepath, &dt)?;
     }
     Ok(())
