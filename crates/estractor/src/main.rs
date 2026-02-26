@@ -180,6 +180,10 @@ async fn extract_quotes_from_source(
             let response = client
                         .get(url)
                         .header("User-Agent", definitions::client_agents::random_agent())
+                        .header("referer", "https://www.google.com/") // TO DO: randomize all following...
+                        .header("accept-language", "it")
+                        .header("accept-encoding", "gzip, deflate, br, zstd")
+                        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
                         .send().await; //?.text().await?;
             match response {
                 Ok(response) => {
