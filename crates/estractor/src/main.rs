@@ -182,13 +182,14 @@ async fn extract_quotes_from_source(
                         .header("User-Agent", definitions::client_agents::random_agent())
                         .header("referer", "https://www.google.com/") // TO DO: randomize all following...
                         .header("accept-language", "it")
-                        .header("accept-encoding", "gzip, deflate, br, zstd")
+                        //.header("accept-encoding", "gzip, deflate, br, zstd")
                         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
                         .send().await; //?.text().await?;
             match response {
                 Ok(response) => {
                     if response.status().is_success() {
                         let html_content = response.text().await?;
+                        println!("html_content {}: {}", isin.isin, html_content.split_at(100).0);
                         let price = match source.extractor.as_str() {
                             "selector" => get_price_by_selector(&html_content, &source.site),
                             "pattern" => get_price_by_pattern(&html_content, &source.site),
