@@ -121,7 +121,7 @@ fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
 
 fn get_latest_dtime(source: &str, arg: &str) -> Result<String, io::Error> {
     let mut latest_time = "1900-01-01-00-00-00.csv".to_string();
-
+    println!("get_latest_dtime path: {}{}", arg, source);
     for entry in std::fs::read_dir([arg, source].concat()).unwrap() {
         // file format is <obsdatetime>.csv
         let entry = entry.unwrap(); 
