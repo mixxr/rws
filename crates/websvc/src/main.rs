@@ -80,7 +80,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         //let cors = Cors::default().allow_any_origin().send_wildcard();
-        let cors = Cors::default().send_wildcard();
+        let cors = Cors::default().allow_any_origin();
         App::new()
             .wrap(Logger::default())
             .wrap(cors)
@@ -106,9 +106,18 @@ async fn root() -> &'static str {
 
 fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
     if dt.to_lowercase().trim() == "latest" {
-        println!("latest required at {}", output_fp_prefix);
+        println!("latest required at {}, {}", output_fp_prefix, source);
         // read directory and get latest file
-        return get_latest_dtime(source, output_fp_prefix).expect("latest not available");
+        match get_latest_dtime(source, output_fp_prefix) {
+            Ok(latest_dt) => {
+                println!("latest observation datetime: {}", latest_dt);
+                return latest_dt;
+            },
+            Err(e) => {
+                println!("Error getting latest observation datetime: {}", e);
+                return "1900-01-01-00-00-00.csv".to_string();
+            }
+        }
     }
     // naive format %Y-%m-%d-%H-%M-%S checker
     // let parts: Vec<&str> = dt.split('-').collect();
@@ -121,8 +130,13 @@ fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
 
 fn get_latest_dtime(source: &str, arg: &str) -> Result<String, io::Error> {
     let mut latest_time = "1900-01-01-00-00-00.csv".to_string();
-    println!("get_latest_dtime path: {}{}", arg, source);
-    for entry in std::fs::read_dir([arg, source].concat()).unwrap() {
+    let dir_path = [arg, source].concat();
+    println!("get_latest_dtime path: {}", dir_path);
+    if !std::path::Path::new(&dir_path).exists() {
+        println!("Directory {} does not exist", dir_path);
+        return Ok(latest_time);
+    }
+    for entry in std::fs::read_dir(dir_path).unwrap() {
         // file format is <obsdatetime>.csv
         let entry = entry.unwrap(); 
         // get observation datetime from filename
@@ -195,13 +209,21 @@ fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: 
    
 // }
 
-fn add_info(mut response: Vec<String>, info: String) -> Vec<String> {
+// sanity check for input parameters: only allow alphanumeric characters, hyphens and underscores, and trim whitespace
+fn sanitize_input(input: &str) -> String {
+    input.trim().replace(|c: char| !c.is_alphanumeric() && c != '-' && c != '_', "")
+}
+
+
+// check if response is empty or contains only header or nodata found
+fn check_response(response: &Vec<String>, info: String) -> bool {
     if response.len() <= 0 
         || response[0] == ic_csv::NODATA_FOUND 
         || (response.len() == 1 && response[0].starts_with("isin,")) {
-        response.push(info);
+        //response.push(info);
+        return true;
     }
-    response
+    return false;
 }
 
 #[get("/sources")]
@@ -226,12 +248,17 @@ async fn get_source(
     data: web::Data<SharedMap>,
     path: web::Path<String>,
 ) -> impl Responder {
-    let source = path.into_inner();
+    let source = sanitize_input(&path.into_inner());
     // obtain shared state
     let shared_state = data.lock().unwrap();
     let ds_path = get_ds_name(&shared_state, Some(&source), None);
     let sources: Vec<String> = read_csv(&ds_path, None, false).await;
-    let sources = add_info(sources, format!("source {} not found", source));
+
+    if check_response(&sources, format!("source {} not found", source)) {
+        return HttpResponse::NotFound()
+            .content_type("application/json")
+            .json(sources);
+    }
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
@@ -244,7 +271,8 @@ async fn get_sources_observations(
     path: web::Path<(String, String)>,
 ) -> impl Responder {
     let (source, maxobsStr) = path.into_inner();
-    let mut maxobs = maxobsStr.trim().parse::<usize>().unwrap_or(1000);
+    let source = sanitize_input(&source);
+    let mut maxobs = maxobsStr.parse::<usize>().unwrap_or(1000);
     // check if maxobs <=0 then return latest 1000 observations
     if maxobs <= 0 {
         maxobs = 1000;
@@ -252,7 +280,11 @@ async fn get_sources_observations(
     // obtain shared state
     let shared_state = data.lock().unwrap();
     let obsdatetimes = get_latest_observations(&shared_state, &source, maxobs);
-    let obsdatetimes = add_info(obsdatetimes, format!("source {} not found", source));
+    if check_response(&obsdatetimes, format!("source {} not found", source)) {
+        return HttpResponse::NotFound()
+            .content_type("application/json")
+            .json(obsdatetimes);
+    }
     HttpResponse::Ok()
         .content_type("application/json")
         .json(obsdatetimes)
@@ -265,11 +297,17 @@ async fn get_all_by_date(
     path: web::Path<(String, String)>
 ) -> impl Responder { 
     let (source, obsdatetime) = path.into_inner();
+    let source = sanitize_input(&source);
+    let obsdatetime = sanitize_input(&obsdatetime);
         // obtain shared state
     let shared_state = data.lock().unwrap();
     let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
-    let sources = add_info(sources, format!("source {} or observation {} not found", source, obsdatetime));
+    if check_response(&sources, format!("source {} or observation {} not found", source, obsdatetime)) {
+        return HttpResponse::NotFound()
+            .content_type("application/json")
+            .json(sources);
+    }
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
@@ -282,11 +320,18 @@ async fn get_by_isin(
     path: web::Path<(String, String, String)>
 ) -> impl Responder {
     let (source, obsdatetime, isin) = path.into_inner();
+    let source = sanitize_input(&source);
+    let obsdatetime = sanitize_input(&obsdatetime);
+    let isin = sanitize_input(&isin);
         // obtain shared state
     let shared_state = data.lock().unwrap();
     let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
     let sources: Vec<String> = read_csv(&ds_path, Some(&isin), true).await;
-    let sources = add_info(sources, format!("source {} or observation {} or ISIN {} not found", source, obsdatetime, isin));
+    if check_response(&sources, format!("source {} or observation {} or ISIN {} not found", source, obsdatetime, isin)) {
+        return HttpResponse::NotFound()
+            .content_type("application/json")
+            .json(sources);
+    }
     HttpResponse::Ok()
         .content_type("application/json")
         .json(sources)
