@@ -91,6 +91,8 @@ async fn main() -> std::io::Result<()> {
             .service(get_sources_observations)
             .service(get_all_by_date)
             .service(get_by_isin)
+            .service(get_tickers)
+            .service(get_by_ticker)
     })
     .bind(("0.0.0.0", listen_port))?
     .run()
@@ -336,6 +338,41 @@ async fn get_by_isin(
         .content_type("application/json")
         .json(sources)
 }
+
+#[get("/certificates/{ticker}")]
+/* returns certificates by ticker */
+async fn get_by_ticker(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String)>
+) -> impl Responder {
+    let (ticker) = path.into_inner();
+    let ticker = sanitize_input(&ticker);
+        // obtain shared state
+    let shared_state = data.lock().unwrap();
+    // create a vector of dummy certificates for testing. Each entry should be in format <isin>,<name>,<ask>,<bid>,<currency>,<obsdatetime>
+    let certificates = vec!["US0378331005,Apple Inc.,150.00,149.50,USD,2024-06-01-12-00-00".to_string(), "US5949181045,Microsoft Corp.,300.00,299.50,USD,2024-06-01-12-00-00".to_string(), "US02079K3059,Alphabet Inc.,2800.00,2795.00,USD,2024-06-01-12-00-00".to_string()];    
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(certificates)
+}
+
+#[get("/tickers/{matcher}")]
+/* returns list of latest (maxobs) observations per source */
+async fn get_tickers(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String)>,
+) -> impl Responder {
+    let matcher = path.into_inner();
+    let matcher = sanitize_input(&matcher);
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    // create a vector of dummy tickers for testing. Each entry should be in format <ticker>,<name>
+    let tickers = vec!["AAPL,Apple Inc.".to_string(), "MSFT,Microsoft Corp.".to_string(), "GOOGL,Alphabet Inc.".to_string()];
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(tickers)
+}
+
 
 fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
     // Open the file
