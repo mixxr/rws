@@ -18,6 +18,8 @@ use clap::Parser;
 mod definitions;
 use definitions::args::Args;
 use tracing::info;
+
+use rand::prelude::*;
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -347,10 +349,22 @@ async fn get_by_ticker(
 ) -> impl Responder {
     let (ticker) = path.into_inner();
     let ticker = sanitize_input(&ticker);
-        // obtain shared state
+        // obtain shared s;tate
     let shared_state = data.lock().unwrap();
-    // create a vector of dummy certificates for testing. Each entry should be in format <isin>,<name>,<ask>,<bid>,<currency>,<obsdatetime>
-    let certificates = vec!["US0378331005,Apple Inc.,150.00,149.50,USD,2024-06-01-12-00-00".to_string(), "US5949181045,Microsoft Corp.,300.00,299.50,USD,2024-06-01-12-00-00".to_string(), "US02079K3059,Alphabet Inc.,2800.00,2795.00,USD,2024-06-01-12-00-00".to_string()];    
+    // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
+    // first row is the header
+    // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
+    let mut certificates = Vec::new();
+    certificates.push("isin,certificate name,ask,bid,currency,obsdatetime".to_string());
+    let mut rng = rand::rng();
+    for i in 1..=10 {
+        // random ask and bid values between 100 and 110 for ask, and between 90 and 100 for bid
+        // create a random number using Rnd library
+        let isin = format!("US{:0>10}", rng.random::<u64>() % 10000000);
+        let ask = rng.random::<u32>() % 10 + 98;
+        let bid = rng.random::<u32>() % 10 + 100;
+        certificates.push(format!("{},Certificate {},{},{},USD,2024-06-01-12-00-{}", isin, i, ask, bid, (i % 10) + 10));
+    }
     HttpResponse::Ok()
         .content_type("application/json")
         .json(certificates)
