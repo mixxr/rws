@@ -13,7 +13,7 @@
     "postCreateCommand": "rustup component add clippy rustfmt && ./.devcontainer/setup.sh",
     "features": {
         "ghcr.io/devcontainers/features/rust:1": {},
-        "ghcr.io/devcontainers/features/node:1": { }
+        // "ghcr.io/devcontainers/features/node:1": { }
         // "ghcr.io/dhoeric/features/google-cloud-cli": {}
     }
 }    

@@ -1,0 +1,18 @@
+
+# D1 installation
+1. pre-req
+npm i -D wrangler@latest OR cargo install wrangler
+rustup target add wasm32-unknown-unknown
+cargo install cargo-generate
+
+2. wrangler login does not work a2a so you need api token (cloudflare)
+> export CLOUDFLARE_API_TOKEN=your_api_token_here
+> wrangler whoami
+
+3. cargo generate cloudflare/workers-rs
+> https://developers.cloudflare.com/workers/languages/rust/
+> https://github.com/minagawah/cloudflare-workers-d1-rust-example/tree/main 
+
+wrangler d1 execute certificates --local --file=../tests/dbms_init.sql
+wrangler dev
+curl
