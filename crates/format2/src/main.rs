@@ -203,8 +203,22 @@ fn main() -> std::process::ExitCode {
                         fields.insert(key.to_string(), extract_value(path.to_str().unwrap(), &content_str, value));
                     }
                     println!("Extracted fields: {:?}", fields);
-                    let output_filepath = &[output_dir.to_string(), fields.get("isin").unwrap().to_string(), ".json".to_string()].concat();
-                    serde_json::to_writer(File::create(output_filepath).unwrap(), &fields).unwrap();
+                    // TODO: serialize fields in accordance with output format (json, sql, csv)
+                    match args.output_format.as_str() {
+                        "csv" => {
+                            // TODO: create 1 file?
+                            // let output_filepath = &[output_dir.to_string(), fields.get("isin").unwrap().to_string(), ".csv".to_string()].concat();
+                            // let mut wtr = csv::Writer::from_writer(File::create(output_filepath).unwrap());
+                            // wtr.serialize(fields).unwrap();
+                            // wtr.flush().unwrap();
+                            todo!()
+                        }
+                        _ => {
+                            // default is json
+                            let output_filepath = &[output_dir.to_string(), fields.get("isin").unwrap().to_string(), ".json".to_string()].concat();
+                            serde_json::to_writer(File::create(output_filepath).unwrap(), &fields).unwrap();
+                        }   
+                    }
                 }
             }
             println!("Completed in: {:?}", start.elapsed());

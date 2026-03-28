@@ -819,6 +819,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "commons",
+ "csv",
  "glob",
  "regex",
  "serde",
