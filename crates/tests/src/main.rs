@@ -4,6 +4,8 @@ use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
 
+use definitions::args::Args;
+
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Certificate {
     isin: String,
@@ -145,20 +147,26 @@ fn extract_quote(isin: &str, dt: &str, content_str: &str, map: &std::collections
     c
 }
 
+/*
+regex2 --config <issuer>.rx.txt --input-dir output\<dt> --output-format [json|sql|csv] --output-dir <path>
+- <path> contains 1 file with entries as defined in <issuer>.rx.txt, eg. <isin>,<dt>,<ask>,<bid>,...
+*/
 fn main() -> std::process::ExitCode {
-    let args: Vec<String> = std::env::args().collect();
-    if args.len() <= 2 {
-        eprintln!("Please provide k-v config and file as argumnts!");
+    let args = Args::parse();
+    if args.config == None {
+        eprintln!("Please type --help to check the parameters and retry.");
         return std::process::ExitCode::from(1);
     }
-    match read_kv_file(&args[1]) {
+    println!("Configuration: {:?}", args);
+
+    match read_kv_file(&args.config) {
         Ok(map) => {
             println!("Loaded {} entries:", map.len());
             for (key, value) in &map {
                 println!("{} => {}", key, value);
             }
             let max_len = map["LEN"].parse::<usize>().unwrap_or(5000);
-            let content_str = read_file(&args[2], max_len);
+            let content_str = read_file(&args.input_dir, max_len);
             println!("First bytes:{}", &content_str[..100]);
             println!("ASK: {}", extract_value(&content_str, &map["ASK"]));
             println!("BID: {}", extract_value(&content_str, &map["BID"]));

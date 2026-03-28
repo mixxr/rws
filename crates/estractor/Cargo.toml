@@ -2,6 +2,7 @@
 name = "estractor"
 version = "0.1.0"
 edition = "2024"
+authors = ["Michelangelo <ms.co.it@gmail.com>"]
 
 [dependencies]
 chrono = "0.4.42"
