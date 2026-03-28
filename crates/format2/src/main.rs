@@ -214,7 +214,7 @@ fn main() -> std::process::ExitCode {
                             todo!()
                         }
                         _ => {
-                            // default is json
+                            // default is json => 1 file?
                             let output_filepath = &[output_dir.to_string(), fields.get("isin").unwrap().to_string(), ".json".to_string()].concat();
                             serde_json::to_writer(File::create(output_filepath).unwrap(), &fields).unwrap();
                         }   
