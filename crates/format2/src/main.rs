@@ -111,11 +111,10 @@ fn extract_value_from_regex(content_str: &str, pattern: &str) -> String {
 }
 
 fn extract_value_from_path(filepath: &str, position: usize) -> String {
-    // file_path: "data/input/2026-01-01/IT000002.txt"
+    // file_path: "data/input/2026-01-01/IT000002"
     // position: 0 => ISIN, 1 => dt
     
-    let parts: Vec<&str> = filepath.split('\\').collect();
-    println!("Extracting from path: {}, position: {}, parts: {:?}", filepath, position, parts);
+    let parts: Vec<&str> = filepath.split(std::path::MAIN_SEPARATOR).collect();
     if position >= parts.len() {
         return "".to_string();
     }
