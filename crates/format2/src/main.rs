@@ -171,6 +171,21 @@ fn main() -> std::process::ExitCode {
     let args = Args::parse();
     println!("Configuration: {:?}", args);
 
+    // check if input dir does not exist then exit with error
+    if !std::path::Path::new(&args.input_dir).exists() {
+        eprintln!("Input directory does not exist: {}", &args.input_dir);
+        return std::process::ExitCode::FAILURE;
+    }
+    // check if output dir does not exist then create it
+    if !std::path::Path::new(&args.output_dir).exists() {
+        std::fs::create_dir_all(&args.output_dir).unwrap();
+    }
+    // check if output dir has trailing separator and if not add it
+    let mut output_dir = args.output_dir.to_string();
+    if !output_dir.ends_with(std::path::MAIN_SEPARATOR) {
+        output_dir.push(std::path::MAIN_SEPARATOR);
+    }
+
     match read_kv_file(&args.config) {
         Ok(map) => {
             println!("Fields to extract: {} ", map.len());
@@ -188,6 +203,8 @@ fn main() -> std::process::ExitCode {
                         fields.insert(key.to_string(), extract_value(path.to_str().unwrap(), &content_str, value));
                     }
                     println!("Extracted fields: {:?}", fields);
+                    let output_filepath = &[output_dir.to_string(), fields.get("isin").unwrap().to_string(), ".json".to_string()].concat();
+                    serde_json::to_writer(File::create(output_filepath).unwrap(), &fields).unwrap();
                 }
             }
             println!("Completed in: {:?}", start.elapsed());
