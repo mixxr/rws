@@ -4,6 +4,7 @@ use std::io::{self};
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::time::{Duration, Instant};
 
 mod definitions;
 use clap::Parser;
@@ -123,13 +124,6 @@ fn extract_value_from_path(filepath: &str, position: usize) -> String {
 
 fn read_file_content(path: &str, max_len: usize) -> String {
     let f = File::open(path).expect("Can't find file!");
-    // let mut reader = BufReader::with_capacity(1000,f);
-    
-    // let mut contents = String::with_capacity(1000);
-
-    // //Read the entire file as a string
-    // reader.read_to_string(&mut contents).expect("Can't read file!");
-
     let mut reader = BufReader::new(f);
 
     // Read first 100 bytes
@@ -172,20 +166,38 @@ regex2 --config <issuer>.rx.txt --input-dir output\<dt> --output-format [json|sq
 - <path> contains 1 file with entries as defined in <issuer>.rx.txt, eg. <isin>,<dt>,<ask>,<bid>,...
 */
 fn main() -> std::process::ExitCode {
+    // get current milliseconds since epoch
+    let start = Instant::now();
     let args = Args::parse();
     println!("Configuration: {:?}", args);
 
     match read_kv_file(&args.config) {
         Ok(map) => {
-            println!("Loaded {} entries:", map.len());
+            println!("Fields to extract: {} ", map.len());
             let max_len = args.max_len.parse::<usize>().unwrap_or(5000);
-            let mut fields: HashMap<String, String> = HashMap::new();
-            let content_str = read_file_content(&args.input_dir, max_len);
-            for (key, value) in &map {
-                println!("extracting {} => {}...", key, value);
-                fields.insert(key.to_string(), extract_value(&args.input_dir, &content_str, value));
+            // for each file in the input dir, extract the fields and print them
+            for entry in std::fs::read_dir(&args.input_dir).unwrap() {
+                let entry = entry.unwrap();
+                let path = entry.path();
+                if path.is_file() {
+                    println!("\nProcessing file: {}", path.display());
+                    let content_str = read_file_content(path.to_str().unwrap(), max_len);
+                    let mut fields: HashMap<String, String> = HashMap::new();
+                    for (key, value) in &map {
+                        println!("extracting {} => {}...", key, value);
+                        fields.insert(key.to_string(), extract_value(path.to_str().unwrap(), &content_str, value));
+                    }
+                    println!("Extracted fields: {:?}", fields);
+                }
             }
-            println!("Extracted fields: {:?}", fields);
+            println!("Completed in: {:?}", start.elapsed());
+            // let mut fields: HashMap<String, String> = HashMap::new();
+            // let content_str = read_file_content(&args.input_dir, max_len);
+            // for (key, value) in &map {
+            //     println!("extracting {} => {}...", key, value);
+            //     fields.insert(key.to_string(), extract_value(&args.input_dir, &content_str, value));
+            // }
+            // println!("Extracted fields: {:?}", fields);
         }
         Err(e) => eprintln!("Error reading file: {}", e),
     }
