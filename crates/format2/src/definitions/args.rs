@@ -1,10 +1,4 @@
 use clap::*;
-use commons::definitions::globals::*; 
-/*
-pub const ISIN_PATH_PREFIX: &str = "data/";
-pub const OUTPUT_PATH_PREFIX: &str = "data/output/";
-pub const SOURCE_PATH: &str = "data/sources.txt"; 
-*/
 
 #[derive(Parser, Debug)]
 #[command(version, about = "Digital Posture RegEx2", long_about = None)]
@@ -16,6 +10,10 @@ pub struct Args {
     /// Input dir path 
     #[arg(short, long)]
     pub input_dir: String,
+
+    /// Max length to read (input files)
+    #[arg(short = 'l', long, default_value = "5000")]
+    pub max_len: String,
 
     /// Output file format [json|sql|csv] 
     #[arg(short = 'f', long, default_value = "json")]

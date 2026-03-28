@@ -1,9 +1,12 @@
+use std::collections::HashMap;
 use std::io::{self};
 
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
 
+mod definitions;
+use clap::Parser;
 use definitions::args::Args;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
@@ -24,27 +27,27 @@ struct Quote {
     currency: String,
 }
 
-fn insert_certificates(cs: Vec<Certificate>) -> Vec<String> {
-    let db = env.d1("DB")?;
-    let query = db.prepare("INSERT INTO certificate VALUES (?,?,?,?,?)");
-    let mut result = Vec<String>::new();
-    for c in cs {
-        let r = query.bind(&[c.isin.into(), c.name.into(), c.tickers.into(), c.start_date.into(), c.end_date.into()])?.run().await?;
-        result.push(r);
-    }
-    result
-}
+// fn insert_certificates(cs: Vec<Certificate>) -> Vec<String> {
+//     let db = env.d1("DB")?;
+//     let query = db.prepare("INSERT INTO certificate VALUES (?,?,?,?,?)");
+//     let mut result = Vec<String>::new();
+//     for c in cs {
+//         let r = query.bind(&[c.isin.into(), c.name.into(), c.tickers.into(), c.start_date.into(), c.end_date.into()])?.run().await?;
+//         result.push(r);
+//     }
+//     result
+// }
 
-fn insert_quotes(cs: Vec<Quote>) -> Vec<String> {
-    let db = env.d1("DB")?;
-    let query = db.prepare("INSERT INTO quote VALUES (?,?,?,?,?)");
-    let mut result = Vec<String>::new();
-    for c in cs {
-        let r = query.bind(&[c.isin.into(), c.obs_dt.into(), c.ask.into(), c.bid.into(), c.currency.into()])?.run().await;
-        result.push(r);
-    }
-    result
-}
+// fn insert_quotes(cs: Vec<Quote>) -> Vec<String> {
+//     let db = env.d1("DB")?;
+//     let query = db.prepare("INSERT INTO quote VALUES (?,?,?,?,?)");
+//     let mut result = Vec<String>::new();
+//     for c in cs {
+//         let r = query.bind(&[c.isin.into(), c.obs_dt.into(), c.ask.into(), c.bid.into(), c.currency.into()])?.run().await;
+//         result.push(r);
+//     }
+//     result
+// }
 
 fn read_kv_file(path: &str) -> io::Result<std::collections::HashMap<String, String>> {
     let file = File::open(path)?;
@@ -71,7 +74,7 @@ fn read_kv_file(path: &str) -> io::Result<std::collections::HashMap<String, Stri
     Ok(map)
 }
 
-fn extract_value(content_str: &str, pattern: &str) -> String {
+fn extract_value(file_path: &str,content_str: &str, pattern: &str) -> String {
     //Print the contents
     // println!("{} {}", &content_str[..50], pattern);
     /*
@@ -92,16 +95,34 @@ contents = contents[..end_value];
     .unwrap()
     .parse::<i32>()
     */
+    match pattern {
+        p if p.starts_with("Path") => extract_value_from_path(file_path, pattern.split('.').nth(1).unwrap_or("0").parse::<usize>().unwrap()),
+        _ => extract_value_from_regex(content_str, pattern),
+    }
+}
+
+fn extract_value_from_regex(content_str: &str, pattern: &str) -> String {
     let rx = regex::Regex::new(&pattern).unwrap();
     let Some(caps) = rx.captures(&content_str) else { return "".to_string()};
     caps[1].to_string()
     // let rx_bid = regex::Regex::new(r"\*\*([0-9]+\.[0-9]+)\*\*LETTERA").unwrap();
     // let Some(caps_bid) = rx_bid.captures(&content_str) else { return };
     // println!("bid {}, {}", &caps_bid[1], caps_bid.len())
-
 }
 
-fn read_file(path: &str, max_len: usize) -> String {
+fn extract_value_from_path(filepath: &str, position: usize) -> String {
+    // file_path: "data/input/2026-01-01/IT000002.txt"
+    // position: 0 => ISIN, 1 => dt
+    
+    let parts: Vec<&str> = filepath.split('\\').collect();
+    println!("Extracting from path: {}, position: {}, parts: {:?}", filepath, position, parts);
+    if position >= parts.len() {
+        return "".to_string();
+    }
+    parts[parts.len() - position - 1].to_string()
+}
+
+fn read_file_content(path: &str, max_len: usize) -> String {
     let f = File::open(path).expect("Can't find file!");
     // let mut reader = BufReader::with_capacity(1000,f);
     
@@ -121,31 +142,31 @@ fn read_file(path: &str, max_len: usize) -> String {
     contents.to_string()
 }
 
-fn extract_certificates() -> Vec<Certificate> {
-    let mut cs: Vec<Certificate> = Vec::new();
-    for i in 1..10 {
-        let c = Certificate {
-            isin: String::from("IT000002"),
-            name: String::from("Cert 0002"),
-            tickers: String::from("t1000,t2000,t3000,"),
-            start_date: String::from("2026-01-01"),
-            end_date: String::from("2029-01-01"),
-        };
-        cs.push(c);
-    }
-    cs
-}
+// fn extract_certificates() -> Vec<Certificate> {
+//     let mut cs: Vec<Certificate> = Vec::new();
+//     for i in 1..10 {
+//         let c = Certificate {
+//             isin: String::from("IT000002"),
+//             name: String::from("Cert 0002"),
+//             tickers: String::from("t1000,t2000,t3000,"),
+//             start_date: String::from("2026-01-01"),
+//             end_date: String::from("2029-01-01"),
+//         };
+//         cs.push(c);
+//     }
+//     cs
+// }
 
-fn extract_quote(isin: &str, dt: &str, content_str: &str, map: &std::collections::HashMap<String, String>) -> Quote {
-    let c = Quote {
-        isin: String::from(isin),
-        obs_dt: String::from(dt),
-        ask: extract_value(content_str, &map["ASK"]).parse::<f32>().unwrap_or(0.0),
-        bid: extract_value(content_str, &map["BID"]).parse::<f32>().unwrap_or(0.0),
-        currency: String::from("EUR"), // TO DO: via regex
-    };
-    c
-}
+// fn extract_quote(isin: &str, dt: &str, content_str: &str, map: &std::collections::HashMap<String, String>) -> Quote {
+//     let c = Quote {
+//         isin: String::from(isin),
+//         obs_dt: String::from(dt),
+//         ask: extract_value(content_str, &map["ASK"]).parse::<f32>().unwrap_or(0.0),
+//         bid: extract_value(content_str, &map["BID"]).parse::<f32>().unwrap_or(0.0),
+//         currency: String::from("EUR"), // TO DO: via regex
+//     };
+//     c
+// }
 
 /*
 regex2 --config <issuer>.rx.txt --input-dir output\<dt> --output-format [json|sql|csv] --output-dir <path>
@@ -153,32 +174,19 @@ regex2 --config <issuer>.rx.txt --input-dir output\<dt> --output-format [json|sq
 */
 fn main() -> std::process::ExitCode {
     let args = Args::parse();
-    if args.config == None {
-        eprintln!("Please type --help to check the parameters and retry.");
-        return std::process::ExitCode::from(1);
-    }
     println!("Configuration: {:?}", args);
 
     match read_kv_file(&args.config) {
         Ok(map) => {
             println!("Loaded {} entries:", map.len());
+            let max_len = args.max_len.parse::<usize>().unwrap_or(5000);
+            let mut fields: HashMap<String, String> = HashMap::new();
+            let content_str = read_file_content(&args.input_dir, max_len);
             for (key, value) in &map {
-                println!("{} => {}", key, value);
+                println!("extracting {} => {}...", key, value);
+                fields.insert(key.to_string(), extract_value(&args.input_dir, &content_str, value));
             }
-            let max_len = map["LEN"].parse::<usize>().unwrap_or(5000);
-            let content_str = read_file(&args.input_dir, max_len);
-            println!("First bytes:{}", &content_str[..100]);
-            println!("ASK: {}", extract_value(&content_str, &map["ASK"]));
-            println!("BID: {}", extract_value(&content_str, &map["BID"]));
-            //extract_value(&content_str, "rxStr");
-            // let cs = extract_certificates();
-            // let r = insert_certificates(cs);
-            // println!("Results for {}: {}", cs, r);
-            let isin = &args[2].split('.').next().unwrap();
-            let dt = "2026-03-27 09:00:00";
-            let q = extract_quote(&isin, &dt, &content_str, &map);
-            let r2 = insert_quotes(vec![q]);
-            println!("Results for {:?}: {:?}", q.clone(), r2);
+            println!("Extracted fields: {:?}", fields);
         }
         Err(e) => eprintln!("Error reading file: {}", e),
     }
