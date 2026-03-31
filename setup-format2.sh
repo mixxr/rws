@@ -24,5 +24,5 @@ chmod +x run.sh
 echo "Setup completed: $(cat ./run.sh)"
 ./run.sh
 echo "Run completed."
-echo "Remove semaphore file $semaphore_file"
-rm $semaphore_file
+echo "Rename semaphore file $semaphore_file"
+mv $semaphore_file $mntdir/$datetime.done

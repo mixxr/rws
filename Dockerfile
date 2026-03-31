@@ -6,4 +6,4 @@ RUN cargo install --path ./crates/format2
 
 ENV MOUNT_DIR="/data"
 COPY ./setup-format2.sh ./setup.sh
-CMD ["./setup.sh"]
+CMD ["ls","-la"]
