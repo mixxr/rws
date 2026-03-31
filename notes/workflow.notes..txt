@@ -1,8 +1,8 @@
 # workflow
 1. webclaw --urls-file <issuer>.urls.txt --output-dir output\<dt>\<issuer>\ --only-main-content
 - output\<dt> contains files as <isin>.md
-2. format2 --config <issuer>.rx.txt --input-dir output\<dt>\<issuer>\ --output-format [json|sql|csv] --output-dir <path>
-- <path> contains 1 file with entries as defined in <issuer>.rx.txt, eg. <isin>,<dt>,<ask>,<bid>,...
+2. format2 --config <issuer>.rx.txt --input-dir output\<dt>\<issuer>\ --output-format [ndjson|json|sql|csv] --output-dir formatted\<dt>\<issuer>.json -f ndjson -l 3000
+- <path> contains N files with entries as defined in <issuer>.rx.txt, eg. <isin>,<dt>,<ask>,<bid>,...
 3. bash script to store the output file (json or sql or csv) to Firebase
 4. REST service that expose /certificates /quotes /... by reading Firebase
 

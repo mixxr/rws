@@ -4,29 +4,29 @@ use std::io::{self};
 use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
-use std::time::{Duration, Instant};
+use std::time::{Instant};
 
 mod definitions;
 use clap::Parser;
 use definitions::args::Args;
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Certificate {
-    isin: String,
-    name: String,
-    tickers: String,
-    start_date: String,
-    end_date: String,
-}
+// #[derive(Debug, serde::Deserialize, serde::Serialize)]
+// struct Certificate {
+//     isin: String,
+//     name: String,
+//     tickers: String,
+//     start_date: String,
+//     end_date: String,
+// }
 
-#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-struct Quote {
-    isin: String,
-    obs_dt: String,
-    ask: f32,
-    bid: f32,
-    currency: String,
-}
+// #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+// struct Quote {
+//     isin: String,
+//     obs_dt: String,
+//     ask: f32,
+//     bid: f32,
+//     currency: String,
+// }
 
 // fn insert_certificates(cs: Vec<Certificate>) -> Vec<String> {
 //     let db = env.d1("DB")?;
@@ -177,12 +177,12 @@ fn main() -> std::process::ExitCode {
         return std::process::ExitCode::FAILURE;
     }
     // check if output dir does not exist then create it
-    if !std::path::Path::new(&args.output_dir).exists() {
+    if args.output_format != "ndjson" && !std::path::Path::new(&args.output_dir).exists() {
         std::fs::create_dir_all(&args.output_dir).unwrap();
     }
     // check if output dir has trailing separator and if not add it
     let mut output_dir = args.output_dir.to_string();
-    if !output_dir.ends_with(std::path::MAIN_SEPARATOR) {
+    if args.output_format != "ndjson" && !output_dir.ends_with(std::path::MAIN_SEPARATOR) {
         output_dir.push(std::path::MAIN_SEPARATOR);
     }
 
@@ -212,6 +212,15 @@ fn main() -> std::process::ExitCode {
                             // wtr.serialize(fields).unwrap();
                             // wtr.flush().unwrap();
                             todo!()
+                        }
+                        "ndjson" => {
+                            let output_filepath = output_dir.to_string();
+                            // ndJSON is 1 file containing multiple JSON objects, each in a new line
+                            let mut file = File::options().append(true).create(true).open(output_filepath).unwrap();
+                            serde_json::to_writer(&mut file, &fields).unwrap();
+                            // add a new line after each JSON object
+                            file.write_all(b"\n").unwrap();
+
                         }
                         _ => {
                             // default is json => 1 file?

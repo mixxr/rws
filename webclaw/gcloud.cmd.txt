@@ -18,3 +18,8 @@ gcloud scheduler jobs create http daily-webclaw-schedule \
 # read config scheduler
 gcloud scheduler jobs describe daily-webclaw-schedule \
   --location=europe-west1
+
+# create docker for format2
+gcloud beta run jobs deploy format2-job --source=. --execute-now --region=europe-west1 \
+--add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
+--add-volume-mount volume=gcs-1,mount-path=/data
