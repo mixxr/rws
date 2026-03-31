@@ -204,7 +204,7 @@ fn main() -> std::process::ExitCode {
                     }
                     println!("Extracted fields: {:?}", fields);
                     // TODO: serialize fields in accordance with output format (json, sql, csv)
-                    match args.output_format.as_str() {
+                    match args.output_format.to_lowercase().as_str() {
                         "csv" => {
                             // TODO: create 1 file?
                             // let output_filepath = &[output_dir.to_string(), fields.get("isin").unwrap().to_string(), ".csv".to_string()].concat();
@@ -215,6 +215,7 @@ fn main() -> std::process::ExitCode {
                         }
                         "ndjson" => {
                             let output_filepath = output_dir.to_string();
+                            println!("Writing json to {output_filepath}...");
                             // ndJSON is 1 file containing multiple JSON objects, each in a new line
                             let mut file = File::options().append(true).create(true).open(output_filepath).unwrap();
                             serde_json::to_writer(&mut file, &fields).unwrap();
