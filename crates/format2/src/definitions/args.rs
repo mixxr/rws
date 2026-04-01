@@ -15,8 +15,8 @@ pub struct Args {
     #[arg(short = 'l', long, default_value = "5000")]
     pub max_len: String,
 
-    /// Output file format [json|sql|csv] 
-    #[arg(short = 'f', long, default_value = "json")]
+    /// Output file format [json|ndjson|csv] 
+    #[arg(short = 'f', long, default_value = "json", value_parser = ["json", "ndjson", "csv"])]
     pub output_format: String,
 
     /// Output dir path
