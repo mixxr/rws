@@ -176,6 +176,21 @@ fn main() -> std::process::ExitCode {
         eprintln!("Input directory does not exist: {}", &args.input_dir);
         return std::process::ExitCode::FAILURE;
     }
+    // check if ndjson and output-dir is a filepath with extention
+    if args.output_format == "ndjson" {
+        let path = std::path::Path::new(&args.output_dir);
+        if path.is_dir() {
+            eprintln!("Output directory is a directory but ndjson format requires a file path: {}", &args.output_dir);
+            return std::process::ExitCode::FAILURE;
+        }
+        if path.extension().is_none() {
+            eprintln!("Output file path does not have an extension: {}", &args.output_dir);
+            return std::process::ExitCode::FAILURE;
+        }
+        // output_dir = dirpath/filename.ext, dirpath will be created anyway
+        let dirpath = std::path::Path::new(&args.output_dir).parent().unwrap();
+        let _ = std::fs::create_dir_all(&dirpath);
+    }
     // check if output dir does not exist then create it
     if args.output_format != "ndjson" && !std::path::Path::new(&args.output_dir).exists() {
         std::fs::create_dir_all(&args.output_dir).unwrap();

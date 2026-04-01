@@ -1,7 +1,8 @@
 # to create a docker image
-gcloud beta run jobs deploy webclaw-job --env-vars-file=./gcloud.dev.env --source=. --execute-now --region=europe-west1 \
+gcloud beta run jobs deploy webclaw-job --source=. --execute-now --region=europe-west1 \
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
---add-volume-mount volume=gcs-1,mount-path=/data
+--add-volume-mount volume=gcs-1,mount-path=/data \
+--env-vars-file=./gcloud.dev.env 
 
 # Create a scheduler job that triggers the Cloud Run job daily at 17 UTC+2
 gcloud scheduler jobs create http daily-webclaw-schedule \
