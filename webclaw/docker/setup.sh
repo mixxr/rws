@@ -4,7 +4,7 @@ mntdir=${MOUNT_DIR:-.}
 echo "Mount Dir: $mntdir"
 rm ./run.sh
 datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
-for filepath in "$mntdir"/*.urls.txt; do
+for filepath in "$mntdir"/config/*.urls.txt; do
   if [ -f "$filepath" ]; then
 	file="$(basename "$filepath")"
     echo "basename $file"
@@ -16,5 +16,5 @@ chmod +x run.sh
 echo "Setup completed: $(cat ./run.sh)"
 ./run.sh
 echo "Run completed."
-echo "Create semaphore file $mntdir/$datetime.todo"
-touch "$mntdir/$datetime.todo"
+echo "Create semaphore file $mntdir/jobs/$datetime.todo"
+touch "$mntdir/jobs/$datetime.todo"
