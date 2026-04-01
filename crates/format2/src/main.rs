@@ -68,7 +68,7 @@ fn read_kv_file(path: &str) -> io::Result<std::collections::HashMap<String, Stri
         if let Some((key, value)) = trimmed.split_once('=') {
             map.insert(key.trim().to_string(), value.trim().to_string());
         } else {
-            eprintln!("Warning: Invalid format at line {}: '{}'", line_num + 1, trimmed);
+            log::error!("Warning: Invalid format at line {}: '{}'", line_num + 1, trimmed);
         }
     }
 
@@ -77,7 +77,7 @@ fn read_kv_file(path: &str) -> io::Result<std::collections::HashMap<String, Stri
 
 fn extract_value(file_path: &str,content_str: &str, pattern: &str) -> String {
     //Print the contents
-    // println!("{} {}", &content_str[..50], pattern);
+    // log::info!("{} {}", &content_str[..50], pattern);
     /*
     let start_key = contents.find("POWER_SUPPLY_CAPACITY").unwrap();
 contents = contents[start_key..];
@@ -108,7 +108,7 @@ fn extract_value_from_regex(content_str: &str, pattern: &str) -> String {
     caps[1].to_string()
     // let rx_bid = regex::Regex::new(r"\*\*([0-9]+\.[0-9]+)\*\*LETTERA").unwrap();
     // let Some(caps_bid) = rx_bid.captures(&content_str) else { return };
-    // println!("bid {}, {}", &caps_bid[1], caps_bid.len())
+    // log::info!("bid {}, {}", &caps_bid[1], caps_bid.len())
 }
 
 fn extract_value_from_path(filepath: &str, position: usize) -> String {
@@ -169,22 +169,25 @@ fn main() -> std::process::ExitCode {
     // get current milliseconds since epoch
     let start = Instant::now();
     let args = Args::parse();
-    println!("Configuration: {:?}", args);
+    
+    env_logger::init();
+
+    log::debug!("Configuration: {:?}, Log Level: {}", args, std::env::var("RUST_LOG").unwrap_or("ERROR".to_string()));
 
     // check if input dir does not exist then exit with error
     if !std::path::Path::new(&args.input_dir).exists() {
-        eprintln!("Input directory does not exist: {}", &args.input_dir);
+        log::error!("Input directory does not exist: {}", &args.input_dir);
         return std::process::ExitCode::FAILURE;
     }
     // check if ndjson and output-dir is a filepath with extention
     if args.output_format == "ndjson" {
         let path = std::path::Path::new(&args.output_dir);
         if path.is_dir() {
-            eprintln!("Output directory is a directory but ndjson format requires a file path: {}", &args.output_dir);
+            log::error!("Output directory is a directory but ndjson format requires a file path: {}", &args.output_dir);
             return std::process::ExitCode::FAILURE;
         }
         if path.extension().is_none() {
-            eprintln!("Output file path does not have an extension: {}", &args.output_dir);
+            log::error!("Output file path does not have an extension: {}", &args.output_dir);
             return std::process::ExitCode::FAILURE;
         }
         // output_dir = dirpath/filename.ext, dirpath will be created anyway
@@ -201,23 +204,24 @@ fn main() -> std::process::ExitCode {
         output_dir.push(std::path::MAIN_SEPARATOR);
     }
 
+    log::info!("Job {}", args.input_dir);
     match read_kv_file(&args.config) {
         Ok(map) => {
-            println!("Fields to extract: {} ", map.len());
+            log::debug!("Fields to extract: {} ", map.len());
             let max_len = args.max_len.parse::<usize>().unwrap_or(5000);
             // for each file in the input dir, extract the fields and print them
             for entry in std::fs::read_dir(&args.input_dir).unwrap() {
                 let entry = entry.unwrap();
                 let path = entry.path();
                 if path.is_file() {
-                    println!("\nProcessing file: {}", path.display());
+                    log::info!("Processing {}", path.display());
                     let content_str = read_file_content(path.to_str().unwrap(), max_len);
                     let mut fields: HashMap<String, String> = HashMap::new();
                     for (key, value) in &map {
-                        println!("extracting {} => {}...", key, value);
+                        log::debug!("Extracting {} => {}", key, value);
                         fields.insert(key.to_string(), extract_value(path.to_str().unwrap(), &content_str, value));
                     }
-                    println!("Extracted fields: {:?}", fields);
+                    log::info!("Extracted fields: {:?}", fields);
                     // TODO: serialize fields in accordance with output format (json, sql, csv)
                     match args.output_format.to_lowercase().as_str() {
                         "csv" => {
@@ -230,7 +234,7 @@ fn main() -> std::process::ExitCode {
                         }
                         "ndjson" => {
                             let output_filepath = output_dir.to_string();
-                            println!("Writing json to {output_filepath}...");
+                            log::debug!("Writing json to {output_filepath}...");
                             // ndJSON is 1 file containing multiple JSON objects, each in a new line
                             let mut file = File::options().append(true).create(true).open(output_filepath).unwrap();
                             serde_json::to_writer(&mut file, &fields).unwrap();
@@ -246,16 +250,16 @@ fn main() -> std::process::ExitCode {
                     }
                 }
             }
-            println!("Completed in: {:?}", start.elapsed());
+            log::info!("Job completed in {:?}", start.elapsed());
             // let mut fields: HashMap<String, String> = HashMap::new();
             // let content_str = read_file_content(&args.input_dir, max_len);
             // for (key, value) in &map {
-            //     println!("extracting {} => {}...", key, value);
+            //     log::info!("extracting {} => {}...", key, value);
             //     fields.insert(key.to_string(), extract_value(&args.input_dir, &content_str, value));
             // }
-            // println!("Extracted fields: {:?}", fields);
+            // log::info!("Extracted fields: {:?}", fields);
         }
-        Err(e) => eprintln!("Error reading file: {}", e),
+        Err(e) => log::error!("Error reading file: {}", e),
     }
     std::process::ExitCode::SUCCESS
 }

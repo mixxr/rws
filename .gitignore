@@ -1,2 +1,4 @@
 /target
 /data/output
+*.log
+*test.json
