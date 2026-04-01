@@ -17,7 +17,7 @@ for filepath in "$mntdir"/*.rx.txt; do
 	file="$(basename "$filepath")"
     echo "basename $file"
 	issuer="${file%%.*}"
-	echo "format2 --config $filepath --input-dir $mntdir/output/$issuer/$datetime --output-dir $mntdir/formatted/$issuer/$datetime.json -f ndjson -l 3000" >> ./run.sh
+	echo "format2 --config $filepath --input-dir $mntdir/output/$issuer/$datetime --output-dir $mntdir/formatted/$issuer/$datetime.json -f ndjson -l 3000 2>>$semaphore_file" >> ./run.sh
   # echo "format2 --config $filepath --input-dir $mntdir/output/$issuer/$datetime --output-dir $mntdir/formatted/$issuer/$datetime.json -f ndjson -l 3000 > $datetime.report" >> ./run.sh
   fi
 done

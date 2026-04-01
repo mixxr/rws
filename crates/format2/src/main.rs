@@ -259,7 +259,7 @@ fn main() -> std::process::ExitCode {
             // }
             // log::info!("Extracted fields: {:?}", fields);
         }
-        Err(e) => log::error!("Error reading file: {}", e),
+        Err(e) => log::error!("Error reading file {}: {}", &args.config, e),
     }
     std::process::ExitCode::SUCCESS
 }
