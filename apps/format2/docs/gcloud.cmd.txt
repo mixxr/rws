@@ -1,0 +1,17 @@
+# create docker for format2
+gcloud beta run jobs deploy format2-job --source=. --execute-now --region=europe-west1 \
+--add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
+--add-volume-mount volume=gcs-1,mount-path=/data
+
+# format2 trigger scheduler
+# helper: https://crontab.guru/#15_17_*_*_MON-FRI
+gcloud scheduler jobs create http daily-format2-schedule \
+  --location=europe-west1 \
+  --schedule="15 17 * * MON-FRI" \
+  --uri="https://europe-west1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/invcerts/jobs/format2-job:run" \
+  --http-method=POST \
+  --oauth-service-account-email=600125851897-compute@developer.gserviceaccount.com \
+  --oauth-token-scope="https://www.googleapis.com/auth/cloud-platform" \
+  --time-zone="Europe/Rome" \
+  --attempt-deadline="3m" \
+  --description="Triggers daily format2 Cloud Run job"
