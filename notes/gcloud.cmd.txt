@@ -6,3 +6,8 @@ gcloud beta run jobs deploy isin-estractor --env-vars-file=./gcloud.dev.env --so
 # To execute this job again, use:
 gcloud beta run jobs execute isin-estractor
 
+# storage cli
+gcloud storage mv gs://SOURCE_BUCKET_NAME/SOURCE_OBJECT_NAME gs://DESTINATION_BUCKET_NAME/DESTINATION_OBJECT_NAME
+gcloud storage mv gs://rws-data/jobs/ gs://rws-data/quotes/
+gcloud storage ls gs://rws-data/quotes/output
+
