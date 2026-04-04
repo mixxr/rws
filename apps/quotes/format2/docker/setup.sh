@@ -34,7 +34,7 @@ if ! test -f ./run.sh; then
   echo "No execution to build."
   exit 1
 fi
-chmod +x run.sh
+chmod +x ./run.sh
 echo "Setup completed: $(cat ./run.sh)"
 ./run.sh
 if [ $? -eq 0 ]; then 

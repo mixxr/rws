@@ -1,4 +1,5 @@
-/target
+**/target
 /data/output
 *.log
 *test.json
+**\\target
