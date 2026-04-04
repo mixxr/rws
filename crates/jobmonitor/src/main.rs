@@ -18,10 +18,6 @@ async fn main() {
 
     let bucket_name = std::env::var("BUCKET_NAME")
         .map_err(|_| "BUCKET_NAME environment variable missing".to_string())?;
-
-    // set the bucket name as default for the storage client (optional, can also specify in get_file)
-    storage.set_default_bucket(bucket_name);
-    // storage.read_object("example.txt").send().await.expect("Failed to read object");
     
     let storage = Arc::new(storage);
 
