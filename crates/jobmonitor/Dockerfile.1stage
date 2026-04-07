@@ -1,0 +1,12 @@
+FROM rust:1.93
+
+WORKDIR /app
+COPY . .
+
+ENV PORT=8080
+ENV BUCKET_NAME=projects/_/buckets/rws-data
+EXPOSE 8080
+
+RUN cargo install --path .
+
+CMD ["jobmonitor"]

@@ -3,6 +3,10 @@ gcloud beta run jobs deploy isin-estractor --env-vars-file=./gcloud.dev.env --so
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
 --add-volume-mount volume=gcs-1,mount-path=/data
 
+gcloud beta run jobs deploy jobmonitor --source=. --execute-now --region=europe-west1
+
+europe-west1-docker.pkg.dev/invcerts/cloud-run-source-deploy/jobmonitor@sha256:363bbeb9b9e0560b1910fca5b42a0c0957354c074af94d08471591c3d56cd234
+
 # To execute this job again, use:
 gcloud beta run jobs execute isin-estractor
 
