@@ -1,11 +1,13 @@
 use std::{env};
 mod rwsio;
 use rwsio::*;
+mod utils;
+use utils::*;
 
 use std::sync::{Arc, Mutex};
 use actix_cors::Cors;
 use actix_web::middleware::Logger;
-use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
+use actix_web::{App, HttpResponse, HttpServer, Responder, get, put, web};
 
 use env_logger::Env;
 
@@ -77,6 +79,7 @@ async fn main() -> std::io::Result<()> {
             .service(root)
             .service(get_quotes_jobs)
             .service(get_quotes_job_file)
+            .service(update_quotes_job_status)
     })
     .bind((if_addr, listen_port))?
     .run()
@@ -120,6 +123,34 @@ async fn root() -> &'static str {
 //     return false;
 // }
 
+#[put("/quotes/jobs/{dt}/{logtype}")]
+// promote to 'done' a given job (dt and logtype)
+async fn update_quotes_job_status(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String, String)>,
+) -> impl Responder {
+    let (dt, logtype) = path.into_inner();
+    // validate input parameters
+    if !validate_parameters(&dt, &logtype, &"partial".to_string()) {
+        return HttpResponse::NotFound()
+            .content_type("text/plain; charset=utf-8")
+            .body("Invalid datetime format, must be in ISO 8601 format (e.g. 2024-06-01T12:00:00Z) or invalid logtype [f2|bq] or ext [partial|done].");
+    }
+    let shared_state = data.lock().unwrap();
+    // update file status by renaming the file with new extension
+    let old_file_path = format!("{}{}{}.{logtype}.partial", shared_state.mount_dir, shared_state.quotes_path, dt);
+    let new_file_path = format!("{}{}{}.{logtype}.done", shared_state.mount_dir, shared_state.quotes_path, dt);
+    if let Err(e) = std::fs::rename(&old_file_path, &new_file_path) {
+        eprintln!("Failed to promote job status for {}.{}: {}", dt, logtype, e);
+        return HttpResponse::InternalServerError()
+            .content_type("text/plain; charset=utf-8")
+            .body("Failed to promote job status.");
+    }
+    HttpResponse::Ok()
+        .content_type("text/plain; charset=utf-8")
+        .body("Job status promoted successfully.")
+}
+
 #[get("/quotes/jobs/{dt}/{logtype}/{ext}")]
 // /quotes/jobs/:dt/:logtype[f2, bq] -> log file DT
 async fn get_quotes_job_file(
@@ -130,24 +161,11 @@ async fn get_quotes_job_file(
     // let bucket = std::env::var("BUCKET_NAME")
     //      .map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
 
-    // check if dt is in the correct format (e.g. 2024-06-01T12:00:00Z)
-    if !dt.chars().all(|c| c.is_digit(10) || c == '-' || c == 'T' || c == ':' || c == 'Z') {
+    if !validate_parameters(&dt, &logtype, &ext) {
         return HttpResponse::NotFound()
             .content_type("text/plain; charset=utf-8")
-            .body("Invalid datetime format, must be in ISO 8601 format (e.g. 2024-06-01T12:00:00Z)");
+            .body("Invalid datetime format, must be in ISO 8601 format (e.g. 2024-06-01T12:00:00Z) or invalid logtype [f2|bq] or ext [partial|done].");
     }
-    // check if logtype is either "f2" or "bq"
-    if logtype != "f2" && logtype != "bq" {
-        return HttpResponse::NotFound()
-            .content_type("text/plain; charset=utf-8")
-            .body("Invalid log type, must be 'f2' or 'bq'");
-    }
-    // check if ext is either "done" or "partial"
-    if logtype != "done" && logtype != "partial" {
-        return HttpResponse::NotFound()
-            .content_type("text/plain; charset=utf-8")
-            .body("Invalid ext type, must be 'done' or 'partial'");
-    }  
     let shared_state = data.lock().unwrap();
     // Read object as a stream of chunks
     // let mut reader = shared_state.storage
