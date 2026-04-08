@@ -37,7 +37,7 @@ pub fn get_file_list(path: &str, maxobs: usize) -> Vec<String> {
             // let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
             // let obsdatetime = filename.strip_suffix(".csv").unwrap().to_string();//.unwrap_or(&obsdatetime).to_string(); // TODO: return Vec<&str> is better?
             println!("Found file: {}", fpath.display());
-            file_list.push(fpath.file_stem().unwrap().to_str().unwrap().to_string());
+            file_list.push(fpath.file_name().unwrap().to_str().unwrap().to_string());
             max_entries -= 1;
             if max_entries == 0 {
                 break;

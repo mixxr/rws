@@ -16,5 +16,5 @@ chmod +x run.sh
 echo "Setup completed: $(cat ./run.sh)"
 ./run.sh
 echo "Run completed."
-echo "Create semaphore file $mntdir/jobs/$datetime.format2"
-touch "$mntdir/jobs/$datetime.format2"
+echo "Create semaphore file $mntdir/jobs/$datetime.f2"
+touch "$mntdir/jobs/$datetime.f2"

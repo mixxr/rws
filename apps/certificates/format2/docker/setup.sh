@@ -5,14 +5,14 @@ bucket=${MOUNT_BUCKET}
 echo "Mount Dir: $mntdir -> $bucket"
 rm ./run.sh
 echo "#!/bin/bash" > ./run.sh
-# "Read semaphore file, its filename is <dt>.format2, where <dt> is the datetime in format YYYY-MM-DDTHH-MM-SS, eg. 2024-06-01T12-00-00.format2"
-echo "Read <datetime>.format2 semaphore file to get datetime for processing"
-semaphore_file=$(ls "$mntdir"/jobs/*.format2 2>/dev/null | head -n 1)
+# "Read semaphore file, its filename is <dt>.f2, where <dt> is the datetime in format YYYY-MM-DDTHH-MM-SS, eg. 2024-06-01T12-00-00.f2"
+echo "Read <datetime>.f2 semaphore file to get datetime for processing"
+semaphore_file=$(ls "$mntdir"/jobs/*.f2 2>/dev/null | head -n 1)
 if [ -z "$semaphore_file" ]; then
   echo "No semaphore file found. Exiting."
   exit 1
 fi
-datetime=$(basename "$semaphore_file" .format2)
+datetime=$(basename "$semaphore_file" .f2)
 echo "Datetime for processing: $datetime"
 for filepath in "$mntdir"/config/*.rx.txt; do
   if [ -f "$filepath" ]; then

@@ -24,8 +24,8 @@ echo "Setup completed: $(cat ./run.sh)"
 ./run.sh
 if [ $? -eq 0 ]; then 
   echo "Run completed."
-  echo "Create semaphore file $mntdir/jobs/$datetime.format2"
-  touch "$mntdir/jobs/$datetime.format2"
+  echo "Create semaphore file $mntdir/jobs/$datetime.f2"
+  touch "$mntdir/jobs/$datetime.f2"
 else 
   echo "Run ERROR on $mntdir/jobs/$datetime" 
   exit 1
