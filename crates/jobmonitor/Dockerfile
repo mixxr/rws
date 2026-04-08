@@ -7,8 +7,12 @@ RUN cargo build --release
 FROM debian:bookworm-slim
 COPY --from=builder /app/target/release/jobmonitor /usr/local/bin/app
 WORKDIR /usr/local/bin/app
-ENV PORT=8080
+ENV LISTEN_PORT=8080
 ENV BUCKET_NAME=projects/_/buckets/rws-data
+ENV MOUNT_DIR="/data"
+ENV QUOTES_PATH="/quotes/jobs/"
+ENV LOG_LEVEL="debug"
+
 EXPOSE 8080
 
 CMD ["app"]
