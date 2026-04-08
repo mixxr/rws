@@ -120,13 +120,13 @@ async fn root() -> &'static str {
 //     return false;
 // }
 
-#[get("/quotes/jobs/{dt}/{logtype}")]
+#[get("/quotes/jobs/{dt}/{logtype}/{ext}")]
 // /quotes/jobs/:dt/:logtype[f2, bq] -> log file DT
 async fn get_quotes_job_file(
     data: web::Data<SharedMap>,
-    path: web::Path<(String, String)>,
+    path: web::Path<(String, String, String)>,
 ) -> impl Responder {
-    let (dt, logtype) = path.into_inner();
+    let (dt, logtype, ext) = path.into_inner();
     // let bucket = std::env::var("BUCKET_NAME")
     //      .map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
 
@@ -142,7 +142,12 @@ async fn get_quotes_job_file(
             .content_type("text/plain; charset=utf-8")
             .body("Invalid log type, must be 'f2' or 'bq'");
     }
-    
+    // check if ext is either "done" or "partial"
+    if logtype != "done" && logtype != "partial" {
+        return HttpResponse::NotFound()
+            .content_type("text/plain; charset=utf-8")
+            .body("Invalid ext type, must be 'done' or 'partial'");
+    }  
     let shared_state = data.lock().unwrap();
     // Read object as a stream of chunks
     // let mut reader = shared_state.storage
@@ -155,7 +160,7 @@ async fn get_quotes_job_file(
     // while let Some(chunk) = reader.next().await.transpose().map_err(|e| format!("Read error: {e}"))? {
     //     contents.extend_from_slice(&chunk);
     // }
-    let file_path = format!("{}{}{}.{logtype}.done", shared_state.mount_dir, shared_state.quotes_path, dt);
+    let file_path = format!("{}{}{}.{logtype}.{ext}", shared_state.mount_dir, shared_state.quotes_path, dt);
     let contents = read_file_as_string(&file_path).await;
 
     HttpResponse::Ok()
@@ -186,7 +191,6 @@ async fn get_quotes_jobs(
         .content_type("application/json")
         .json(files)
 }
-
 
 
 

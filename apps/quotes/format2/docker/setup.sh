@@ -24,7 +24,7 @@ for filepath in "$mntdir"/config/*.rx.txt; do
     if [ -e ./pre-cmd.sh ]; then
    	  echo "./pre-cmd.sh $mntdir/output/$issuer/$datetime" >> ./run.sh
     fi
-	  echo "format2 --config $filepath --input-dir $mntdir/output/$issuer/$datetime --output-dir $mntdir/output/formatted/$issuer/$datetime.json -f ndjson -l 3000 2>>$semaphore_file" >> ./run.sh
+	  echo "format2 --config $filepath --input-dir $mntdir/output/$issuer/$datetime --output-dir $mntdir/output/formatted/$issuer/$datetime.json -f ndjson 2>>$semaphore_file" >> ./run.sh
     if [ -e ./post-cmd.sh ]; then
    	  echo "./post-cmd.sh $mntdir/output/formatted/$issuer/$datetime.json" >> ./run.sh
     fi
@@ -46,5 +46,7 @@ if [ $? -eq 0 ]; then
   mv $semaphore_file $semaphore_file.done
 else 
   echo "Run ERROR on $semaphore_file" 
+  echo "Rename semaphore file $semaphore_file as partially done"
+  mv $semaphore_file $semaphore_file.partial
   exit 1
 fi
