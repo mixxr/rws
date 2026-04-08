@@ -4,12 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-google-cloud-storage = "1"
-futures = "0.3"
 actix-web = "4.12.1"
 env_logger = "0.11.8"
 glob = "0.3.3"
 serde = "1.0.228"
 tokio = { version = "1.40.0", features = ["full"] }
 actix-cors = "0.7.1"
-cloud-storage = "0.11.1"

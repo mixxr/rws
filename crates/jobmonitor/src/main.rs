@@ -1,29 +1,20 @@
 use std::{env};
-
-
+mod rwsio;
+use rwsio::*;
 
 use std::sync::{Arc, Mutex};
 use actix_cors::Cors;
-
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
-//use serde::Serialize;
+
 use env_logger::Env;
-use glob::glob_with;
-use glob::MatchOptions;
 
-// use tracing::info;
-
-use google_cloud_storage::client::Storage;
-use futures::StreamExt; // for `next()` on the reader stream
-use cloud_storage::Object;
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
     quotes_path: String,
     bucket_name: String,
     mount_dir: String,
-    storage: Storage,
 }
 
 // Type alias for shared state
@@ -62,16 +53,15 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init_from_env(Env::default().default_filter_or(log_level));
 
-    let storage = Storage::builder()
-        .build()
-        .await
-        .expect("Failed to create Storage client");
+    // let storage = Storage::builder()
+    //     .build()
+    //     .await
+    //     .expect("Failed to create Storage client");
 
     let shared_state: SharedMap = Arc::new(Mutex::new(ContentSystem {
         quotes_path: quotes_path.to_string(),
         bucket_name: bucket_name.to_string(),
         mount_dir: mount_dir.to_string(),
-        storage: storage
     }));
 
     let if_addr = "0.0.0.0";
@@ -101,32 +91,7 @@ async fn root() -> &'static str {
 }
 
 
-fn get_file_list(shared_state: &ContentSystem, path: &str, maxobs: usize) -> Vec<String> {
-    let options = MatchOptions {
-        case_sensitive: false,
-        require_literal_separator: false,
-        require_literal_leading_dot: false,
-    };
-    let mut file_list = Vec::new();
-    let mut max_entries = maxobs;
-    for entry in glob_with(&format!("{}{}/*", shared_state.mount_dir, path), options).unwrap() {
-        if let Ok(fpath) = entry {
-            //let filename = String::from(path.to_str().unwrap());
-            // filename is in format <obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
-            // let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
-            // let obsdatetime = filename.strip_suffix(".csv").unwrap().to_string();//.unwrap_or(&obsdatetime).to_string(); // TODO: return Vec<&str> is better?
 
-            file_list.push(fpath.file_stem().unwrap().to_str().unwrap().to_string());
-            max_entries -= 1;
-            if max_entries == 0 {
-                break;
-            }
-        }
-    }
-    // sort obsdatetimes in descending order
-    // obsdatetimes.sort_by(|a, b| b.cmp(a));
-    file_list
-}
 
 // fn get_ds(key: &str, map: &SharedMap) -> File {
 //    /*
@@ -177,8 +142,8 @@ async fn get_quotes_job_file(
             .content_type("text/plain; charset=utf-8")
             .body("Invalid log type, must be 'f2' or 'bq'");
     }
+    
     let shared_state = data.lock().unwrap();
-    let name = format!("{}{}.{logtype}.done", shared_state.quotes_path, dt);
     // Read object as a stream of chunks
     // let mut reader = shared_state.storage
     //     .read_object(&shared_state.bucket_name, &name)
@@ -190,14 +155,12 @@ async fn get_quotes_job_file(
     // while let Some(chunk) = reader.next().await.transpose().map_err(|e| format!("Read error: {e}"))? {
     //     contents.extend_from_slice(&chunk);
     // }
-    let object = Object::read(&shared_state.bucket_name, &name).await?;
-    println!("Object name: {name}, {}", object.name);
-    println!("Size: {} bytes", object.size);
-    let bytes = Object::download(&shared_state.bucket_name, &name).await?;
+    let file_path = format!("{}{}{}.{logtype}.done", shared_state.mount_dir, shared_state.quotes_path, dt);
+    let contents = read_file_as_string(&file_path).await;
 
     HttpResponse::Ok()
         .content_type("text/plain; charset=utf-8")
-        .body(String::from_utf8(bytes).map_err(|_| "File is not valid UTF-8".to_string()))?
+        .body(contents)
 }
 
 
@@ -216,7 +179,8 @@ async fn get_quotes_jobs(
     // }
 
     let shared_state = data.lock().unwrap();
-    let files = get_file_list(&shared_state, &shared_state.quotes_path, 1000);
+    let dir_path = format!("{}{}", shared_state.mount_dir, shared_state.quotes_path);
+    let files = get_file_list(&dir_path, 1000);
 
     HttpResponse::Ok()
         .content_type("application/json")
