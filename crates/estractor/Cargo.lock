@@ -201,6 +201,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 
 [[package]]
+name = "commons"
+version = "0.1.0"
+
+[[package]]
 name = "core-foundation"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -326,6 +330,20 @@ checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "estractor"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "commons",
+ "csv",
+ "regex",
+ "reqwest",
+ "scraper",
+ "tokio",
 ]
 
 [[package]]
@@ -1320,19 +1338,6 @@ name = "rustversion"
 version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
-
-[[package]]
-name = "rws"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "clap",
- "csv",
- "regex",
- "reqwest",
- "scraper",
- "tokio",
-]
 
 [[package]]
 name = "ryu"
