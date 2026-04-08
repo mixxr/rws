@@ -1,6 +1,5 @@
 #!/bin/bash
-# if last command failed, exit with error
-if [ $? -ne 0 ]; then
+if [ $3 -ne 0 ]; then
   echo "Previous command failed. Exiting."
   exit 1
 fi

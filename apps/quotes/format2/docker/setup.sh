@@ -28,7 +28,7 @@ for filepath in "$mntdir"/config/*.rx.txt; do
     if [ -e ./post-cmd.sh ]; then
    	  echo "./post-cmd.sh $mntdir/output/formatted/$issuer/$datetime.json" >> ./run.sh
     fi
-    echo "./append-to-bq.sh $bucket/output/formatted/$issuer/$datetime.json $mntdir/jobs/$datetime.bq.partial" >> ./run.sh
+    echo "./append-to-bq.sh $bucket/output/formatted/$issuer/$datetime.json $mntdir/jobs/$datetime.bq.partial \$?" >> ./run.sh
   fi
 done
 if ! test -f ./run.sh; then
