@@ -15,6 +15,7 @@ if [ -z "$semaphore_file" ]; then
 fi
 datetime=$(basename "$semaphore_file" .f2)
 echo "Datetime for processing: $datetime"
+rm -f $mntdir/jobs/$datetime.bq.partial
 for filepath in "$mntdir"/config/*.rx.txt; do
   if [ -f "$filepath" ]; then
 	  file="$(basename "$filepath")"
