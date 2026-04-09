@@ -18,7 +18,8 @@ struct CertificateResponse {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::new("AIzaSyCmEZdvP5oQNEANO68AQ8y2ToGLv4iM4TE").await?;
+    let g_api_key = std::env::var("G_API_KEY").map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
+    let client = Client::new(g_api_key).await?;
     let model = client.typed_model::<CertificateResponse>("gemini-3-flash-preview");
 
     let response = model
