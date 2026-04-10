@@ -1,0 +1,46 @@
+{
+  "certificate_isin": "NLBNPIT30382",
+  "certificate_issuer": "BNP Paribas",
+  "underlyings": [
+    {
+      "certificate_isin": "NLBNPIT30382",
+      "stock_name": "ING Groep N.V.",
+      "google_finance_ticker": "INGA.AS",
+      "isin": "NL0011821105",
+      "exchange": "AMS",
+      "stock_sector": "Financials"
+    },
+    {
+      "certificate_isin": "NLBNPIT30382",
+      "stock_name": "ASML Holding N.V.",
+      "google_finance_ticker": "ASML.AS",
+      "isin": "NL0010273314",
+      "exchange": "AMS",
+      "stock_sector": "Information Technology"
+    },
+    {
+      "certificate_isin": "NLBNPIT30382",
+      "stock_name": "NN Group N.V.",
+      "google_finance_ticker": "NN.AS",
+      "isin": "NL0011820941",
+      "exchange": "AMS",
+      "stock_sector": "Financials"
+    },
+    {
+      "certificate_isin": "NLBNPIT30382",
+      "stock_name": "Prosus N.V.",
+      "google_finance_ticker": "PRX.AS",
+      "isin": "NL0013647821",
+      "exchange": "AMS",
+      "stock_sector": "Information Technology"
+    },
+    {
+      "certificate_isin": "NLBNPIT30382",
+      "stock_name": "Adyen N.V.",
+      "google_finance_ticker": "ADYEN.AS",
+      "isin": "NL0012002076",
+      "exchange": "AMS",
+      "stock_sector": "Information Technology"
+    }
+  ]
+}

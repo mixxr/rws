@@ -1,0 +1,22 @@
+{
+  "certificate_isin": "NLBNPIT2T027",
+  "certificate_issuer": "Unknown",
+  "underlyings": [
+    {
+      "certificate_isin": "NLBNPIT2T027",
+      "stock_name": "NTPC Limited",
+      "google_finance_ticker": "NTPC",
+      "isin": "INE733E01020",
+      "exchange": "NSE",
+      "stock_sector": "Power"
+    },
+    {
+      "certificate_isin": "NLBNPIT2T027",
+      "stock_name": "Oil and Natural Gas Corporation Ltd",
+      "google_finance_ticker": "ONGC",
+      "isin": "INE330701011",
+      "exchange": "NSE",
+      "stock_sector": "Oil & Gas"
+    }
+  ]
+}

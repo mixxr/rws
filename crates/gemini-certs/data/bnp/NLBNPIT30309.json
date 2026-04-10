@@ -1,0 +1,46 @@
+{
+  "certificate_isin": "NLBNPIT30309",
+  "certificate_issuer": "NN Investment Partners",
+  "underlyings": [
+    {
+      "certificate_isin": "NLBNPIT30309",
+      "stock_name": "ASML Holding N.V.",
+      "google_finance_ticker": "ASML",
+      "isin": "NL0010273215",
+      "exchange": "Euronext Amsterdam",
+      "stock_sector": "Technology"
+    },
+    {
+      "certificate_isin": "NLBNPIT30309",
+      "stock_name": "LVMH Moët Hennessy Louis Vuitton SE",
+      "google_finance_ticker": "LVMUY",
+      "isin": "FR0014005S81",
+      "exchange": "Euronext Paris",
+      "stock_sector": "Consumer Cyclical"
+    },
+    {
+      "certificate_isin": "NLBNPIT30309",
+      "stock_name": "SAP SE",
+      "google_finance_ticker": "SAP",
+      "isin": "DE0007164600",
+      "exchange": "XETRA",
+      "stock_sector": "Technology"
+    },
+    {
+      "certificate_isin": "NLBNPIT30309",
+      "stock_name": "TotalEnergies SE",
+      "google_finance_ticker": "TTE",
+      "isin": "FR0005101598",
+      "exchange": "Euronext Paris",
+      "stock_sector": "Energy"
+    },
+    {
+      "certificate_isin": "NLBNPIT30309",
+      "stock_name": "Siemens AG",
+      "google_finance_ticker": "SIEGY",
+      "isin": "DE0007236101",
+      "exchange": "XETRA",
+      "stock_sector": "Industrial"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "certificate_isin": "NLBNPIT30341",
+  "certificate_issuer": "Van Lanschot Kempen",
+  "underlyings": [
+    {
+      "certificate_isin": "NLBNPIT30341",
+      "stock_name": "ASML Holding N.V.",
+      "google_finance_ticker": "ASML",
+      "isin": "NL0010273215",
+      "exchange": "AMS",
+      "stock_sector": "Technology"
+    },
+    {
+      "certificate_isin": "NLBNPIT30341",
+      "stock_name": "Arçelik A.Ş.",
+      "google_finance_ticker": "ARCLK",
+      "isin": "TRKARCL00010",
+      "exchange": "IST",
+      "stock_sector": "Consumer Goods"
+    },
+    {
+      "certificate_isin": "NLBNPIT30341",
+      "stock_name": "Compagnie de Saint-Gobain S.A.",
+      "google_finance_ticker": "SGOF",
+      "isin": "FR0000125006",
+      "exchange": "EURONEXT PARIS",
+      "stock_sector": "Industrials"
+    },
+    {
+      "certificate_isin": "NLBNPIT30341",
+      "stock_name": "Nokia Oyj",
+      "google_finance_ticker": "NOK",
+      "isin": "FI0009000681",
+      "exchange": "HEL",
+      "stock_sector": "Technology"
+    },
+    {
+      "certificate_isin": "NLBNPIT30341",
+      "stock_name": "Unibail-Rodamco-Westfield SE",
+      "google_finance_ticker": "URW",
+      "isin": "FR0013326327",
+      "exchange": "EURONEXT PARIS",
+      "stock_sector": "Real Estate"
+    }
+  ]
+}

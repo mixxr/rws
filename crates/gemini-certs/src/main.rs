@@ -63,18 +63,40 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let g_api_key = std::env::var("G_API_KEY").map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
     let client = Client::new(g_api_key).await?;
-    let model = client.typed_model::<CertificateResponse>("gemini-3-flash-preview");
+    // other models: "gemini-3-flash-preview"
+    let model = client.typed_model::<CertificateResponse>(&args.model);
+
+    let rpm = 15.0;
+    let ave_wait = 60.0/rpm + 0.5;
 
     for isin in isins {
         log::debug!("Processing ISIN: {}", isin);
 
-        let prompt = format!(
-            "what are the ISINs underlying the certificate {}, please create a json containing stock name, google finance ticker, ISIN and exchange", 
-            isin
-        );
-        let response = model
-            .generate_content(prompt)
-            .await?;
+        // let response = model
+        //     .generate_content(prompt)
+        //     .await?;
+
+        let mut attempts = 0;
+        let response: CertificateResponse = loop {
+            let prompt = format!(
+                "what are the ISINs underlying the certificate {}, please create a json containing stock name, google finance ticker, ISIN and exchange", 
+                isin
+            );
+            match model.generate_content(prompt).await {
+                Ok(res) => break res, // Success! Exit the retry loop
+                Err(e) => {
+                    attempts += 1;
+                    if attempts > args.retries {
+                        log::error!("Final failure for ISIN {}: {}", isin, e);
+                        return Err(e.into()); // Exit the program
+                    }
+                    
+                    let wait_time = attempts as u64 * 5; // Exponential-ish backoff
+                    log::warn!("Error fetching {}: {}. Retry {}/{} in {}s...", isin, e, attempts, args.retries, wait_time);
+                    sleep(Duration::from_secs(wait_time)).await;
+                }
+            }
+        };
 
         log::debug!("Certificate: {:?}", response);
         // Directly access the structured data
@@ -105,8 +127,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 file.write_all(b"\n").unwrap();
             }
         }
-        log::info!("{isin}, OK");
-        let delay_secs = rand::thread_rng().gen_range(2..=5);
+        log::info!("{}, OK", isin.to_ascii_uppercase());
+        //let delay_secs = rand::thread_rng().gen_range(2..=5);
+        let jitter = rand::thread_rng().gen_range(0.0..2.0);
+        // 4. Calculate final wait time (ensuring it's not negative)
+        let delay_secs = (ave_wait + jitter) as u64;
         log::debug!("Waiting {} seconds before next request...", delay_secs);
         sleep(Duration::from_secs(delay_secs)).await;
     }

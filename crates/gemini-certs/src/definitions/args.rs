@@ -14,4 +14,12 @@ pub struct Args {
     /// Output dir path
     #[arg(short = 'o', long, default_value = "./")]
     pub output_dir: String,
+
+        /// Gemini retries
+    #[arg(short = 'r', long, default_value_t = 3)]
+    pub retries: i8,
+
+    /// Gemini model
+    #[arg(short = 'm', long, default_value = "gemini-2.5-flash-lite")]
+    pub model: String,
 }
