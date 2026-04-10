@@ -5,6 +5,10 @@ use std::io::Write;
 // use gcp_bigquery_client::Client as BQClient;
 // use gcp_bigquery_client::model::table_data_insert_all_request::TableDataInsertAllRequest;
 
+mod definitions;
+use clap::Parser;
+use definitions::args::Args;
+
 #[derive(Serialize, Deserialize, AsSchema, Debug)]
 struct StockInfo {
     certificate_isin: String,
@@ -26,45 +30,61 @@ struct CertificateResponse {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args = Args::parse();
+    
+    env_logger::init();
+
+    println!("Configuration: {:?}, Log Level: {}", args, std::env::var("RUST_LOG").unwrap_or("INFO".to_string()));
+
+    // check if input dir does not exist then exit with error
+    if !std::path::Path::new(&args.isin_dir).exists() {
+        log::error!("Input directory does not exist: {}", &args.isin_dir);
+        return Err("Please provide a valid text file containing an ISIN list".into());
+    }
+
     let g_api_key = std::env::var("G_API_KEY").map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
     let client = Client::new(g_api_key).await?;
     let model = client.typed_model::<CertificateResponse>("gemini-3-flash-preview");
 
+    let isin = "IT0006772062";
     let response = model
-        .generate_content("What are the ISINs underlying certificate IT0006772062?")
+        .generate_content(format!("What are the ISINs underlying certificate {}?", isin))
         .await?;
 
-    println!("Certificate: {:?}", response);
+    log::debug!("Certificate: {:?}", response);
     // Directly access the structured data
     //println!("Certificate: {}", response.certificate_isin);
     // for stock in &response.underlyings {
     //     println!("- {} ({})", stock.stock_name, stock.isin);
     // }
 
-    let folder_path = "/tmp/data/certificates/";
+    let output_dir = &args.output_dir;
     // Ensure directory exists
-    std::fs::create_dir_all(folder_path)?;
+    std::fs::create_dir_all(output_dir)?;
 
     // create a json file to store single certificate response
     let file_name = format!("{}.json", response.certificate_isin);
-    let full_path = std::path::Path::new(folder_path).join(file_name);
+    let full_path = std::path::Path::new(output_dir).join(file_name);
 
     // Serialize and write
     let json_string = serde_json::to_string_pretty(&response)?;
     std::fs::write(&full_path, &json_string)?;
-    println!("File saved to: {:?}", full_path);
+    log::debug!("File saved to: {:?}", full_path);
 
-    // create a ndjson file to store underlyings
-    let ndj_file_name = format!("{}-tickers.json", response.certificate_isin);
-    let ndj_full_path = std::path::Path::new(folder_path).join(ndj_file_name);
-    let mut file = File::create(&ndj_full_path)?;
-    for stock in &response.underlyings {
-        println!("Writing json to {:?}...", &ndj_full_path);
-        // ndJSON is 1 file containing multiple JSON objects, each in a new line
-        serde_json::to_writer(&mut file, &stock).unwrap();
-        // add a new line after each JSON object
-        file.write_all(b"\n").unwrap();
+    // create a ndjson file to store underlyings if required
+    if args.output_format == "ndjson" {
+        let ndj_file_name = format!("{}-tickers.json", response.certificate_isin);
+        let ndj_full_path = std::path::Path::new(output_dir).join(ndj_file_name);
+        let mut file = File::create(&ndj_full_path)?;
+        for stock in &response.underlyings {
+            log::debug!("Writing json to {:?}...", &ndj_full_path);
+            // ndJSON is 1 file containing multiple JSON objects, each in a new line
+            serde_json::to_writer(&mut file, &stock).unwrap();
+            // add a new line after each JSON object
+            file.write_all(b"\n").unwrap();
+        }
     }
+    log::info!("{isin}, OK");
     // TODO: remove lines here::86
     // 3. Save to BigQuery
     // let project_id = "your-gcp-project-id";

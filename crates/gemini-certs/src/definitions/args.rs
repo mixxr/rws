@@ -1,0 +1,17 @@
+use clap::*;
+
+#[derive(Parser, Debug)]
+#[command(version, about = "Digital Posture Gemini Certificate Get Tickers", long_about = None)]
+pub struct Args {
+    /// ISIN list file path 
+    #[arg(short = 'i', long)]
+    pub isin_dir: String,
+
+    /// Output file format [json|ndjson|csv] 
+    #[arg(short = 'f', long, default_value = "ndjson", value_parser = ["json-only", "ndjson", "csv"])]
+    pub output_format: String,
+
+    /// Output dir path
+    #[arg(short = 'o', long, default_value = "./")]
+    pub output_dir: String,
+}
