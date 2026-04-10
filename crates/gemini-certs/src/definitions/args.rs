@@ -5,7 +5,7 @@ use clap::*;
 pub struct Args {
     /// ISIN list file path 
     #[arg(short = 'i', long)]
-    pub isin_dir: String,
+    pub isin_path: String,
 
     /// Output file format [json|ndjson|csv] 
     #[arg(short = 'f', long, default_value = "ndjson", value_parser = ["json-only", "ndjson", "csv"])]

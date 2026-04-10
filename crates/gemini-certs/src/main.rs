@@ -36,9 +36,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("Configuration: {:?}, Log Level: {}", args, std::env::var("RUST_LOG").unwrap_or("INFO".to_string()));
 
-    // check if input dir does not exist then exit with error
-    if !std::path::Path::new(&args.isin_dir).exists() {
-        log::error!("Input directory does not exist: {}", &args.isin_dir);
+    // check if input file does not exist then exit with error
+    if !std::path::Path::new(&args.isin_path).exists() {
+        log::error!("Input directory does not exist: {}", &args.isin_path);
         return Err("Please provide a valid text file containing an ISIN list".into());
     }
 
