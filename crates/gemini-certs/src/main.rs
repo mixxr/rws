@@ -1,10 +1,13 @@
 use google_ai_rs::{Client, AsSchema};
 use serde::*;
-use gcp_bigquery_client::Client as BQClient;
-use gcp_bigquery_client::model::table_data_insert_all_request::TableDataInsertAllRequest;
+use std::fs::File;
+use std::io::Write;
+// use gcp_bigquery_client::Client as BQClient;
+// use gcp_bigquery_client::model::table_data_insert_all_request::TableDataInsertAllRequest;
 
 #[derive(Serialize, Deserialize, AsSchema, Debug)]
 struct StockInfo {
+    certificate_isin: String,
     stock_name: String,
     google_finance_ticker: String,
     isin: String,
@@ -32,23 +35,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("Certificate: {:?}", response);
     // Directly access the structured data
-    println!("Certificate: {}", response.certificate_isin);
-    for stock in &response.underlyings {
-        println!("- {} ({})", stock.stock_name, stock.isin);
-    }
+    //println!("Certificate: {}", response.certificate_isin);
+    // for stock in &response.underlyings {
+    //     println!("- {} ({})", stock.stock_name, stock.isin);
+    // }
 
     let folder_path = "/tmp/data/certificates/";
-    let file_name = format!("{}.json", response.certificate_isin);
-    let full_path = std::path::Path::new(folder_path).join(file_name);
-
     // Ensure directory exists
     std::fs::create_dir_all(folder_path)?;
+
+    // create a json file to store single certificate response
+    let file_name = format!("{}.json", response.certificate_isin);
+    let full_path = std::path::Path::new(folder_path).join(file_name);
 
     // Serialize and write
     let json_string = serde_json::to_string_pretty(&response)?;
     std::fs::write(&full_path, &json_string)?;
     println!("File saved to: {:?}", full_path);
 
+    // create a ndjson file to store underlyings
+    let ndj_file_name = format!("{}-tickers.json", response.certificate_isin);
+    let ndj_full_path = std::path::Path::new(folder_path).join(ndj_file_name);
+    let mut file = File::create(&ndj_full_path)?;
+    for stock in &response.underlyings {
+        println!("Writing json to {:?}...", &ndj_full_path);
+        // ndJSON is 1 file containing multiple JSON objects, each in a new line
+        serde_json::to_writer(&mut file, &stock).unwrap();
+        // add a new line after each JSON object
+        file.write_all(b"\n").unwrap();
+    }
+    // TODO: remove lines here::86
     // 3. Save to BigQuery
     // let project_id = "your-gcp-project-id";
     // let dataset_id = "ISINs";
