@@ -18,6 +18,7 @@ struct StockInfo {
 #[derive(Serialize, Deserialize, AsSchema, Debug)]
 struct CertificateResponse {
     certificate_isin: String,
+    certificate_issuer: String,
     underlyings: Vec<StockInfo>,
 }
 
