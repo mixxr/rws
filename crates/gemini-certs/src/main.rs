@@ -2,6 +2,8 @@ use google_ai_rs::{Client, AsSchema};
 use serde::*;
 use std::fs::File;
 use std::io::Write;
+use rand::Rng;
+use tokio::time::{sleep, Duration};
 // use gcp_bigquery_client::Client as BQClient;
 // use gcp_bigquery_client::model::table_data_insert_all_request::TableDataInsertAllRequest;
 
@@ -34,57 +36,80 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     env_logger::init();
 
-    println!("Configuration: {:?}, Log Level: {}", args, std::env::var("RUST_LOG").unwrap_or("INFO".to_string()));
+    println!("Configuration: {:?}, Log Level: {}", args, std::env::var("RUST_LOG").unwrap_or("ERROR".to_string()));
+    
+    let content = std::fs::read_to_string(&args.isin_path)
+        .map_err(|_| "Please provide a valid text file containing an ISIN list")?;
 
-    // check if input file does not exist then exit with error
-    if !std::path::Path::new(&args.isin_path).exists() {
-        log::error!("Input directory does not exist: {}", &args.isin_path);
+    // 2. Parse the <isin>,<name> format
+    let isins: Vec<String> = content
+        .lines()
+        .filter(|line| !line.trim().is_empty())
+        .filter_map(|line| {
+            // Split by comma and take the first part
+            line.split(',')
+                .next()
+                .map(|s| s.trim().to_string())
+        })
+        .collect();
+
+    if isins.is_empty() {
         return Err("Please provide a valid text file containing an ISIN list".into());
     }
-
-    let g_api_key = std::env::var("G_API_KEY").map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
-    let client = Client::new(g_api_key).await?;
-    let model = client.typed_model::<CertificateResponse>("gemini-3-flash-preview");
-
-    let isin = "IT0006772062";
-    let response = model
-        .generate_content(format!("What are the ISINs underlying certificate {}?", isin))
-        .await?;
-
-    log::debug!("Certificate: {:?}", response);
-    // Directly access the structured data
-    //println!("Certificate: {}", response.certificate_isin);
-    // for stock in &response.underlyings {
-    //     println!("- {} ({})", stock.stock_name, stock.isin);
-    // }
 
     let output_dir = &args.output_dir;
     // Ensure directory exists
     std::fs::create_dir_all(output_dir)?;
 
-    // create a json file to store single certificate response
-    let file_name = format!("{}.json", response.certificate_isin);
-    let full_path = std::path::Path::new(output_dir).join(file_name);
+    let g_api_key = std::env::var("G_API_KEY").map_err(|_| "Configuration error, please contact service administrator.".to_string())?;
+    let client = Client::new(g_api_key).await?;
+    let model = client.typed_model::<CertificateResponse>("gemini-3-flash-preview");
 
-    // Serialize and write
-    let json_string = serde_json::to_string_pretty(&response)?;
-    std::fs::write(&full_path, &json_string)?;
-    log::debug!("File saved to: {:?}", full_path);
+    for isin in isins {
+        log::debug!("Processing ISIN: {}", isin);
 
-    // create a ndjson file to store underlyings if required
-    if args.output_format == "ndjson" {
-        let ndj_file_name = format!("{}-tickers.json", response.certificate_isin);
-        let ndj_full_path = std::path::Path::new(output_dir).join(ndj_file_name);
-        let mut file = File::create(&ndj_full_path)?;
-        for stock in &response.underlyings {
-            log::debug!("Writing json to {:?}...", &ndj_full_path);
-            // ndJSON is 1 file containing multiple JSON objects, each in a new line
-            serde_json::to_writer(&mut file, &stock).unwrap();
-            // add a new line after each JSON object
-            file.write_all(b"\n").unwrap();
+        let prompt = format!(
+            "what are the ISINs underlying the certificate {}, please create a json containing stock name, google finance ticker, ISIN and exchange", 
+            isin
+        );
+        let response = model
+            .generate_content(prompt)
+            .await?;
+
+        log::debug!("Certificate: {:?}", response);
+        // Directly access the structured data
+        //println!("Certificate: {}", response.certificate_isin);
+        // for stock in &response.underlyings {
+        //     println!("- {} ({})", stock.stock_name, stock.isin);
+        // }
+
+        // create a json file to store single certificate response
+        let file_name = format!("{}.json", isin);
+        let full_path = std::path::Path::new(output_dir).join(file_name);
+
+        // Serialize and write
+        let json_string = serde_json::to_string_pretty(&response)?;
+        std::fs::write(&full_path, &json_string)?;
+        log::debug!("File saved to: {:?}", full_path);
+
+        // create a ndjson file to store underlyings if required
+        if args.output_format == "ndjson" {
+            let ndj_file_name = format!("{}-tickers.json", isin);
+            let ndj_full_path = std::path::Path::new(output_dir).join(ndj_file_name);
+            let mut file = File::create(&ndj_full_path)?;
+            for stock in &response.underlyings {
+                log::debug!("Writing json to {:?}...", &ndj_full_path);
+                // ndJSON is 1 file containing multiple JSON objects, each in a new line
+                serde_json::to_writer(&mut file, &stock).unwrap();
+                // add a new line after each JSON object
+                file.write_all(b"\n").unwrap();
+            }
         }
+        log::info!("{isin}, OK");
+        let delay_secs = rand::thread_rng().gen_range(2..=5);
+        log::debug!("Waiting {} seconds before next request...", delay_secs);
+        sleep(Duration::from_secs(delay_secs)).await;
     }
-    log::info!("{isin}, OK");
     // TODO: remove lines here::86
     // 3. Save to BigQuery
     // let project_id = "your-gcp-project-id";
