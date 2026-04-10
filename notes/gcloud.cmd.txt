@@ -1,3 +1,9 @@
+# create account key > it is a JSON file (secret)
+gcloud auth application-default login --no-launch-browser
+
+## Choose the best way to use and authenticate service accounts on Google Cloud
+https://cloud.google.com/blog/products/identity-security/how-to-authenticate-service-accounts-to-help-keep-applications-secure
+
 # to deploy the job:
 gcloud beta run jobs deploy isin-estractor --env-vars-file=./gcloud.dev.env --source=. --execute-now --region=europe-west1 \
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
