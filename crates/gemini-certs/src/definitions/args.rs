@@ -20,6 +20,14 @@ pub struct Args {
     pub retries: i8,
 
     /// Gemini model
-    #[arg(short = 'm', long, default_value = "gemini-2.5-flash-lite")]
+    #[arg(short = 'm', long, default_value = "gemini-3-flash-preview")]
     pub model: String,
+
+     /// Gemini model RPM
+    #[arg(short = 'p', long, default_value_t = 10.0)]
+    pub rpm: f32,  
+
+     /// Gemini model list file path (to cycle on models if provided)
+    #[arg(short = 'l', long)]
+    pub model_list_path: Option<String>,
 }
