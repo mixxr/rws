@@ -1,0 +1,17 @@
+[package]
+name = "gemini-cert"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gemini-client-api = "7.4.5"
+google-ai-rs =  { version = "0.3.0", features = ["serde"] } 
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1.40.0", features = ["full"] }
+serde_json = "1.0"
+# BigQuery Client
+gcp-bigquery-client = "0.28"
+clap = { version = "4.5.54", features = ["derive"] }
+env_logger = "0.11.10"
+log = "0.4.29"
+rand = "0.8"
