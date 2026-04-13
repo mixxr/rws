@@ -1,4 +1,6 @@
 #!/bin/bash
-gcloud beta run jobs deploy format2-job --source=. --execute-now --region=europe-west1 \
+TYPE="certs"
+JOB="geminicert"
+gcloud beta run jobs deploy $TYPE-$JOB-job --source=. --region=europe-west1 \
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
---add-volume-mount volume=gcs-1,mount-path=/data
+--add-volume-mount volume=gcs-1,mount-path=/data 

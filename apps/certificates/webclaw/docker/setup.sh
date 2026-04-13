@@ -8,6 +8,7 @@ echo "Mount Dir: $mntdir"
 webclaw --version
 mkdir -p $mntdir/input/
 rm ./run.sh
+echo "#!/bin/bash" > ./run.sh
 
 for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
   if [ -f "$filepath" ]; then
