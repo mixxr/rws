@@ -1,20 +1,36 @@
 #!/bin/bash
 echo "Setup running..."
-mntdir=${MOUNT_DIR:-.}
+TYPE="certificates"
+STATUS="wf"
+STATUS_TO="ge"
+mntdir=${MOUNT_DIR:-.}/${TYPE}
 echo "Mount Dir: $mntdir"
+webclaw --version
 rm ./run.sh
-datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
-for filepath in "$mntdir"/config/*.urls.txt; do
+
+for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
   if [ -f "$filepath" ]; then
-	file="$(basename "$filepath")"
-    echo "basename $file"
-	issuer="${file%%.*}"
-	echo "webclaw --urls-file $filepath --output-dir $mntdir/output/$issuer/$datetime/ --only-main-content" >> ./run.sh
+	  file="$(basename "$filepath")"
+    echo "Processing $file"
+    isin="${file%%.*}"
+	  while IFS=',' read -r url file_to_save start_pos end_pos; do
+      # Skip empty lines
+      [[ -z "$url$file_to_save$start_pos$end_pos" ]] && continue
+
+      echo "webclaw $url --only-main-content | cut -c $start_pos-$end_pos > $mntdir/input/$file_to_save" >> ./run.sh
+      echo "if [ $? -ne 0 ]; then 
+        mv $filepath $filepath.done 
+        echo $mntdir/input/$file_to_save > $mntdir/jobs/$STATUS_TO/$isin.uri
+      else
+        echo 'ERROR: $filepath'
+      fi" >> ./run.sh 
+    done < "$filepath"
   fi
 done
-chmod +x run.sh
+if ! test -f ./run.sh; then
+  echo "No execution to build."
+  exit 1
+fi
+chmod +x ./run.sh
 echo "Setup completed: $(cat ./run.sh)"
 ./run.sh
-echo "Run completed."
-echo "Create semaphore file $mntdir/jobs/$datetime.f2"
-touch "$mntdir/jobs/$datetime.f2"
