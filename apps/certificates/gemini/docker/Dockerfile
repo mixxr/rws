@@ -4,7 +4,7 @@
 # COPY . .
 # RUN cargo install --path ./crates/format2
 
-FROM europe-west1-docker.pkg.dev/invcerts/ghcr/mixxr/format2:latest
+FROM europe-west1-docker.pkg.dev/invcerts/ghcr/mixxr/gemini-cert:latest
 WORKDIR .
 ENV MOUNT_DIR="/data"
 ENV MOUNT_BUCKET="gs://rws-data"
