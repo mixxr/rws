@@ -3,7 +3,8 @@ echo "==== Setup running...===="
 TYPE="certificates"
 STATUS="bq"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
-echo $mntdir
+bucket=${MOUNT_BUCKET}/${TYPE}
+echo "Mount Dir: $mntdir -> $bucket"
 echo "Reading manifest file from $mntdir/jobs/$STATUS/*.txt"
 manifest_file=$(ls "$mntdir/jobs/$STATUS"/*.txt 2>/dev/null | head -n 1)
 if [ -z "$manifest_file" ]; then
@@ -12,6 +13,7 @@ if [ -z "$manifest_file" ]; then
 fi
 echo "Processing manifest file $manifest_file"
 log_file="$manifest_file".log
+datetime=$(basename "$manifest_file" .txt)
 
 echo "#!/bin/bash" > ./run.sh
 echo "ERROR_COUNT=0" >> ./run.sh
@@ -20,7 +22,7 @@ echo "bq load \\
   --schema_update_option=ALLOW_FIELD_ADDITION \\
   --file_set_spec_type=NEW_LINE_DELIMITED_MANIFEST \\
   ISINs.isin_ticker \\
-  $manifest_file 2>> $log_file" >> ./run.sh
+  $bucket/jobs/$STATUS/$datetime.txt 2>> $log_file" >> ./run.sh
 echo "if [ \$? -ne 0 ]; then 
   echo 'ERROR loading $manifest_file' 
   ((ERROR_COUNT++))
