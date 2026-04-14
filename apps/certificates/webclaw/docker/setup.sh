@@ -1,5 +1,7 @@
 #!/bin/bash
 echo "==== Setup running... ===="
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 TYPE="certificates"
 STATUS="wf"
 STATUS_TO="ge"

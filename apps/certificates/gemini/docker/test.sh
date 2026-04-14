@@ -1,10 +1,11 @@
 #!/bin/bash
+
+echo pwd: $(pwd)
 source ../../../build_init.sh  $(pwd)
+echo $TYPE
+echo $APPNAME
 # test if TYPE and APPNAME are correctly set
 if [ -z "$TYPE" ] || [ -z "$APPNAME" ]; then
   echo "Error: TYPE or APPNAME is not set."
   exit 1
 fi
-gcloud beta run jobs deploy $TYPE-$APPNAME-job --source=. --region=europe-west1 \
---add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
---add-volume-mount volume=gcs-1,mount-path=/data 
