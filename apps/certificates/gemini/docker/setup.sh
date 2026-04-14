@@ -22,11 +22,17 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     
 	  read -r line < "$filepath"
     echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -p 1" >> ./run.sh
-    echo "if [ \$? -eq 0 ]; then 
+    echo "ERROR_COUNT=0
+    if [ \$? -eq 0 ]; then 
       mv $filepath $filepath.done 
       echo $bucket/output/$isin-tickers.json >> $MANIFEST
     else
       echo 'ERROR: $filepath'
+      ERROR_COUNT=ERROR_COUNT+1
+    fi
+    echo "ERROR COUNTER: $ERROR_COUNT"
+    if [ \$ERROR_COUNT -gt 0 ]; then
+      exit 2
     fi" >> ./run.sh 
   fi
 done
