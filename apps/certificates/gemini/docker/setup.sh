@@ -18,6 +18,7 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
   if [ -f "$filepath" ]; then
 	  file="$(basename "$filepath")"
     isin="${file%%.*}"
+    isin=${isin^^}
     echo "Processing $isin $filepath"
     
 	  read -r line < "$filepath"
@@ -28,7 +29,7 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
       echo $bucket/output/$isin-tickers.json >> $MANIFEST
     else
       echo 'ERROR: $filepath'
-      ERROR_COUNT=$ERROR_COUNT+1
+      ((ERROR_COUNT++))
     fi" >> ./run.sh 
   fi
 done
