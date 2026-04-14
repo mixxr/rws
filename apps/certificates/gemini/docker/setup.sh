@@ -21,21 +21,22 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     echo "Processing $isin $filepath"
     
 	  read -r line < "$filepath"
-    echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -p 1" >> ./run.sh
+    echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -p 2" >> ./run.sh
     echo "ERROR_COUNT=0
     if [ \$? -eq 0 ]; then 
       mv $filepath $filepath.done 
       echo $bucket/output/$isin-tickers.json >> $MANIFEST
     else
       echo 'ERROR: $filepath'
-      ERROR_COUNT=ERROR_COUNT+1
-    fi
-    echo "ERROR COUNTER: $ERROR_COUNT"
-    if [ \$ERROR_COUNT -gt 0 ]; then
-      exit 2
+      ERROR_COUNT=$ERROR_COUNT+1
     fi" >> ./run.sh 
   fi
 done
+echo "echo "ERROR COUNTER: $ERROR_COUNT"
+if [ \$ERROR_COUNT -gt 0 ]; then
+  exit 2
+fi" >> ./run.sh
+
 if ! test -f ./run.sh; then
   echo "No execution to build."
   exit 1
