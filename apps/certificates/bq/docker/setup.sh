@@ -41,5 +41,5 @@ if ! test -f ./run.sh; then
 fi
 chmod +x ./run.sh
 echo -e "Setup completed:\n $(cat ./run.sh)"
-#./run.sh
+./run.sh
 echo "==== Execution completed ===="
