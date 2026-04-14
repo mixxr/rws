@@ -9,7 +9,7 @@ echo "Reading manifest files from $mntdir/jobs/$STATUS/*.txt"
 
 echo "#!/bin/bash" > ./run.sh
 echo "ERROR_COUNT=0" >> ./run.sh
-for manifest_file in "$mntdir/jobs/$STATUS"/*.uri; do
+for manifest_file in "$mntdir/jobs/$STATUS"/*.txt; do
   echo "Processing manifest file $manifest_file"
   log_file="$manifest_file".log
   datetime=$(basename "$manifest_file" .txt)
