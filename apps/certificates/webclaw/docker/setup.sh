@@ -7,8 +7,9 @@ mntdir=${MOUNT_DIR:-.}/${TYPE}
 echo "Mount Dir: $mntdir"
 webclaw --version
 mkdir -p $mntdir/input/
-rm ./run.sh
+
 echo "#!/bin/bash" > ./run.sh
+echo "ERROR_COUNT=0" >> ./run.sh
 
 for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
   if [ -f "$filepath" ]; then
@@ -28,10 +29,15 @@ for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
         echo $mntdir/input/$file_to_save > $mntdir/jobs/$STATUS_TO/$isin.uri
       else
         echo 'ERROR: $filepath'
+        ((ERROR_COUNT++))
       fi" >> ./run.sh 
     done < <(head -n 1 "$filepath")
   fi
 done
+echo "echo "ERROR COUNTER: $ERROR_COUNT"
+if [ \$ERROR_COUNT -gt 0 ]; then
+  exit 2
+fi" >> ./run.sh
 if ! test -f ./run.sh; then
   echo "No execution to build."
   exit 1

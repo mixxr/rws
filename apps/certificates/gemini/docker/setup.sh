@@ -10,10 +10,10 @@ MANIFEST="$mntdir/jobs/$STATUS_TO/$datetime.txt"
 
 echo "Mount Dir: $mntdir -> $bucket"
 echo "Manifest file: $MANIFEST"
-rm ./run.sh
 #rm -f "$MANIFEST*"
 
 echo "#!/bin/bash" > ./run.sh
+echo "ERROR_COUNT=0" >> ./run.sh
 for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
   if [ -f "$filepath" ]; then
 	  file="$(basename "$filepath")"
@@ -23,8 +23,7 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     
 	  read -r line < "$filepath"
     echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -p 2" >> ./run.sh
-    echo "ERROR_COUNT=0
-    if [ \$? -eq 0 ]; then 
+    echo "if [ \$? -eq 0 ]; then 
       mv $filepath $filepath.done 
       echo $bucket/output/$isin-tickers.json >> $MANIFEST
     else

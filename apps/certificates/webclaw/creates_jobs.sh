@@ -8,7 +8,7 @@ if [[ ! -f "$INPUT_FILE" ]]; then
     echo "Errore: Il file $INPUT_FILE non esiste."
     exit 1
 fi
-
+N=0
 # Leggi il file riga per riga
 while IFS= read -r isin || [[ -n "$isin" ]]; do
     # Rimuovi eventuali spazi bianchi o caratteri di ritorno a capo invisibili (Windows style)
@@ -31,7 +31,8 @@ while IFS= read -r isin || [[ -n "$isin" ]]; do
     echo "$CONTENT" > "$OUTPUT_FILE"
 
     echo "Job creato: $OUTPUT_FILE"
+    ((N++))
 
 done < "$INPUT_FILE"
 
-echo "Operazione completata!"
+echo "Operazione completata! Jobs creati: $N"
