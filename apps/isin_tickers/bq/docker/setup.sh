@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "==== Setup running...===="
-TYPE="certificates"
+TYPE="isin_tickers"
 STATUS="bq"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 bucket=${MOUNT_BUCKET}/${TYPE}

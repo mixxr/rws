@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "==== Setup running... ===="
-TYPE="certificates"
-STATUS="wf"
+TYPE="isin_tickers"
+STATUS="wc"
 STATUS_TO="ge"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 echo "Mount Dir: $mntdir"

@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "==== Setup running... ===="
-TYPE="certificates"
+TYPE="isin_tickers"
 STATUS="ge"
 STATUS_TO="bq"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
