@@ -23,6 +23,8 @@ for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
       file_to_save="${file_to_save#"${file_to_save%%[![:space:]]*}"}"
       start_line="${start_line#"${start_line%%[![:space:]]*}"}"
       lines_to_read="${lines_to_read#"${lines_to_read%%[![:space:]]*}"}"
+      lines_to_read="${lines_to_read//$'\r'/}" 
+      echo "Processing $url $file_to_save $start_line $lines_to_read:"
       echo "webclaw $url --only-main-content | tail -n +$start_line | head -n +$lines_to_read > $mntdir/input/$file_to_save" >> ./run.sh
       echo "if [ \$? -eq 0 ]; then 
         mv $filepath $filepath.done 
