@@ -30,7 +30,7 @@ while IFS= read -r isin || [[ -n "$isin" ]]; do
 
     # Definisci il contenuto della riga
     # Formato: URL, ISIN.md, 5, 35
-    CONTENT="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=${isin},${isin}.md, $1, $2"
+    CONTENT="https://kid.bnpparibas.com/${isin}-IT.pdf,${isin}.md, $1, $2"
 
     # Crea il file CSV e scrivi il contenuto
     echo "$CONTENT" > "$OUTPUT_FILE"

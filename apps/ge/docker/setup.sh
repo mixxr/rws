@@ -22,7 +22,7 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     echo "Processing $isin $filepath"
     # .uri files contain 1 line like "/data/certificates/input/DE000VG656A7.md"
 	  read -r line < "$filepath"
-    echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -t $TYPE-only" >> ./run.sh
+    echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -t $TYPE-only -g English" >> ./run.sh
     echo "if [ \$? -eq 0 ]; then 
       mv $filepath $filepath.done 
       # a MANIFEST file contains N lines like "gs://bucket/tickers/output/DE000VG656A7-tickers.json"
