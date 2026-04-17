@@ -5,5 +5,4 @@ echo "====> Remember to create jobs with creates_jobs.sh script before executing
 gcloud beta run jobs deploy $TYPE-$APPNAME-job --source=. --region=europe-west1 --max-retries=1 \
 --set-env-vars APPNAME=$APPNAME,APP_TYPE=$APP_TYPE \
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
---add-volume-mount volume=gcs-1,mount-path=/data \
---execute-now
+--add-volume-mount volume=gcs-1,mount-path=/data

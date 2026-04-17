@@ -6,4 +6,3 @@
 *.old
 test_*
 *.local
-**/jobs/*.csv
