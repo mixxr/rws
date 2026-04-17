@@ -33,7 +33,7 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     fi" >> ./run.sh 
   fi
 done
-echo "echo "ERROR COUNTER: $ERROR_COUNT"
+echo "echo "ERROR COUNTER: \$ERROR_COUNT"
 if [ \$ERROR_COUNT -gt 0 ]; then
   exit 2
 fi" >> ./run.sh

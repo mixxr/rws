@@ -1,11 +1,8 @@
 FROM europe-west1-docker.pkg.dev/invcerts/ghcr/0xmassi/webclaw:latest
 WORKDIR .
-COPY ./setup.sh .
-RUN chmod +x ./setup.sh
-ARG APPNAME=wc
-ARG APP_TYPE=details
 ENV MOUNT_DIR="/data"
-ENV APP_TYPE=$APP_TYPE
-ENV APPNAME=$APPNAME
+ENV MOUNT_BUCKET="gs://rws-data"
 ENV RUST_LOG="info"
+COPY ./*.sh ./
+RUN chmod +x ./*.sh
 CMD ["./setup.sh"]

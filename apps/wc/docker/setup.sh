@@ -4,7 +4,7 @@ TYPE=${APP_TYPE:-details}
 STATUS=${APPNAME:-wc}
 STATUS_TO="ge"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
-echo "Mount Dir: $mntdir"
+echo "Mount Dir: $mntdir, APPNAME: $STATUS, TYPE: $TYPE"
 webclaw --version
 mkdir -p $mntdir/input/
 
@@ -34,7 +34,7 @@ for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
     done < <(head -n 1 "$filepath")
   fi
 done
-echo "echo "ERROR COUNTER: $ERROR_COUNT"
+echo "echo "ERROR COUNTER: \$ERROR_COUNT"
 if [ \$ERROR_COUNT -gt 0 ]; then
   exit 2
 fi" >> ./run.sh
