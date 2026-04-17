@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "==== Setup running... ===="
-TYPE=${APP_TYPE:-isin}
+TYPE=${APP_TYPE:-details}
 STATUS=${APPNAME:-wc}
 STATUS_TO="ge"
 mntdir=${MOUNT_DIR:-.}/${TYPE}

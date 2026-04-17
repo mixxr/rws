@@ -3,8 +3,9 @@ WORKDIR .
 COPY ./setup.sh .
 RUN chmod +x ./setup.sh
 ARG APPNAME=wc
-ARG APP_TYPE=isin
+ARG APP_TYPE=details
 ENV MOUNT_DIR="/data"
 ENV APP_TYPE=$APP_TYPE
 ENV APPNAME=$APPNAME
+ENV RUST_LOG="info"
 CMD ["./setup.sh"]

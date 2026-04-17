@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "==== Setup running... ===="
-TYPE="isin"
+TYPE="tickers"
 STATUS="ge"
 STATUS_TO="bq"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
@@ -20,12 +20,13 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     isin="${file%%.*}"
     isin=${isin^^}
     echo "Processing $isin $filepath"
-    
+    # .uri files contain 1 line like "/data/certificates/input/DE000VG656A7.md"
 	  read -r line < "$filepath"
-    echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -p 2" >> ./run.sh
+    echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -t $TYPE-only" >> ./run.sh
     echo "if [ \$? -eq 0 ]; then 
       mv $filepath $filepath.done 
-      echo $bucket/output/$isin-tickers.json >> $MANIFEST
+      # a MANIFEST file contains N lines like "gs://bucket/tickers/output/DE000VG656A7-tickers.json"
+      echo $bucket/output/$isin-$TYPE.json >> $MANIFEST
     else
       echo 'ERROR: $filepath'
       ((ERROR_COUNT++))
