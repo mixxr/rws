@@ -364,7 +364,7 @@ async fn get_by_tickers(
         let isin = format!("US{:0>10}", rng.random::<u64>() % 10000000);
         let ask = rng.random::<u32>() % 10 + 98;
         let bid = rng.random::<u32>() % 10 + 100;
-        certificates.push(format!("{},Certificate {},{},{},USD,2024-06-01-12-00-{}", isin, i, ask, bid, (i % 10) + 10));
+        certificates.push(format!("{},Certificate {},{},{},USD,2024-06-01-12-00-{}", isin, i, ask, bid, (i % 10) + 10)); 
     }
     HttpResponse::Ok()
         .content_type("application/json")
