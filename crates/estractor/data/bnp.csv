@@ -12,10 +12,21 @@ NLBNPIT30309, Banca MPS BBVA Caixabank Societe Generale Protection Booster Cash 
 NLBNPIT30325, Eni Generali Poste Italiane Unicredit Protection Booster Cash Collect
 NLBNPIT30341, Generali Swiss Re Scor Unipol Assicurazioni Protection Booster Cash Collect
 NLBNPIT30382, BP PLC Equinor Repsol TotalEnergies Protection Booster Cash Collect
-NLBNPIT302V1,Unicredit Bper Intesa Sanpaolo
-NLBNPIT302W9,Intesa Sanpaolo Unicredit
-NLBNPIT302Z2,Intesa Sanpaolo Santander The Goldman Sachs Morgan Stanley
-NLBNPIT30374,Boeing Rheinmetall Leonardo Thales
-NLBNPIT30358,A2A Engie Veolia E.on
-NLBNPIT303A3,Nvidia Intel Tesla Meta
+NLBNPIT302V1, Unicredit Bper Intesa Sanpaolo
+NLBNPIT302W9, Intesa Sanpaolo Unicredit
+NLBNPIT302Z2, Intesa Sanpaolo Santander The Goldman Sachs Morgan Stanley
+NLBNPIT30374, Boeing Rheinmetall Leonardo Thales
+NLBNPIT30358, A2A Engie Veolia E.on
+NLBNPIT303A3, Nvidia Intel Tesla Meta
 NLBNPIT30150, Coherent Leonardo Thales Premi Fissi Cash Collect Callable
+NLBNPIT303C9, Unicredit Intesa Sanpaolo Banco BPM
+NLBNPIT303D7, Bper Intesa Sanpaolo
+NLBNPIT303E5, Banca MPS Santander
+NLBNPIT303F2, Azimut Banca MPS Fineco Unicredit
+NLBNPIT303G0, Banca MPS Banco BPM Bper Unicredit
+NLBNPIT303I6, Allianz Assicurazioni Generali Intesa Sanpaolo Unicredit
+NLBNPIT303M8, Assicurazioni Generali Unipol Zurich Insurance Axa
+NLBNPIT303N6, Coherent Leonardo Rheinmetall
+NLBNPIT303O4, Banca MPS Siemens Energy Stellantis STMicroelectronics
+NLBNPIT303P1, BP PLC TotalEnergies Equinor Repsol
+NLBNPIT303S5, AMD Dell Meta
