@@ -10,7 +10,7 @@
             ]
         }
     },
-    "postCreateCommand": "rustup component add clippy rustfmt && ./.devcontainer/setup.sh",
+    "postCreateCommand": "rustup component add clippy rustfmt && nohup ./.devcontainer/setup.sh",
     "features": {
         "ghcr.io/devcontainers/features/rust:1": {},
         // "ghcr.io/devcontainers/features/node:1": { }
