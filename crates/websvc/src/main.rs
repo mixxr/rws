@@ -94,7 +94,8 @@ async fn main() -> std::io::Result<()> {
             .service(get_all_by_date)
             .service(get_by_isin)
             .service(get_tickers)
-            .service(get_by_ticker)
+            .service(get_by_tickers)
+            .service(get_certs_and_tickers)
     })
     .bind(("0.0.0.0", listen_port))?
     .run()
@@ -341,15 +342,15 @@ async fn get_by_isin(
         .json(sources)
 }
 
-#[get("/certificates/{ticker}")]
-/* returns certificates by ticker */
-async fn get_by_ticker(
+#[get("/certificates")]
+/* returns certificates by ticker list as query string ?tickers={ticker_csv_list} */
+async fn get_by_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<(String)>
+    query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
-    let (ticker) = path.into_inner();
-    let ticker = sanitize_input(&ticker);
-        // obtain shared s;tate
+    let ticker_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
+    let ticker_csv_list = sanitize_input(&ticker_csv_list);
+    // obtain shared state
     let shared_state = data.lock().unwrap();
     // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
     // first row is the header
@@ -387,6 +388,38 @@ async fn get_tickers(
         .json(tickers)
 }
 
+#[get("/certificates-tickers/{certs_csv_list}")]
+/* returns certificates by ticker */
+async fn get_certs_and_tickers(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String)>
+) -> impl Responder {
+    let (certs_csv_list) = path.into_inner();
+    let certs_csv_list = sanitize_input(&certs_csv_list);
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
+    // first row is the header
+    // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
+    let mut certificates = Vec::new();
+    //certificates.push("certificate name ISIN,ticker name ISIN".to_string());
+    certificates.push("IT32840834324, Certificate ABC ,AAPL, Apple Inc. ".to_string());
+    certificates.push("IT32840834324, Certificate ABC ,MSFT, Microsoft Corp. ".to_string());
+    certificates.push("IT32840834324, Certificate ABC ,TSLA, Tesla Inc. ".to_string());
+    certificates.push("IT32840834324, Certificate ABC ,AMZN, Amazon.com Inc. ".to_string());
+    certificates.push("IT32840834328, Certificate 123 ,META, Facebook Inc. ".to_string());
+    certificates.push("IT32840834328, Certificate 123 ,TSLA, Tesla Inc. ".to_string());
+    certificates.push("IT32840834328, Certificate 123 ,Salesforce.com Inc. CRM".to_string());
+    certificates.push("IT32840834331, Certificate DDDD QWERTY ,TSLA, Tesla Inc. ".to_string());
+    certificates.push("IT32840834331, Certificate DDDD QWERTY ,ADBE, Adobe Inc. ".to_string());
+    certificates.push("IT32840834331, Certificate DDDD QWERTY ,CRM, Salesforce.com Inc. ".to_string());
+    certificates.push("IT32840834674, Certificate Booster NAP ,AAPL, Apple Inc. ".to_string());
+    certificates.push("IT32840834674, Certificate Booster NAP ,TSLA, Tesla Inc. ".to_string());
+    certificates.push("IT32840834675, Certificate Booster ,MSFT, Microsoft Corp. ".to_string());
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(certificates)
+}
 
 fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
     // Open the file
