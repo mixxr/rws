@@ -3,6 +3,7 @@ use google_cloud_bigquery::http::job::query::QueryRequest;
 use google_cloud_bigquery::query::row::Row;
 
 pub static NODATA_FOUND: &str = "No data found";
+pub static HARD_ROW_LIMIT: usize = 1000;
 
 pub struct Tables {
     pub _ISIN_TICKER: &'static str,
@@ -42,7 +43,7 @@ pub async fn query_bq(
         format!(" WHERE {}", conditions_in_and.join(" AND "))
     };
 
-    let q = format!("SELECT {} FROM {}{}", cols, tablename, where_clause);
+    let q = format!("SELECT {} FROM {}{} LIMIT {}", cols, tablename, where_clause, HARD_ROW_LIMIT);
     // TODO: sanification of inputs to prevent SQL injection, especially for conditions
     
     let request = QueryRequest {

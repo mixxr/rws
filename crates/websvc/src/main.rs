@@ -409,7 +409,11 @@ async fn get_certs_and_tickers(
     path: web::Path<(String)>
 ) -> impl Responder {
     let certs_csv_list = path.into_inner();
-    let certs_csv_list = sanitize_input(&certs_csv_list);
+    // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003
+    // sanitize input to prevent SQL injection one ISIN by one
+    let certs_csv_list = certs_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");
+    // create a where condition for BigQuery query in format certificate_isin IN ('US0000000001','US0000000002','US0000000003')
+    let where_condition = format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','"));
     // obtain shared state
     let shared_state = data.lock().unwrap();
     // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
@@ -421,7 +425,7 @@ async fn get_certs_and_tickers(
         &project_id,
         vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
         TABLES._ISIN_TICKER, 
-        vec![]).await;
+        vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
