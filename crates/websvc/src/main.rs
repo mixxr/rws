@@ -20,6 +20,16 @@ use definitions::args::Args;
 use tracing::info;
 
 use rand::prelude::*;
+
+use google_cloud_bigquery::client::{Client, ClientConfig};
+use google_cloud_bigquery::http::job::query::QueryRequest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct TickerData {
+    certificate: String,
+    ticker: String,
+}
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -96,6 +106,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_tickers)
             .service(get_by_tickers)
             .service(get_certs_and_tickers)
+            .service(get_data)
     })
     .bind(("0.0.0.0", listen_port))?
     .run()
@@ -419,6 +430,32 @@ async fn get_certs_and_tickers(
     HttpResponse::Ok()
         .content_type("application/json")
         .json(certificates)
+}
+
+#[get("/test-bigquery")]
+async fn get_data() -> Json<Vec<TickerData>> {
+    // 1. Initialize BigQuery Client
+    // Auth is handled automatically via Application Default Credentials (ADC)
+    let config = ClientConfig::default().with_auth().await.unwrap();
+    let client = Client::new(config);
+
+    // 2. Prepare the query
+    let query_request = QueryRequest {
+        query: "SELECT certificate_isin, stock_name FROM `invcerts.ISINs.isin_ticker` LIMIT 10".to_string(),
+        ..Default::default()
+    };
+
+    // 3. Execute query
+    let mut result = client.query(&query_request).await.unwrap();
+    let mut rows = Vec::new();
+
+    while let Some(row) = result.next().await.unwrap() {
+        let certificate: String = row.column(0).unwrap();
+        let ticker: String = row.column(1).unwrap();
+        rows.push(TickerData { certificate, ticker });
+    }
+
+    Json(rows)
 }
 
 fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
