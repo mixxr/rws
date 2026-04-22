@@ -23,6 +23,7 @@ use rand::prelude::*;
 
 use google_cloud_bigquery::client::{Client, ClientConfig};
 use google_cloud_bigquery::http::job::query::QueryRequest;
+use google_cloud_bigquery::query::row::Row;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -386,7 +387,7 @@ async fn get_by_tickers(
 /* returns list of latest (maxobs) observations per source */
 async fn get_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<(String)>,
+    path: web::Path<String>,
 ) -> impl Responder {
     let matcher = path.into_inner();
     let matcher = sanitize_input(&matcher);
@@ -405,7 +406,7 @@ async fn get_certs_and_tickers(
     data: web::Data<SharedMap>,
     path: web::Path<(String)>
 ) -> impl Responder {
-    let (certs_csv_list) = path.into_inner();
+    let certs_csv_list = path.into_inner();
     let certs_csv_list = sanitize_input(&certs_csv_list);
     // obtain shared state
     let shared_state = data.lock().unwrap();
@@ -433,29 +434,46 @@ async fn get_certs_and_tickers(
 }
 
 #[get("/test-bigquery")]
-async fn get_data() -> Json<Vec<TickerData>> {
+async fn get_data() ->  actix_web::web::Json<Vec<TickerData>> {
     // 1. Initialize BigQuery Client
-    // Auth is handled automatically via Application Default Credentials (ADC)
-    let config = ClientConfig::default().with_auth().await.unwrap();
-    let client = Client::new(config);
+    // let config = ClientConfig::default().with_auth().await?;
+    // let client = Client::new(config).await?;
+    //let client = Client::new("my-project-id").await?;
+    let (config, project_id) = ClientConfig::new_with_auth().await.unwrap();
+    let client = Client::new(config).await.unwrap();
+    println!("BigQuery Client initialized with project ID: {:?}", project_id);
+    // println!("BigQuery Client initialized with project ID: {}", project_id);
+    let project_id = project_id.unwrap_or_default();
 
     // 2. Prepare the query
-    let query_request = QueryRequest {
+    let request = QueryRequest {
         query: "SELECT certificate_isin, stock_name FROM `invcerts.ISINs.isin_ticker` LIMIT 10".to_string(),
         ..Default::default()
     };
 
-    // 3. Execute query
-    let mut result = client.query(&query_request).await.unwrap();
-    let mut rows = Vec::new();
+    //let request = QueryRequest::default();
 
-    while let Some(row) = result.next().await.unwrap() {
-        let certificate: String = row.column(0).unwrap();
-        let ticker: String = row.column(1).unwrap();
-        rows.push(TickerData { certificate, ticker });
+    // let sql = "SELECT certificate_isin, stock_name FROM `invcerts.ISINs.isin_ticker` LIMIT 10";
+    /*
+    let mut params = HashMap::new();
+params.insert("id".to_string(), json!(123));
+
+let mut result = client.query(
+    "SELECT * FROM my_table WHERE id = @id",
+    Some(params)
+).await?;
+ */
+    // 3. Execute query
+    let mut iter = client.query::<Row>(&project_id, request).await.unwrap();
+    let mut rows = Vec::new();
+    while let Some(row) = iter.next().await.unwrap() {
+        let col1 = row.column::<String>(0);
+        let col2 = row.column::<String>(1);
+        println!("Certificate ISIN: {:?}, Stock Name: {:?}", col1, col2);
+        rows.push(TickerData { certificate: col1.expect("Failed to get certificate ISIN"), ticker: col2.expect("Failed to get stock name") });
     }
 
-    Json(rows)
+    actix_web::web::Json(rows)
 }
 
 fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
