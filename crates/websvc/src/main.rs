@@ -14,6 +14,8 @@ use glob::MatchOptions;
 
 mod ic_csv;
 use ic_csv::*;
+mod bq;
+use bq::*;
 use clap::Parser;
 mod definitions;
 use definitions::args::Args;
@@ -26,11 +28,11 @@ use google_cloud_bigquery::http::job::query::QueryRequest;
 use google_cloud_bigquery::query::row::Row;
 use serde::Serialize;
 
-#[derive(Serialize)]
-struct TickerData {
-    certificate: String,
-    ticker: String,
-}
+// #[derive(Serialize)]
+// struct TickerData {
+//     certificate: String,
+//     ticker: String,
+// }
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -413,65 +415,31 @@ async fn get_certs_and_tickers(
     // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
     // first row is the header
     // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
-    let mut certificates = Vec::new();
-    //certificates.push("certificate name ISIN,ticker name ISIN".to_string());
-    certificates.push("IT32840834324, Certificate ABC ,AAPL, Apple Inc. ".to_string());
-    certificates.push("IT32840834324, Certificate ABC ,MSFT, Microsoft Corp. ".to_string());
-    certificates.push("IT32840834324, Certificate ABC ,TSLA, Tesla Inc. ".to_string());
-    certificates.push("IT32840834324, Certificate ABC ,AMZN, Amazon.com Inc. ".to_string());
-    certificates.push("IT32840834328, Certificate 123 ,META, Facebook Inc. ".to_string());
-    certificates.push("IT32840834328, Certificate 123 ,TSLA, Tesla Inc. ".to_string());
-    certificates.push("IT32840834328, Certificate 123 ,Salesforce.com Inc. CRM".to_string());
-    certificates.push("IT32840834331, Certificate DDDD QWERTY ,TSLA, Tesla Inc. ".to_string());
-    certificates.push("IT32840834331, Certificate DDDD QWERTY ,ADBE, Adobe Inc. ".to_string());
-    certificates.push("IT32840834331, Certificate DDDD QWERTY ,CRM, Salesforce.com Inc. ".to_string());
-    certificates.push("IT32840834674, Certificate Booster NAP ,AAPL, Apple Inc. ".to_string());
-    certificates.push("IT32840834674, Certificate Booster NAP ,TSLA, Tesla Inc. ".to_string());
-    certificates.push("IT32840834675, Certificate Booster ,MSFT, Microsoft Corp. ".to_string());
+     let (client, project_id) = init_bq_client().await;
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
+        TABLES._ISIN_TICKER, 
+        vec![]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
-        .json(certificates)
+        .json(rows)
 }
 
 #[get("/test-bigquery")]
-async fn get_data() ->  actix_web::web::Json<Vec<TickerData>> {
-    // 1. Initialize BigQuery Client
-    // let config = ClientConfig::default().with_auth().await?;
-    // let client = Client::new(config).await?;
-    //let client = Client::new("my-project-id").await?;
-    let (config, project_id) = ClientConfig::new_with_auth().await.unwrap();
-    let client = Client::new(config).await.unwrap();
-    println!("BigQuery Client initialized with project ID: {:?}", project_id);
-    // println!("BigQuery Client initialized with project ID: {}", project_id);
-    let project_id = project_id.unwrap_or_default();
-
-    // 2. Prepare the query
-    let request = QueryRequest {
-        query: "SELECT certificate_isin, stock_name FROM `invcerts.ISINs.isin_ticker` LIMIT 10".to_string(),
-        ..Default::default()
-    };
-
-    //let request = QueryRequest::default();
-
-    // let sql = "SELECT certificate_isin, stock_name FROM `invcerts.ISINs.isin_ticker` LIMIT 10";
-    /*
-    let mut params = HashMap::new();
-params.insert("id".to_string(), json!(123));
-
-let mut result = client.query(
-    "SELECT * FROM my_table WHERE id = @id",
-    Some(params)
-).await?;
- */
-    // 3. Execute query
-    let mut iter = client.query::<Row>(&project_id, request).await.unwrap();
-    let mut rows = Vec::new();
-    while let Some(row) = iter.next().await.unwrap() {
-        let col1 = row.column::<String>(0);
-        let col2 = row.column::<String>(1);
-        println!("Certificate ISIN: {:?}, Stock Name: {:?}", col1, col2);
-        rows.push(TickerData { certificate: col1.expect("Failed to get certificate ISIN"), ticker: col2.expect("Failed to get stock name") });
-    }
+async fn get_data() ->  actix_web::web::Json<Vec<String>> {
+    let (client, project_id) = init_bq_client().await;
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
+        TABLES._ISIN_TICKER, 
+        vec![]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
 
     actix_web::web::Json(rows)
 }
