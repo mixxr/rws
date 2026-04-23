@@ -1,0 +1,7 @@
+ISIN,Nome,Prossima Cedola
+IT0006771353,STMicroelectronics NV Intel Corp Advanced Micro Devices Inc Broadcom Inc,2026-05-15
+IT0006772062,Banco BPM SpA Societe Generale SA Banca Monte dei Paschi di Siena Commerzbank AG,2026-05-15
+IT0006771148,Eni SpA TotalEnergies SE Chevron Corp Occidental Petroleum Corp,2026-05-15
+IT0006770512,BNP Paribas SA UniCredit SpA Banco BPM SpA,2026-05-15
+IT0006767823,Palantir Technologies Inc Microsoft Corp Amazon.com Inc NVIDIA Corp,2026-05-28
+IT0006772583,MU Tesla Intel Oracle,2026-05-28
