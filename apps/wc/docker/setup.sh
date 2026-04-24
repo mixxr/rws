@@ -2,10 +2,11 @@
 echo "==== Setup running... ===="
 TYPE=${APP_TYPE:-details}
 STATUS=${APPNAME:-wc}
+CMD_NAME=${CMD_NAME:-webclaw}
 STATUS_TO="ge"
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 echo "Mount Dir: $mntdir, APPNAME: $STATUS, TYPE: $TYPE"
-webclaw --version
+$CMD_NAME --version
 mkdir -p $mntdir/input/
 
 echo "#!/bin/bash" > ./run.sh
@@ -25,7 +26,12 @@ for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
       lines_to_read="${lines_to_read#"${lines_to_read%%[![:space:]]*}"}"
       lines_to_read="${lines_to_read//$'\r'/}" 
       echo "Processing $url $file_to_save $start_line $lines_to_read:"
-      echo "webclaw $url --only-main-content | tail -n +$start_line | head -n +$lines_to_read > $mntdir/input/$file_to_save" >> ./run.sh
+      # test if CMD_NAME is webclaw or curl
+      if [ "$CMD_NAME" == "webclaw" ]; then
+        echo "webclaw $url --only-main-content | tail -n +$start_line | head -n +$lines_to_read > $mntdir/input/$file_to_save" >> ./run.sh
+      else
+        echo "curl -s $url | tail -n +$start_line | head -n +$lines_to_read > $mntdir/input/$file_to_save" >> ./run.sh
+      fi
       echo "if [ \$? -eq 0 ]; then 
         mv $filepath $filepath.done 
         echo $mntdir/input/$file_to_save > $mntdir/jobs/$STATUS_TO/$isin.uri

@@ -16,3 +16,4 @@ commons = { path = "../commons" }
 clap = { version = "4.5.54", features = ["derive"] }
 actix-cors = "0.7.1"
 rand = "0.10.0"
+google-cloud-bigquery = { version="0.15.0", features = ["auth"] }

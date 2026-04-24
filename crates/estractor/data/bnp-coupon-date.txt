@@ -1,0 +1,34 @@
+ISIN,Nome,Prossima Cedola
+NLBNPIT303M8,Assicurazioni Generali Unipol Zurich Insurance Axa,2026-05-20
+NLBNPIT303G0,Banca MPS Banco BPM Bper Unicredit,2026-05-20
+NLBNPIT302Y5,Banca MPS Banco BPM Bper Banca Unicredit Protection Booster Cash Collect,2026-06-20
+NLBNPIT2TQK4,Boeing Dassault Leonardo Rheinmetall Premi Fissi Cash Collect,2026-05-28
+NLBNPIT30341,Generali Swiss Re Scor Unipol Assicurazioni Protection Booster Cash Collect,2026-06-20
+NLBNPIT303P1,BP PLC TotalEnergies Equinor Repsol,2026-05-20
+NLBNPIT303F2,Azimut Banca MPS Fineco Unicredit,2026-05-20
+NLBNPIT300U7,Palantir Technologies Step-Down Cash Collect,2026-05-28
+NLBNPIT30374,Boeing Rheinmetall Leonardo Thales,2026-05-20
+NLBNPIT303I6,Allianz Assicurazioni Generali Intesa Sanpaolo Unicredit,2026-05-20
+NLBNPIT300C5,BANCA MONTE DEI PASCHI DI SIENA Step-Down Cash Collect,2026-05-28
+NLBNPIT300T9,Tesla Step-Down Cash Collect,2026-05-28
+NLBNPIT30325,Eni Generali Poste Italiane Unicredit Protection Booster Cash Collect,2026-06-20
+NLBNPIT2HHH4,ERG Ferrari Leonardo Moncler Premi Fissi Cash Collect,2026-05-28
+NLBNPIT30382,BP PLC Equinor Repsol TotalEnergies Protection Booster Cash Collect,2026-06-20
+NLBNPIT303D7,Bper Intesa Sanpaolo,2026-05-20
+NLBNPIT303C9,Unicredit Intesa Sanpaolo Banco BPM,2026-05-20
+NLBNPIT303O4,Banca MPS Siemens Energy Stellantis STMicroelectronics,2026-10-20
+NLBNPIT303E5,Banca MPS Santander,2026-10-20
+NLBNPIT303N6,Coherent Leonardo Rheinmetall,2026-10-20
+NLBNPIT2T027,Palantir Tesla Nvidia Booster Cash Collect,2026-05-28
+NLBNPIT300H4,Stellantis,2026-05-28
+NLBNPIT303A3,Nvidia Intel Tesla Meta,2026-05-20
+NLBNPIT30333,Enel Leonardo Moncler Snam Protection Booster Cash Collect,2026-06-20
+NLBNPIT302W9,Intesa Sanpaolo Unicredit,2026-06-20
+NLBNPIT21TB7,Step-Down Cash Collect Kla Corp C3.AI Uipath,2026-05-28
+NLBNPIT302V1,Unicredit Bper Intesa Sanpaolo,2026-06-20
+NLBNPIT303S5,AMD Dell Meta,2026-05-20
+NLBNPIT30309,Banca MPS BBVA Caixabank Societe Generale Protection Booster Cash Collect,2026-06-20
+NLBNPIT30150,Coherent Leonardo Thales Premi Fissi Cash Collect Callable,2026-05-28
+NLBNPIT2QDD3,Amazon Dell Fortinet Oracle,2026-05-28
+NLBNPIT302Z2,Intesa Sanpaolo Santander The Goldman Sachs Morgan Stanley,2026-06-20
+NLBNPIT30358,A2A Engie Veolia E.on,2026-06-20

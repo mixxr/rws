@@ -1,0 +1,3 @@
+source, content_type, extractor_type, base_url
+leonteq, html, selector, https://certificati.leonteq.com/api/product-model/details/isin/
+

@@ -21,3 +21,23 @@ gcloud storage mv gs://SOURCE_BUCKET_NAME/SOURCE_OBJECT_NAME gs://DESTINATION_BU
 gcloud storage mv gs://rws-data/jobs/ gs://rws-data/quotes/
 gcloud storage ls gs://rws-data/quotes/output
 
+# ADC
+Application Default Credentials (ADC) is a strategy used by the authentication libraries to automatically find credentials based on the application environment.
+ADC searches for credentials in the following locations:
+
+- GOOGLE_APPLICATION_CREDENTIALS environment variable
+- A credential file created by using the gcloud auth application-default login command
+- The attached service account, returned by the metadata server
+
+## Command
+`gcloud auth application-default login`
+
+## expected response
+```
+Credentials saved to file: [C:\Users\<username>\AppData\Roaming\gcloud\application_default_credentials.json]
+
+These credentials will be used by any library that requests Application Default Credentials (ADC).
+
+Quota project "<prj name>" was added to ADC which can be used by Google client libraries for billing and quota. Note that some services may still bill the project 
+owning the resource.
+```

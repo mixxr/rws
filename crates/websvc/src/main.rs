@@ -14,12 +14,25 @@ use glob::MatchOptions;
 
 mod ic_csv;
 use ic_csv::*;
+mod bq;
+use bq::*;
 use clap::Parser;
 mod definitions;
 use definitions::args::Args;
 use tracing::info;
 
 use rand::prelude::*;
+
+use google_cloud_bigquery::client::{Client, ClientConfig};
+use google_cloud_bigquery::http::job::query::QueryRequest;
+use google_cloud_bigquery::query::row::Row;
+use serde::Serialize;
+
+// #[derive(Serialize)]
+// struct TickerData {
+//     certificate: String,
+//     ticker: String,
+// }
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
@@ -94,7 +107,9 @@ async fn main() -> std::io::Result<()> {
             .service(get_all_by_date)
             .service(get_by_isin)
             .service(get_tickers)
-            .service(get_by_ticker)
+            .service(get_by_tickers)
+            .service(get_certs_and_tickers)
+            .service(get_data)
     })
     .bind(("0.0.0.0", listen_port))?
     .run()
@@ -341,15 +356,15 @@ async fn get_by_isin(
         .json(sources)
 }
 
-#[get("/certificates/{ticker}")]
-/* returns certificates by ticker */
-async fn get_by_ticker(
+#[get("/certificates")]
+/* returns certificates by ticker list as query string ?tickers={ticker_csv_list} */
+async fn get_by_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<(String)>
+    query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
-    let (ticker) = path.into_inner();
-    let ticker = sanitize_input(&ticker);
-        // obtain shared s;tate
+    let ticker_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
+    let ticker_csv_list = sanitize_input(&ticker_csv_list);
+    // obtain shared state
     let shared_state = data.lock().unwrap();
     // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
     // first row is the header
@@ -363,7 +378,7 @@ async fn get_by_ticker(
         let isin = format!("US{:0>10}", rng.random::<u64>() % 10000000);
         let ask = rng.random::<u32>() % 10 + 98;
         let bid = rng.random::<u32>() % 10 + 100;
-        certificates.push(format!("{},Certificate {},{},{},USD,2024-06-01-12-00-{}", isin, i, ask, bid, (i % 10) + 10));
+        certificates.push(format!("{},Certificate {},{},{},USD,2024-06-01-12-00-{}", isin, i, ask, bid, (i % 10) + 10)); 
     }
     HttpResponse::Ok()
         .content_type("application/json")
@@ -374,7 +389,7 @@ async fn get_by_ticker(
 /* returns list of latest (maxobs) observations per source */
 async fn get_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<(String)>,
+    path: web::Path<String>,
 ) -> impl Responder {
     let matcher = path.into_inner();
     let matcher = sanitize_input(&matcher);
@@ -387,6 +402,51 @@ async fn get_tickers(
         .json(tickers)
 }
 
+#[get("/certificates-tickers/{certs_csv_list}")]
+/* returns certificates by ticker */
+async fn get_certs_and_tickers(
+    data: web::Data<SharedMap>,
+    path: web::Path<(String)>
+) -> impl Responder {
+    let certs_csv_list = path.into_inner();
+    // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003
+    // sanitize input to prevent SQL injection one ISIN by one
+    let certs_csv_list = certs_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");
+    // create a where condition for BigQuery query in format certificate_isin IN ('US0000000001','US0000000002','US0000000003')
+    let where_condition = format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','"));
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
+    // first row is the header
+    // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
+     let (client, project_id) = init_bq_client().await;
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
+        TABLES._ISIN_TICKER, 
+        vec![&where_condition]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(rows)
+}
+
+#[get("/test-bigquery")]
+async fn get_data() ->  actix_web::web::Json<Vec<String>> {
+    let (client, project_id) = init_bq_client().await;
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
+        TABLES._ISIN_TICKER, 
+        vec![]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
+
+    actix_web::web::Json(rows)
+}
 
 fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
     // Open the file
