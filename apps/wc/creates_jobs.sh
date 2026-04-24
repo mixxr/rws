@@ -2,6 +2,7 @@
 
 if [ -z "$1" ] || [ -z "$2" ]; then
   echo "Error: provide start_line and end_line."
+  echo "Info: BNP KID PDF is 9 220"
   exit 1
 fi
 
