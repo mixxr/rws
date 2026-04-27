@@ -1,10 +1,15 @@
 #!/bin/bash
-echo "==== Setup running...===="
-TYPE="isin_tickers"
-STATUS="bq"
+VERSION="0.1"
+echo "BQ Setup Script - Version $VERSION"
+# it needs to be executed TYPE [tickers|details], STATUS (number, typically it is 1), MOUNT_BUCKET, MOUNT_DIR
+echo "==== Setup running... ===="
+TYPE=${APP_TYPE:-details}
+CMD_NAME=${CMD_NAME:-gs load}
+STATUS=${STATUS:-3}
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 bucket=${MOUNT_BUCKET}/${TYPE}
-echo "Mount Dir: $mntdir -> $bucket"
+echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $bucket"
+
 echo "Reading manifest files from $mntdir/jobs/$STATUS/*.txt"
 
 echo "#!/bin/bash" > ./run.sh
@@ -17,7 +22,7 @@ for manifest_file in "$mntdir/jobs/$STATUS"/*.txt; do
     --autodetect=false --source_format=NEWLINE_DELIMITED_JSON \\
     --schema_update_option=ALLOW_FIELD_ADDITION \\
     --file_set_spec_type=NEW_LINE_DELIMITED_MANIFEST \\
-    ISINs.isin_ticker \\
+    ISINs.$TYPE \\
     $bucket/jobs/$STATUS/$datetime.txt 2>> $log_file" >> ./run.sh
   echo "if [ \$? -eq 0 ]; then
     mv $manifest_file $manifest_file.done
