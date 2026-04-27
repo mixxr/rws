@@ -6,7 +6,7 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 fi
 TYPE=$1
 STATUS=$2
-CMD_NAME="gs load"
+CMD_NAME="gs-load"
 APPNAME=$(basename $(dirname $(pwd)))
 
 case "$TYPE" in
@@ -20,6 +20,7 @@ esac
 # source ../../check_input.sh  $1 $2 $3
 
 echo "APP NAME: $APPNAME, STATUS: $STATUS, TYPE: $TYPE, CMD_NAME: $CMD_NAME"
-gcloud beta run jobs deploy $TYPE-$APPNAME-job --source=. --region=europe-west1 --max-retries=1 \
+gcloud beta run jobs deploy $TYPE-$APPNAME-s$STATUS-job --source=. --region=europe-west1 --max-retries=1 \
+--set-env-vars STATUS=$STATUS,APP_TYPE=$TYPE,CMD_NAME=$CMD_NAME \
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
 --add-volume-mount volume=gcs-1,mount-path=/data

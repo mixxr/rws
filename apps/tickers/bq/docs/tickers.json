@@ -1,0 +1,14 @@
+{
+  "certificate_isin": "NLBNPIT300C5",
+  "stock_name": "Banca MPS",
+  "stock_google_finance_ticker": "BMPS:MIL",
+  "stock_isin": "IT0005336171",
+  "stock_exchange": "Borsa Italiana",
+  "stock_sector": "Financial Services",
+  "stock_industry": "Banks",
+  "stock_specializations": "Commercial Banking, Asset Management",
+  "stock_capitalization": "Mid-Cap",
+  "stock_pe": "5.2",
+  "stock_beta": "1.15",
+  "stock_volatility": "32%"
+}

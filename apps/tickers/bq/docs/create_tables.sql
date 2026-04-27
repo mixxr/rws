@@ -1,5 +1,5 @@
-DROP TABLE `invcerts.ISINs.isin_ticker`;
-CREATE TABLE `invcerts.ISINs.isin_ticker` (
+DROP TABLE `invcerts.ISINs.tickers`;
+CREATE TABLE `invcerts.ISINs.tickers` (
   certificate_isin STRING NOT NULL,
   certificate_name STRING NOT NULL,
   stock_isin STRING NOT NULL,
@@ -12,6 +12,13 @@ CREATE TABLE `invcerts.ISINs.isin_ticker` (
   -- Compound Primary Key definition
   PRIMARY KEY (certificate_isin, stock_isin) NOT ENFORCED
 );
+
+ALTER TABLE `invcerts.ISINs.tickers`
+ADD COLUMN stock_specializations STRING,
+ADD COLUMN stock_capitalization STRING,
+ADD COLUMN stock_pe FLOAT64,
+ADD COLUMN stock_beta FLOAT64,
+ADD COLUMN stock_volatility FLOAT64;
 
 DROP TABLE `invcerts.ISINs.details`;
 CREATE TABLE `invcerts.ISINs.details` (
