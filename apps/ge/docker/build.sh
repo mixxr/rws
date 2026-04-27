@@ -24,4 +24,5 @@ echo "====> Remember to create jobs with creates_jobs.sh script before executing
 gcloud beta run jobs deploy $TYPE-$APPNAME-s$STATUS-job --source=. --region=europe-west1 \
 --set-env-vars STATUS=$STATUS,APP_TYPE=$TYPE,CMD_NAME=$CMD_NAME \
 --add-volume name=gcs-1,bucket=rws-data,type=cloud-storage \
---add-volume-mount volume=gcs-1,mount-path=/data
+--add-volume-mount volume=gcs-1,mount-path=/data \
+--set-secrets=G_API_KEY=projects/600125851897/secrets/gemini-api-key/versions/latest 
