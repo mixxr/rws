@@ -1,15 +1,18 @@
 #!/bin/bash
+VERSION="0.1"
+echo "Gemini-cert Setup Script - Version $VERSION"
+# it needs to be executed TYPE [tickers|details], STATUS (number, typically it is 1), MOUNT_BUCKET, MOUNT_DIR
 echo "==== Setup running... ===="
 TYPE=${APP_TYPE:-details}
-STATUS=${APPNAME:-ge}
-STATUS_TO="bq"
+CMD_NAME=${CMD_NAME:-geminicert}
+STATUS=${STATUS:-2}
+STATUS_TO=$((STATUS+1))
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 bucket=${MOUNT_BUCKET}/${TYPE}
 datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 MANIFEST="$mntdir/jobs/$STATUS_TO/$datetime.txt"
-
-echo "Mount Dir: $mntdir -> $bucket"
-echo "Manifest file: $MANIFEST"
+echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
+echo "Manifest file to produce: $MANIFEST"
 #rm -f "$MANIFEST*"
 
 echo "#!/bin/bash" > ./run.sh
