@@ -10,13 +10,21 @@ webclaw --version
 mkdir -p "$mntdir/jobs/$STATUS_TO"
 datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 echo "#!/bin/bash" > ./run.sh
-for filepath in "$mntdir"/config/*.urls.txt; do
+for filepath in "$mntdir"/config/*.urls.*; do
   if [ -f "$filepath" ]; then
 	  file="$(basename "$filepath")"
     echo "basename $file"
 	  issuer="${file%%.*}"
+    output_format="${file##*.}"
+    # if output_format is md, then set it to markdown
+    if [ "$output_format" = "md" ]; then
+      output_format="markdown"
+    elseif [ "$output_format" = "txt" ]; then
+      output_format="text"
+    fi
+
     mkdir -p "$mntdir/input/$issuer/$datetime"
-	  echo "webclaw --urls-file $filepath --output-dir $mntdir/input/$issuer/$datetime/ --only-main-content" >> ./run.sh
+	  echo "webclaw --urls-file $filepath --output-dir $mntdir/input/$issuer/$datetime/ --only-main-content -f $output_format" >> ./run.sh
   fi
 done
 if ! test -f ./run.sh; then
