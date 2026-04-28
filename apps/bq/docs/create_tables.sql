@@ -49,3 +49,17 @@ CREATE TABLE `invcerts.ISINs.details` (
 
   PRIMARY KEY (isin) NOT ENFORCED
 );
+
+DROP if exists `invcerts.ISINs.quotes`;
+CREATE TABLE `invcerts.ISINs.quotes`
+  isin STRING NOT NULL,
+  issuer STRING,
+  
+  bid FLOAT64,
+  ask FLOAT64,
+  
+  dt TIMESTAMP NOT NULL, -- 2026-04-22T15-00-40 → 2026-04-22T15:00:40
+  PRIMARY KEY (isin, dt) NOT ENFORCED,
+  PARTITION BY DATE(dt)
+  AS SELECT * FROM UNNEST([]);
+);

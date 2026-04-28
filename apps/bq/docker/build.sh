@@ -1,6 +1,6 @@
 #!/bin/bash
 # TYPES is an array to be passed as argument. 
-TYPES="tickers|details"
+TYPES="tickers|details|quotes"
 STATUS=3
 CMD_NAME="gs_load"
 APPNAME=$(basename $(dirname $(pwd)))

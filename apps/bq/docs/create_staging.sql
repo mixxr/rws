@@ -49,3 +49,15 @@ CREATE TABLE `invcerts.ISINs.staging_details` (
 
   PRIMARY KEY (isin) NOT ENFORCED
 );
+
+DROP if exists `invcerts.ISINs.staging_quotes`;
+CREATE TABLE `invcerts.ISINs.staging_quotes` (
+  isin STRING NOT NULL,
+  issuer STRING,
+  
+  bid STRING,
+  ask STRING,
+  
+  dt STRING NOT NULL,
+  PRIMARY KEY (isin, dt) NOT ENFORCED
+);

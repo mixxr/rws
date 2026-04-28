@@ -11,6 +11,7 @@ echo "[INFO] Mount Dir: $MOUNT_DIR, TYPES: $TYPES, CMD_NAME: $CMD_NAME, STATUS: 
 ERROR_COUNT=0
 #TYPES is a comma separated string, we need to split it into an array
 IFS='|' read -r -a TYPES_ARRAY <<< "$TYPES"
+mkdir -p $mntdir/jobs/$STATUS
 #loop through the array and create a manifest file containing lines like gs://rws-data/certificates/output/DE000VG656A7-tickers.json
 for TYPE in "${TYPES_ARRAY[@]}"; do
   mntdir=${MOUNT_DIR:-.}/${TYPE}
