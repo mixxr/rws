@@ -1,7 +1,7 @@
 DROP TABLE `invcerts.ISINs.tickers`;
 CREATE TABLE `invcerts.ISINs.tickers` (
   certificate_isin STRING NOT NULL,
-  certificate_name STRING NOT NULL,
+  certificate_name STRING,
   stock_isin STRING NOT NULL,
   stock_name STRING,
   stock_google_finance_ticker STRING,
@@ -9,16 +9,14 @@ CREATE TABLE `invcerts.ISINs.tickers` (
   stock_sector STRING,
   stock_industry STRING,
   stock_tags STRING,
+  stock_specializations STRING,
+  stock_capitalization STRING,
+  stock_pe FLOAT64,
+  stock_beta FLOAT64,
+  stock_volatility FLOAT64,
   -- Compound Primary Key definition
   PRIMARY KEY (certificate_isin, stock_isin) NOT ENFORCED
 );
-
-ALTER TABLE `invcerts.ISINs.tickers`
-ADD COLUMN stock_specializations STRING,
-ADD COLUMN stock_capitalization STRING,
-ADD COLUMN stock_pe FLOAT64,
-ADD COLUMN stock_beta FLOAT64,
-ADD COLUMN stock_volatility FLOAT64;
 
 DROP TABLE `invcerts.ISINs.details`;
 CREATE TABLE `invcerts.ISINs.details` (

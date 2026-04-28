@@ -29,7 +29,7 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
     echo "if [ \$? -eq 0 ]; then 
       mv $filepath $filepath.done 
       # a MANIFEST file contains N lines like "gs://bucket/tickers/output/DE000VG656A7-tickers.json"
-      # echo $bucket/output/$isin-$TYPE.json >> $MANIFEST
+      echo $bucket/output/$isin-$TYPE.json >> $MANIFEST
     else
       echo 'ERROR: $filepath'
       ((ERROR_COUNT++))
