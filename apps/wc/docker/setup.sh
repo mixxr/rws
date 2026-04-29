@@ -8,6 +8,7 @@ CMD_NAME=${CMD_NAME:-webclaw}
 STATUS=${STATUS:-1}
 STATUS_TO=$((STATUS+1))
 mntdir=${MOUNT_DIR:-.}/${TYPE}
+datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS"
 $CMD_NAME --version
 mkdir -p $mntdir/input/
@@ -36,7 +37,8 @@ for filepath in "$mntdir"/jobs/"$STATUS"/*.csv; do
         echo "curl -s $url | tail -n +$start_line | head -n +$lines_to_read > $mntdir/input/$file_to_save" >> ./run.sh
       fi
       echo "if [ \$? -eq 0 ]; then 
-        mv $filepath $filepath.done 
+        mkdir -p $mntdir/jobs/$STATUS/done/$datetime
+        mv $filepath $mntdir/jobs/$STATUS/done/$datetime/$file 
         echo $mntdir/input/$file_to_save > $mntdir/jobs/$STATUS_TO/$isin.uri
       else
         echo 'ERROR: $filepath'

@@ -10,10 +10,10 @@ STATUS_TO=$((STATUS+1))
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 bucket=${MOUNT_BUCKET}/${TYPE}
 datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
-MANIFEST="$mntdir/jobs/$STATUS_TO/$datetime.txt"
+# MANIFEST="$mntdir/jobs/$STATUS_TO/$datetime.txt"
 echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
-echo "Manifest file to produce: $MANIFEST"
-#rm -f "$MANIFEST*"
+# echo "Manifest file to produce: $MANIFEST"
+# rm -f "$MANIFEST*"
 
 echo "#!/bin/bash" > ./run.sh
 echo "ERROR_COUNT=0" >> ./run.sh
@@ -27,7 +27,8 @@ for filepath in "$mntdir/jobs/$STATUS"/*.uri; do
 	  read -r line < "$filepath"
     echo "geminicert -n $isin -i $line -o $mntdir/output -l $mntdir/config/models.csv -t $TYPE-only -g English" >> ./run.sh
     echo "if [ \$? -eq 0 ]; then 
-      mv $filepath $filepath.done 
+      mkdir -p $mntdir/jobs/$STATUS/done/$datetime
+      mv $filepath $mntdir/jobs/$STATUS/done/$datetime/$file
       # a MANIFEST file contains N lines like "gs://bucket/tickers/output/DE000VG656A7-tickers.json"
       # echo $bucket/output/$isin-$TYPE.json >> $MANIFEST
     else
