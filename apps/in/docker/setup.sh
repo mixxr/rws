@@ -105,8 +105,7 @@ for type in "${TYPES[@]}"; do
 
       # trigger downstream job
       gcloud run jobs execute "${type}-wc-s1-job" \
-        --region europe-west1 \
-        --set-env-vars ISSUER=${ISSUER}
+        --region europe-west1 
       ;;
 
     # --------------------
