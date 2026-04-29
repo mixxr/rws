@@ -3,12 +3,12 @@ echo "Setup running..."
 TYPE="quotes"
 STATUS=1
 STATUS_TO=2
+datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 #bucket=${MOUNT_BUCKET}/${TYPE}
-echo "Mount Dir: $mntdir"
+echo "Mount Dir: $mntdir Datetime: $datetime"
 webclaw --version
 mkdir -p "$mntdir/jobs/$STATUS_TO"
-datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 echo "#!/bin/bash" > ./run.sh
 for filepath in "$mntdir"/config/*.urls.*; do
   if [ -f "$filepath" ]; then
@@ -18,7 +18,7 @@ for filepath in "$mntdir"/config/*.urls.*; do
     # if output_format is md, then set it to markdown
     if [ "$output_format" = "md" ]; then
       output_format="markdown"
-    elseif [ "$output_format" = "txt" ]; then
+    elif [ "$output_format" = "txt" ]; then
       output_format="text"
     fi
     echo "basename $file issuer $issuer output_format $output_format"
