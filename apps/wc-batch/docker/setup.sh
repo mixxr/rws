@@ -13,7 +13,6 @@ echo "#!/bin/bash" > ./run.sh
 for filepath in "$mntdir"/config/*.urls.*; do
   if [ -f "$filepath" ]; then
 	  file="$(basename "$filepath")"
-    echo "basename $file"
 	  issuer="${file%%.*}"
     output_format="${file##*.}"
     # if output_format is md, then set it to markdown
@@ -22,7 +21,7 @@ for filepath in "$mntdir"/config/*.urls.*; do
     elseif [ "$output_format" = "txt" ]; then
       output_format="text"
     fi
-
+    echo "basename $file issuer $issuer output_format $output_format"
     mkdir -p "$mntdir/input/$issuer/$datetime"
 	  echo "webclaw --urls-file $filepath --output-dir $mntdir/input/$issuer/$datetime/ --only-main-content -f $output_format" >> ./run.sh
   fi

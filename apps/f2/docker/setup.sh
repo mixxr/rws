@@ -26,9 +26,9 @@ for filepath in "$mntdir"/config/*.rx.txt; do
     if [ -e ./pre-cmd.sh ]; then
    	  echo "./pre-cmd.sh $mntdir/input/$issuer/$datetime" >> ./run.sh
     fi
-	  echo "format2 --config $filepath --input-dir $mntdir/input/$issuer/$datetime --output-dir $mntdir/output/$issuer-$datetime-quotes.json -f ndjson 2>>$semaphore_file" >> ./run.sh
+	  echo "format2 --config $filepath --input-dir $mntdir/input/$issuer/$datetime --output-dir $mntdir/output/$issuer-$datetime-$TYPE.json -f ndjson 2>>$semaphore_file" >> ./run.sh
     if [ -e ./post-cmd.sh ]; then
-   	  echo "./post-cmd.sh $mntdir/output/$issuer-$datetime-quotes.json" >> ./run.sh
+   	  echo "./post-cmd.sh $mntdir/output/$issuer-$datetime-$TYPE.json" >> ./run.sh
     fi
     # echo "./append-to-bq.sh $bucket/output/formatted/$issuer/$datetime.json $mntdir/jobs/$datetime.bq.partial \$?" >> ./run.sh
   fi

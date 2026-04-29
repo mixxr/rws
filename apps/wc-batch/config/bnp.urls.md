@@ -1,5 +1,4 @@
 https://investimenti.bnpparibas.it/product-details/NLBNPIT2QDD3,NLBNPIT2QDD3.md
-https://investimenti.bnpparibas.it/product-details/NLBNPIT2EPT9,NLBNPIT2EPT9.md
 https://investimenti.bnpparibas.it/product-details/NLBNPIT2TQK4,NLBNPIT2TQK4.md
 https://investimenti.bnpparibas.it/product-details/NLBNPIT2HHH4,NLBNPIT2HHH4.md
 https://investimenti.bnpparibas.it/product-details/NLBNPIT300T9,NLBNPIT300T9.md
