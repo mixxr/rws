@@ -20,7 +20,7 @@ for TYPE in "${TYPES_ARRAY[@]}"; do
   # the manifest file is the list of files that are located in $mntdir/$TYPE/output/*-$TYPE.json
   manifest_file="$mntdir/jobs/$STATUS/$TYPE-$datetime.txt"
   bucket_manifest_file="$bucket/jobs/$STATUS/$TYPE-$datetime.txt"
-  echo "Creating manifest $manifest_file for $mntdir/output/*-$TYPE.json"
+  echo "==== Creating manifest $manifest_file for $mntdir/output/*-$TYPE.json"
   
   # create the manifest file with files not zero lenght and located in $mntdir/output/*-$TYPE.json
   find $mntdir/output/*-$TYPE.json -size +0 > $manifest_file
@@ -41,7 +41,9 @@ for TYPE in "${TYPES_ARRAY[@]}"; do
       file=$(basename "$line")
       mv $mntdir/output/$file $mntdir/output/done/$datetime/
     done < $manifest_file
-    mv $manifest_file $manifest_file.done
+    mkdir -p $mntdir/jobs/$STATUS/done/$datetime
+    mv $manifest_file $mntdir/jobs/$STATUS/done/$datetime/$file
+    # mv $manifest_file $manifest_file.done
   else 
     echo "ERROR loading $manifest_file, renamed .error" 
     cat $manifest_file
