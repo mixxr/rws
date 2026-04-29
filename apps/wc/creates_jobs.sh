@@ -2,8 +2,8 @@
 
 if [ -z "$1" ] || [ -z "$2" ]; then
   echo "Error: provide start_line and end_line."
-  echo "Info: Details, BNP KID PDF is 9 220"
-  echo "Info: Tickers, BNP Web URL is 5 35"
+  echo "Info: Details, BNP, KID PDF is 9 220"
+  echo "Info: Tickers, all, Web URL is 5 35"
   
   exit 1
 fi
@@ -35,7 +35,7 @@ while IFS= read -r isin || [[ -n "$isin" ]]; do
     # Formato: URL, ISIN.md, 5, 35
     # Details BNP
     # CONTENT="https://kid.bnpparibas.com/${isin}-IT.pdf,${isin}.md, $1, $2"
-    # Tickers BNP
+    # Tickers all
     CONTENT="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=${isin},${isin}.md, $1, $2"
 
     # Crea il file CSV e scrivi il contenuto
