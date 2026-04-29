@@ -50,15 +50,15 @@ for TYPE in "${TYPES_ARRAY[@]}"; do
       mv $mntdir/output/$file $mntdir/output/done/$datetime/
     done < $manifest_file
     mkdir -p $mntdir/jobs/$STATUS/done/$datetime/
-    mv $manifest_file $mntdir/jobs/$STATUS/done/$TYPE-$datetime.txt
+    mv $manifest_file $mntdir/jobs/$STATUS/done/$datetime/$TYPE-$datetime.txt
     # mv $manifest_file $manifest_file.done
   else 
     echo "ERROR loading $manifest_file, check error folder for details" 
     cat $manifest_file
     cat $manifest_file.log
     mkdir -p $mntdir/jobs/$STATUS/error/$datetime/
-    mv $manifest_file $mntdir/jobs/$STATUS/error/$TYPE-$datetime.txt
-    mv $manifest_file.log $mntdir/jobs/$STATUS/error/$TYPE-$datetime.log
+    mv $manifest_file $mntdir/jobs/$STATUS/error/$datetime/$TYPE-$datetime.txt
+    mv $manifest_file.log $mntdir/jobs/$STATUS/error/$datetime/$TYPE-$datetime.log
     ((ERROR_COUNT++))
   fi
 done
