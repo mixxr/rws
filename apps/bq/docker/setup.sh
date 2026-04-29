@@ -5,10 +5,11 @@ echo "BQ Setup Script - Version $VERSION"
 echo "==== Setup running... ===="
 TABLE_PREFIX=$TABLE_PREFIX
 TYPES=$APP_TYPES
-CMD_NAME=${CMD_NAME:-gs_load}
+CMD_NAME=${CMD_NAME:-bq_load}
 STATUS=${STATUS:-3}
 echo "[INFO] Mount Dir: $MOUNT_DIR, TYPES: $TYPES, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
 ERROR_COUNT=0
+TYPES_PROCESSED=0
 #TYPES is a comma separated string, we need to split it into an array
 IFS='|' read -r -a TYPES_ARRAY <<< "$TYPES"
 mkdir -p $mntdir/jobs/$STATUS
@@ -24,6 +25,13 @@ for TYPE in "${TYPES_ARRAY[@]}"; do
   
   # create the manifest file with files not zero lenght and located in $mntdir/output/*-$TYPE.json
   find $mntdir/output/*-$TYPE.json -size +0 > $manifest_file
+  # if manifest file is empty, skip the loading 
+  if [ ! -s $manifest_file ]; then
+    echo "No files to load for $TYPE, skipping..."
+    rm $manifest_file
+    continue
+  fi
+  ((TYPES_PROCESSED++))
   # the manifest file should contain lines like gs://rws-data/certificates/output/DE000VG656A7-tickers.json, we need to replace the local path with the bucket path
   sed -i "s|$mntdir|$bucket|g" $manifest_file
   bq load \
@@ -41,18 +49,21 @@ for TYPE in "${TYPES_ARRAY[@]}"; do
       file=$(basename "$line")
       mv $mntdir/output/$file $mntdir/output/done/$datetime/
     done < $manifest_file
-    mkdir -p $mntdir/jobs/$STATUS/done/$datetime
-    mv $manifest_file $mntdir/jobs/$STATUS/done/$datetime/$file
+    mkdir -p $mntdir/jobs/$STATUS/done/$datetime/
+    mv $manifest_file $mntdir/jobs/$STATUS/done/$TYPE-$datetime.txt
     # mv $manifest_file $manifest_file.done
   else 
-    echo "ERROR loading $manifest_file, renamed .error" 
+    echo "ERROR loading $manifest_file, check error folder for details" 
     cat $manifest_file
     cat $manifest_file.log
-    mv $manifest_file $manifest_file.error
+    mkdir -p $mntdir/jobs/$STATUS/error/$datetime/
+    mv $manifest_file $mntdir/jobs/$STATUS/error/$TYPE-$datetime.txt
+    mv $manifest_file.log $mntdir/jobs/$STATUS/error/$TYPE-$datetime.log
     ((ERROR_COUNT++))
   fi
 done
 
+echo "TYPES PROCESSED: $TYPES_PROCESSED"
 echo "ERROR COUNTER: $ERROR_COUNT"
 if [ $ERROR_COUNT -gt 0 ]; then
   exit 2
