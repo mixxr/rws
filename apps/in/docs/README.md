@@ -11,10 +11,12 @@ triggers downstream jobs:
 ```
 ## Input
 It accepts the following ENV VARS:
+- BUCKET
 - ISIN_LIST=isin1|isin2|...
 - TYPE_LIST=[quotes|details|tickers]+
 - ISSUER=[bnp|leonteq|marex|vontobel]
 - (optional) START_JOBS=[details|tickers]
+- (optional) SILENT_MODE=false
 
 ## Output
 It produces:

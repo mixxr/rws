@@ -1,19 +1,25 @@
 #!/bin/bash
-set -euo pipefail
+# set -euo pipefail
+set -u 
 
 # ------------------------
 # INPUT
 # ------------------------
 IFS='|' read -ra ISINS <<< "${ISIN_LIST}"
 IFS='|' read -ra TYPES <<< "${TYPE_LIST}"
+IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
 ISSUER="${ISSUER}"
+
+# check if START_JOBS is set and not empty, if it is set then check if it is details or tickers, if not then exit with error
+for t in "${START_TYPES[@]}"; do
+  if [[ "$t" != "details" && "$t" != "tickers" ]]; then
+    echo "Error: START_JOBS must be a comma separated list of details and tickers. Got: $START_JOBS"
+    exit 1
+  fi
+done
 
 # check BUCKET env var is set, if not use default value gs://rws-data
 BUCKET="${BUCKET:-gs://rws-data}"
-
-echo "ISSUER=$ISSUER"
-echo "ISINS=${ISINS[*]}"
-echo "TYPES=${TYPES[*]}"
 
 # ------------------------
 # FORMAT MAP (future-proof)
@@ -28,9 +34,45 @@ declare -A FORMAT_MAP=(
 FORMAT="${FORMAT_MAP[$ISSUER]:-md}"
 
 # ------------------------
+# CONFIRMATION / SILENT MODE
+# ------------------------
+
+SILENT_MODE="${SILENT_MODE:-false}"
+
+echo "----------------------------------------"
+echo "Configuration:"
+echo "ISSUER=$ISSUER"
+echo "BUCKET=$BUCKET"
+echo "ISIN_LIST    = ${ISIN_LIST}"
+echo "TYPE_LIST    = ${TYPE_LIST}"
+echo "START_JOBS   = ${START_JOBS:-<empty>}"
+echo "SILENT_MODE  = ${SILENT_MODE}"
+echo "- Calculated:
+FORMAT=$FORMAT"
+echo "ISINS=${ISINS[*]}"
+echo "TYPES=${TYPES[*]}"
+
+echo "----------------------------------------"
+
+if [[ "$SILENT_MODE" != "true" ]]; then
+  read -p "Continue? [y/N]: " answer
+
+  case "$answer" in
+    [yY]|[yY][eE][sS])
+      echo "Proceeding..."
+      ;;
+    *)
+      echo "Aborted by user."
+      exit 1
+      ;;
+  esac
+else
+  echo "Silent mode enabled → proceeding without confirmation"
+fi
+
+# ------------------------
 # Job trigger helper
 # ------------------------
-IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
 should_start_job() {
   local type=$1
 
@@ -56,6 +98,14 @@ build_url() {
   local isin=$2
 
   case "$type" in
+    quotes)
+      case "$ISSUER" in
+        bnp) echo "https://investimenti.bnpparibas.it/product-details/${isin}" ;;
+        leonteq) echo "https://certificati.leonteq.com/api/product-model/details/isin/${isin}" ;;
+        marex) echo "https://certificati.marex.com/it/products/${isin}" ;;
+        vontobel) echo "https://markets.vontobel.com/it-it/prodotti/investment/multi-cash-collect-certificate-con-barriera/${isin}" ;;
+      esac
+      ;;
     details)
       case "$ISSUER" in
         bnp) echo "https://kid.bnpparibas.com/${isin}-IT.pdf" ;;
@@ -109,7 +159,7 @@ declare -A RANGE_MAP=(
 echo "==== Processing ISSUER=$ISSUER"
 
 for type in "${TYPES[@]}"; do
-  echo "Processing TYPE=$type"
+  echo "== Processing TYPE=$type"
 
   case "$type" in
 
@@ -145,7 +195,7 @@ for type in "${TYPES[@]}"; do
         #gcloud storage mv "${DEST}.tmp" "$DEST"
 
         rm "$tmp_local"
-        echo "Completed $type $isin: written $DEST"
+        echo "Completed $type $isin"
       done
       echo "Total ISINs processed: $ISIN_PROCESSED"
       # trigger downstream job
@@ -154,20 +204,39 @@ for type in "${TYPES[@]}"; do
 
         gcloud run jobs execute "${type}-wc-s1-job" --region europe-west1 
       else
-        echo "Skipping job start for TYPE=$type"
+        echo "Skipping job auto-start for $type"
       fi
       ;;
 
     # --------------------
     # QUOTES
     # --------------------
-    quotes)
-      TMP_FILE=$(mktemp)
+    quotes)  
       ISIN_PROCESSED=0
       echo "Total ISINs to process: ${#ISINS[@]}"
+      # if total ISINs is 0, then exit with warning
+      if [ ${#ISINS[@]} -eq 0 ]; then
+        echo "WARNING: No ISINs to process for quotes. Skipping..."
+        continue
+      fi
+
+      DEST="${BUCKET}/quotes/config/${ISSUER}.urls.${FORMAT}"
+
+      EXISTING=$(mktemp)
+      TMP_FILE=$(mktemp)
+
+      if gcloud storage ls "$DEST" >/dev/null 2>&1; then
+        gcloud storage cat "$DEST" > "$EXISTING"
+      fi
+
       for isin in "${ISINS[@]}"; do
         if ! validate_isin "$isin"; then
           echo "WARNING: Invalid ISIN for $ISSUER: $isin. Skipping..."
+          continue
+        fi
+        # Check if ISIN exists anywhere in the file
+        if [[ -s "$EXISTING" ]] && grep -q "$isin" "$EXISTING"; then
+          echo "Skipping $isin (already present in $DEST)"
           continue
         fi
         ((ISIN_PROCESSED++))
@@ -175,21 +244,17 @@ for type in "${TYPES[@]}"; do
         echo "${url},${isin}.${FORMAT}" >> "$TMP_FILE"
       done
 
-      DEST="${BUCKET}/quotes/config/${ISSUER}.urls.${FORMAT}"
-
-      EXISTING=$(mktemp)
-
-      if gcloud storage ls "$DEST" >/dev/null 2>&1; then
-        gcloud storage cat "$DEST" > "$EXISTING"
+      # if TEMP_FILE is empty, then exit with warning
+      if [ ! -s "$TMP_FILE" ]; then
+        echo "WARNING: No new ISINs to process for quotes. Skipping..."
+      else
+        cat "$TMP_FILE" >> "$EXISTING"
+        gcloud storage cp "$EXISTING" "$DEST"
       fi
-
-      cat "$TMP_FILE" >> "$EXISTING"
-
-      gcloud storage cp "$EXISTING" "$DEST"
-
+      
       rm "$TMP_FILE" "$EXISTING"
 
-      echo "Completed quotes: ISINs processed $ISIN_PROCESSED, updated $DEST"
+      echo "Completed quotes: ISINs processed $ISIN_PROCESSED, check $DEST"
       ;;
 
     # --------------------
@@ -203,4 +268,4 @@ for type in "${TYPES[@]}"; do
 
 done
 
-echo "INitiator completed."
+echo "==== INitiator completed."

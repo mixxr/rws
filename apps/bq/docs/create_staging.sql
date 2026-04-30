@@ -59,5 +59,18 @@ CREATE TABLE `invcerts.ISINs.staging_quotes` (
   ask STRING,
   
   dt STRING NOT NULL,
-  PRIMARY KEY (isin, dt) NOT ENFORCED
+  PRIMARY KEY (isin, dt) NOT ENFORCED,
+  -- optional metadata (recommended)
+  ingestion_ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+CREATE TABLE `invcerts.ISINs.staging_issuer` (
+  issuer_name STRING,
+  specialization STRING,
+  geo_region STRING,
+  issuer_rating_description STRING,
+  issuer_rating_class STRING,
+
+  -- optional metadata (recommended)
+  ingestion_ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );

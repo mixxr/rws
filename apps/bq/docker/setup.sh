@@ -5,19 +5,25 @@ echo "BQ Setup Script - Version $VERSION"
 echo "==== Setup running... ===="
 TABLE_PREFIX=$TABLE_PREFIX
 TYPES=$APP_TYPES
+# if APP_FOLDERS is not set, use APP_TYPES as folders, otherwise use the value of APP_FOLDERS
+FOLDERS=${APP_FOLDERS:-$APP_TYPES}
 CMD_NAME=${CMD_NAME:-bq_load}
 STATUS=${STATUS:-3}
-echo "[INFO] Mount Dir: $MOUNT_DIR, TYPES: $TYPES, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
+echo "[INFO] Mount Dir: $MOUNT_DIR, TYPES: $TYPES, FOLDERS: $FOLDERS, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
 ERROR_COUNT=0
 TYPES_PROCESSED=0
 #TYPES is a comma separated string, we need to split it into an array
 IFS='|' read -r -a TYPES_ARRAY <<< "$TYPES"
+#FOLDERS is a comma separated string, we need to split it into an array
+IFS='|' read -r -a FOLDERS_ARRAY <<< "$FOLDERS"
 mkdir -p $mntdir/jobs/$STATUS
 #loop through the array and create a manifest file containing lines like gs://rws-data/certificates/output/DE000VG656A7-tickers.json
 for TYPE in "${TYPES_ARRAY[@]}"; do
-  mntdir=${MOUNT_DIR:-.}/${TYPE}
-  bucket=${MOUNT_BUCKET}/${TYPE}
-  datetime=$(date +%Y%m%d%H%M%S)
+  # FOLDER is the value in FOLDERS_ARRAY that corresponds to the index of TYPE in TYPES_ARRAY, for
+  FOLDER=${FOLDERS_ARRAY[$i]}
+  mntdir=${MOUNT_DIR:-.}/${FOLDER}
+  bucket=${MOUNT_BUCKET}/${FOLDER}
+  datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
   # the manifest file is the list of files that are located in $mntdir/$TYPE/output/*-$TYPE.json
   manifest_file="$mntdir/jobs/$STATUS/$TYPE-$datetime.txt"
   bucket_manifest_file="$bucket/jobs/$STATUS/$TYPE-$datetime.txt"

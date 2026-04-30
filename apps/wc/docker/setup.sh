@@ -1,5 +1,19 @@
 #!/bin/bash
 VERSION="0.1"
+run_job() {
+  local job_name=$1
+  PROJECT="invcerts"
+  REGION="europe-west1"
+  TOKEN=$(curl -s -H "Metadata-Flavor: Google" \
+  http://metadata/computeMetadata/v1/instance/service-accounts/default/token \
+  | jq -r .access_token)
+
+  curl -s -X POST \
+    -H "Authorization: Bearer $TOKEN" \
+    -H "Content-Type: application/json" \
+    "https://run.googleapis.com/v2/projects/$PROJECT/locations/$REGION/jobs/${job_name}:run"
+}
+
 echo "WebClaw Setup Script - Version $VERSION"
 # it needs to be executed TYPE [tickers|details|quotes], STATUS (number, typically it is 1), CMD_NAME[curl|webclaw], MOUNT_DIR
 echo "==== Setup running... ===="
@@ -58,4 +72,14 @@ fi
 chmod +x ./run.sh
 echo -e "Setup completed:\n $(cat ./run.sh)"
 ./run.sh
+# if STATUS_TO is 2 and START_NEXT_JOB is true, then start the next job
+if [ "$STATUS_TO" -eq 2 ]; then
+  if [ "${START_NEXT_JOB:-false}" == "true" ]; then
+    echo "Starting downstream job ${TYPE}-ge-s2-job"
+    # gcloud run jobs execute "${TYPE}-ge-s2-job" --region europe-west1
+    run_job "${TYPE}-ge-s2-job"
+  else
+    echo "Skipping job auto-start for $TYPE"
+  fi
+fi
 echo "==== Execution completed ===="
