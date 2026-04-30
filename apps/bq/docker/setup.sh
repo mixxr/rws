@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="0.2"
+VERSION=${APPVERSION:-0.1}
 echo "BQ Setup Script - Version $VERSION"
 # it needs to be executed TYPE [tickers|details], STATUS (number, typically it is 1), MOUNT_BUCKET, MOUNT_DIR
 echo "==== Setup running... ===="
@@ -9,25 +9,36 @@ TYPES=$APP_TYPES
 FOLDERS=${APP_FOLDERS:-$APP_TYPES}
 CMD_NAME=${CMD_NAME:-bq_load}
 STATUS=${STATUS:-3}
-echo "[INFO] Mount Dir: $MOUNT_DIR, TYPES: $TYPES, FOLDERS: $FOLDERS, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
+echo "[Configuration] 
+Mount Dir: $MOUNT_DIR, 
+TYPES: $TYPES, 
+FOLDERS: $FOLDERS, 
+CMD_NAME: $CMD_NAME, 
+STATUS: $STATUS, 
+MOUNT_BUCKET: $MOUNT_BUCKET"
 ERROR_COUNT=0
 TYPES_PROCESSED=0
 #TYPES is a comma separated string, we need to split it into an array
 IFS='|' read -r -a TYPES_ARRAY <<< "$TYPES"
 #FOLDERS is a comma separated string, we need to split it into an array
 IFS='|' read -r -a FOLDERS_ARRAY <<< "$FOLDERS"
-mkdir -p $mntdir/jobs/$STATUS
+datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 #loop through the array and create a manifest file containing lines like gs://rws-data/certificates/output/DE000VG656A7-tickers.json
+i=0
 for TYPE in "${TYPES_ARRAY[@]}"; do
   # FOLDER is the value in FOLDERS_ARRAY that corresponds to the index of TYPE in TYPES_ARRAY, for
   FOLDER=${FOLDERS_ARRAY[$i]}
+  ((i++))
   mntdir=${MOUNT_DIR:-.}/${FOLDER}
   bucket=${MOUNT_BUCKET}/${FOLDER}
-  datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
+  
+  mkdir -p $mntdir/jobs/$STATUS
   # the manifest file is the list of files that are located in $mntdir/$TYPE/output/*-$TYPE.json
   manifest_file="$mntdir/jobs/$STATUS/$TYPE-$datetime.txt"
   bucket_manifest_file="$bucket/jobs/$STATUS/$TYPE-$datetime.txt"
-  echo "==== Creating manifest $manifest_file for $mntdir/output/*-$TYPE.json"
+  echo "==== Processing $TYPE 
+  Creating manifest $manifest_file 
+  for $mntdir/output/*-$TYPE.json"
   
   # create the manifest file with files not zero lenght and located in $mntdir/output/*-$TYPE.json
   find $mntdir/output/*-$TYPE.json -size +0 > $manifest_file

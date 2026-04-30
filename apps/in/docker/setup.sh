@@ -2,6 +2,9 @@
 # set -euo pipefail
 set -u 
 
+# usage:
+# ISSUER=leonteq TYPE_LIST="details|quotes|issuer" ISIN_LIST="CH1525083577|CH1550421528" START_JOBS="details|issuer" BUCKET="gs://rws-data" ./setup.sh
+
 # ------------------------
 # INPUT
 # ------------------------
@@ -10,10 +13,10 @@ IFS='|' read -ra TYPES <<< "${TYPE_LIST}"
 IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
 ISSUER="${ISSUER}"
 
-# check if START_JOBS is set and not empty, if it is set then check if it is details or tickers, if not then exit with error
+# check if START_JOBS is set and not empty, if it is set then check if it is details or issuer, if not then exit with error
 for t in "${START_TYPES[@]}"; do
-  if [[ "$t" != "details" && "$t" != "tickers" ]]; then
-    echo "Error: START_JOBS must be a comma separated list of details and tickers. Got: $START_JOBS"
+  if [[ "$t" != "details" && "$t" != "issuer" ]]; then
+    echo "Error: START_JOBS must be a comma separated list of details and issuer. Got: $START_JOBS"
     exit 1
   fi
 done
@@ -87,7 +90,7 @@ should_start_job() {
 # URL builder
 # ------------------------
 
-    # Tickers all
+    # Issuer all:
     # url="https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=${isin}"
     # Details BNP
     # url="https://kid.bnpparibas.com/${isin}-IT.pdf"
@@ -110,12 +113,14 @@ build_url() {
       case "$ISSUER" in
         bnp) echo "https://kid.bnpparibas.com/${isin}-IT.pdf" ;;
         leonteq) echo "https://structuredproducts-ch.leonteq.com/isin/${isin}/kid/it" ;;
-        marex) echo "https://fp.marex.com/file/${isin}/186886/WSD%20Generated%20File" ;;
+        marex) echo "https://certificati.marex.com/it/products/${isin}" ;;
         vontobel) echo "https://derinet.vontobel.ch/api/kid?isin=${isin}&language=it" ;;
       esac
       ;;
-    tickers)
-      echo "https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=${isin}"
+    issuer)
+      case "$ISSUER" in
+        *) echo "https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=${isin}" ;;
+      esac
       ;;
   esac
 }
@@ -147,10 +152,10 @@ declare -A RANGE_MAP=(
   ["marex_details"]="5,490"
   ["vontobel_details"]="5,490"
   ["leonteq_details"]="5,500"
-  ["marex_tickers"]="5,35"
-  ["bnp_tickers"]="5,35"
-  ["vontobel_tickers"]="5,35"
-  ["leonteq_tickers"]="5,35"
+  ["marex_issuer"]="5,35"
+  ["bnp_issuer"]="5,35"
+  ["vontobel_issuer"]="5,35"
+  ["leonteq_issuer"]="5,500"
 )
 
 # ------------------------
@@ -164,10 +169,11 @@ for type in "${TYPES[@]}"; do
   case "$type" in
 
     # --------------------
-    # DETAILS / TICKERS
+    # DETAILS / issuer
     # --------------------
-    details|tickers)
+    details|issuer)
       ISIN_PROCESSED=0
+      
       echo "Total ISINs to process: ${#ISINS[@]}"
       for isin in "${ISINS[@]}"; do
         if ! validate_isin "$isin"; then

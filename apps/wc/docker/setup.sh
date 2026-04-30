@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="0.1"
+VERSION=${APPVERSION:-0.1}
 run_job() {
   local job_name=$1
   PROJECT="invcerts"
@@ -15,7 +15,7 @@ run_job() {
 }
 
 echo "WebClaw Setup Script - Version $VERSION"
-# it needs to be executed TYPE [tickers|details|quotes], STATUS (number, typically it is 1), CMD_NAME[curl|webclaw], MOUNT_DIR
+# it needs to be executed TYPE [issuer|details|quotes], STATUS (number, typically it is 1), CMD_NAME[curl|webclaw], MOUNT_DIR
 echo "==== Setup running... ===="
 TYPE=${APP_TYPE:-details}
 CMD_NAME=${CMD_NAME:-webclaw}
@@ -26,6 +26,7 @@ datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS"
 $CMD_NAME --version
 mkdir -p $mntdir/input/
+mkdir -p $mntdir/jobs/$STATUS_TO/
 
 echo "#!/bin/bash" > ./run.sh
 echo "ERROR_COUNT=0" >> ./run.sh

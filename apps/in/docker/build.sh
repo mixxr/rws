@@ -1,12 +1,14 @@
 #!/bin/bash
 ISIN_LIST="CH1525083577|CH1550421528"
-TYPE_LIST="tickers|details|quotes"
-START_JOBS="details|tickers"
+TYPE_LIST="issuer|details|quotes"
+START_JOBS="details|issuer"
 ISSUER="leonteq"
 BUCKET="gs://rws-data"
 
 APPNAME=$(basename $(dirname $(pwd)))
 
+echo "Details produces details, tickers and issuer. But issuer could be addressed separately to produce better data quality. 
+Quotes produces only quotes."
 echo "APP NAME: $APPNAME, ISSUER: $ISSUER, TYPE_LIST: $TYPE_LIST, BUCKET: $BUCKET, ISIN_LIST: $ISIN_LIST, START_JOBS: $START_JOBS"
 gcloud beta run jobs deploy $APPNAME-params-job --source=. --region=europe-west1 --max-retries=0 \
 --set-env-vars ISSUER=$ISSUER,BUCKET=$BUCKET,TYPE_LIST="$TYPE_LIST",ISIN_LIST="$ISIN_LIST",SILENT_MODE=true,START_JOBS="$START_JOBS" \
