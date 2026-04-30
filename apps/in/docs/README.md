@@ -14,6 +14,7 @@ It accepts the following ENV VARS:
 - ISIN_LIST=isin1|isin2|...
 - TYPE_LIST=[quotes|details|tickers]+
 - ISSUER=[bnp|leonteq|marex|vontobel]
+- (optional) START_JOBS=[details|tickers]
 
 ## Output
 It produces:
@@ -41,7 +42,7 @@ https://....com/$ISIN,$ISIN.$FORMAT
     - the URL and other parameters (FORMAT) depends on the ISSUER var
 
 ## Job starts
-INitiator will start the following jobs:
+INitiator will start the following jobs, if `START_JOBS` was properly provided:
 - `$TYPE-wc-s1-job` when TYPE is `details` or `tickers`
 
 While `quotes-wc-batch-job` is a scheduled job.

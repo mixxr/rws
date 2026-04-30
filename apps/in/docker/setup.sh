@@ -28,6 +28,20 @@ declare -A FORMAT_MAP=(
 FORMAT="${FORMAT_MAP[$ISSUER]:-md}"
 
 # ------------------------
+# Job trigger helper
+# ------------------------
+IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
+should_start_job() {
+  local type=$1
+
+  for t in "${START_TYPES[@]}"; do
+    [[ "$t" == "$type" ]] && return 0
+  done
+
+  return 1
+}
+
+# ------------------------
 # URL builder
 # ------------------------
 
@@ -56,6 +70,28 @@ build_url() {
   esac
 }
 
+validate_isin() {
+  local isin=$1
+
+  case "$ISSUER" in
+    marex)
+      [[ "$isin" == IT* ]] || return 1
+      ;;
+    bnp)
+      [[ "$isin" == NL* || "$isin" == XS* ]] || return 1
+      ;;
+    leonteq)
+      [[ "$isin" == CH* ]] || return 1
+      ;;
+    vontobel)
+      [[ "$isin" == DE* ]] || return 1
+      ;;
+    *)
+      return 0  # allow unknown issuers
+      ;;
+  esac
+}
+
 declare -A RANGE_MAP=(
   ["bnp_details"]="9,320"
   ["marex_details"]="5,490"
@@ -70,6 +106,8 @@ declare -A RANGE_MAP=(
 # ------------------------
 # MAIN LOOP
 # ------------------------
+echo "==== Processing ISSUER=$ISSUER"
+
 for type in "${TYPES[@]}"; do
   echo "Processing TYPE=$type"
 
@@ -79,7 +117,14 @@ for type in "${TYPES[@]}"; do
     # DETAILS / TICKERS
     # --------------------
     details|tickers)
+      ISIN_PROCESSED=0
+      echo "Total ISINs to process: ${#ISINS[@]}"
       for isin in "${ISINS[@]}"; do
+        if ! validate_isin "$isin"; then
+          echo "WARNING: Invalid ISIN for $ISSUER: $isin. Skipping..."
+          continue
+        fi
+        ((ISIN_PROCESSED++))
         url=$(build_url "$type" "$isin")
 
         key="${ISSUER}_${type}"
@@ -100,12 +145,17 @@ for type in "${TYPES[@]}"; do
         #gcloud storage mv "${DEST}.tmp" "$DEST"
 
         rm "$tmp_local"
-        echo "Written $DEST"
+        echo "Completed $type $isin: written $DEST"
       done
-
+      echo "Total ISINs processed: $ISIN_PROCESSED"
       # trigger downstream job
-      gcloud run jobs execute "${type}-wc-s1-job" \
-        --region europe-west1 
+      if should_start_job "$type"; then
+        echo "Starting downstream job ${type}-wc-s1-job"
+
+        gcloud run jobs execute "${type}-wc-s1-job" --region europe-west1 
+      else
+        echo "Skipping job start for TYPE=$type"
+      fi
       ;;
 
     # --------------------
@@ -113,8 +163,14 @@ for type in "${TYPES[@]}"; do
     # --------------------
     quotes)
       TMP_FILE=$(mktemp)
-
+      ISIN_PROCESSED=0
+      echo "Total ISINs to process: ${#ISINS[@]}"
       for isin in "${ISINS[@]}"; do
+        if ! validate_isin "$isin"; then
+          echo "WARNING: Invalid ISIN for $ISSUER: $isin. Skipping..."
+          continue
+        fi
+        ((ISIN_PROCESSED++))
         url=$(build_url "quotes" "$isin")
         echo "${url},${isin}.${FORMAT}" >> "$TMP_FILE"
       done
@@ -133,7 +189,7 @@ for type in "${TYPES[@]}"; do
 
       rm "$TMP_FILE" "$EXISTING"
 
-      echo "Updated $DEST"
+      echo "Completed quotes: ISINs processed $ISIN_PROCESSED, updated $DEST"
       ;;
 
     # --------------------
