@@ -1,5 +1,5 @@
-use std::{env, fs::File};
-use std::io::{self, BufReader, prelude::*};
+use std::{env};
+//use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
 
 use std::sync::{Arc, Mutex};
@@ -9,8 +9,8 @@ use actix_web::middleware::Logger;
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
 //use serde::Serialize;
 use env_logger::Env;
-use glob::glob_with;
-use glob::MatchOptions;
+// use glob::glob_with;
+// use glob::MatchOptions;
 
 // mod ic_csv;
 // use ic_csv::*;
@@ -20,14 +20,14 @@ use definitions::args::Args;
 use definitions::bq_defs::*;
 mod bq_helpers;
 use bq_helpers::*;
-use tracing::info;
+//use tracing::info;
 
-use rand::prelude::*;
+//use rand::prelude::*;
 
 use google_cloud_bigquery::client::{Client, ClientConfig};
-use google_cloud_bigquery::http::job::query::QueryRequest;
-use google_cloud_bigquery::query::row::Row;
-use serde::Serialize;
+// use google_cloud_bigquery::http::job::query::QueryRequest;
+// use google_cloud_bigquery::query::row::Row;
+//use serde::Serialize;
 
 // #[derive(Serialize)]
 // struct TickerData {
@@ -250,7 +250,36 @@ async fn get_issuers_by_name_prefix(
         &client, 
         &project_id,
         ISSUER_COLUMNS.to_vec(), 
-        &shared_state.TABLE_NAMES._ISSUER, 
+        &shared_state.TABLE_NAMES._issuer, 
+        vec![&where_condition]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(rows)
+}
+
+#[get("/tickers/{name_prefix}")]
+/* returns list of tickers (ticker, stock name) matching the name prefix */
+async fn get_ticklers_by_name_prefix(
+    data: web::Data<SharedMap>,
+    path: web::Path<String>,
+) -> impl Responder {
+    let name_prefix = sanitize_input(&path.into_inner());
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    // use BigQuery structure as below methods
+    let (client, project_id) = init_bq_client().await;
+    let where_condition = match name_prefix.as_str() {
+        "" => "".into(),
+        "*" => "".into(),
+        _ => format!("lower(stock_name) like '{}%'", name_prefix.to_lowercase()),
+    };
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        vec!["stock_google_finance_ticker", "stock_name"],
+        &shared_state.TABLE_NAMES._isin_ticker, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -371,7 +400,7 @@ async fn get_certificates_by_issuer(
         &client,
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        &shared_state.TABLE_NAMES._DETAILS,
+        &shared_state.TABLE_NAMES._details,
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -403,7 +432,7 @@ async fn get_certificate_by_isin(
         &client, 
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        &shared_state.TABLE_NAMES._DETAILS, 
+        &shared_state.TABLE_NAMES._details, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -431,31 +460,49 @@ async fn get_tickers(
 
 #[get("/certificates-tickers/{certs_csv_list}")]
 /* returns certificates by ticker */
+/* optional parameter:
+- tickers={ticker1},...,{tickerN}
+*/
 async fn get_certs_and_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<String>
+    path: web::Path<String>,
+    query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
     let certs_csv_list = path.into_inner();
     // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003
     // sanitize input to prevent SQL injection one ISIN by one
     let certs_csv_list = certs_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");    
     // obtain shared state
+    // retrieve tickers (array) as querystring parameters, for example: tickers=AAPL,MSFT,GOOGL
+    let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
+    let tickers_csv_list = tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");
+
     let shared_state = data.lock().unwrap();
     // first row is the header
     let (client, project_id) = init_bq_client().await;
-    let where_condition = format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','"));
+    let where_condition = match certs_csv_list.as_str() {
+        "" => "(1=1)".into(),
+        "*" => "(1=1)".into(),
+        _ => format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','")),
+    };
+    let filter_condition = match tickers_csv_list.as_str() {
+        "" => "".into(),
+        "*" => "".into(),
+        _ => format!("stock_google_finance_ticker IN ('{}')", tickers_csv_list.replace(",", "','")),
+    };
     let rows = query_bq(
         &client, 
         &project_id,
-        vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
-        &shared_state.TABLE_NAMES._ISIN_TICKER, 
-        vec![&where_condition]).await;
+        ISIN_TICKER_COLUMNS.to_vec(),
+        &shared_state.TABLE_NAMES._isin_ticker, 
+        vec![&where_condition, &filter_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
 }
+
 
 #[get("/test-bigquery")]
 async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
@@ -464,8 +511,8 @@ async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<Strin
     let rows = query_bq(
         &client, 
         &project_id,
-        vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
-        &shared_state.TABLE_NAMES._ISIN_TICKER, 
+        ISIN_TICKER_COLUMNS.to_vec(),
+        &shared_state.TABLE_NAMES._isin_ticker, 
         vec![]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);

@@ -7,7 +7,7 @@ pub static STAGING_PREFIX: &str = "staging_";
 // vec!["isin", "issue", "name", "certificate_type_tags","memory_effect", "phase", "currency", "industry", "callable", "strike_date", "issue_date", "rembursement_date", "autocallable_date", "capital_barrier", "airbag", "risk_level", "coupon_amount", "coupon_recurrence", "coupon_type", "coupon_barrier", "leverage", "exchange_risk"],
 pub static DETAIL_COLUMNS: &'static [&str] = &[
     "isin",
-    "issue",
+    "issuer",
     "name",
     "certificate_type_tags",
     "memory_effect",
@@ -39,12 +39,22 @@ pub static ISSUER_COLUMNS: &'static [&str] = &[
     "issuer_rating_description"
 ];
 
+// static vector of cols for isin_ticker
+// vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"]
+pub static ISIN_TICKER_COLUMNS: &'static [&str] = &[
+    "certificate_isin",
+    "certificate_name",
+    "stock_google_finance_ticker",
+    "stock_name"
+];
+
+
  #[derive(Debug, Clone)]
 pub struct Tables {
-    pub _ISIN_TICKER: String,
-    pub _QUOTE: String,
-    pub _DETAILS: String,
-    pub _ISSUER: String,
+    pub _isin_ticker: String,
+    pub _quote: String,
+    pub _details: String,
+    pub _issuer: String,
 }
 
 // pub static TABLES: Tables = Tables {

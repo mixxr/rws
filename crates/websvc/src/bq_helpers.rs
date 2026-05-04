@@ -9,10 +9,10 @@ impl Tables {
         let prefix = if is_staging { STAGING_PREFIX } else { "" };
 
         Self {
-            _ISIN_TICKER: format!("invcerts.ISINs.{}tickers", prefix), 
-            _QUOTE: format!("invcerts.ISINs.{}quotes", prefix),
-            _DETAILS: format!("invcerts.ISINs.{}details", prefix),
-            _ISSUER: format!("invcerts.Issuers.{}issuer", prefix),
+            _isin_ticker: format!("invcerts.ISINs.{}tickers", prefix), 
+            _quote: format!("invcerts.ISINs.{}quotes", prefix),
+            _details: format!("invcerts.ISINs.{}details", prefix),
+            _issuer: format!("invcerts.Issuers.{}issuer", prefix),
         }
     }
 }

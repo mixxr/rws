@@ -45,15 +45,9 @@ To get all issuers: /issuers/*
 
 # certificates-tickers
 
-## GET /certificates-tickers?tickers=[{ticker1},...,{tickerN}]&op=[OR|AND]
-Returns stocks of certificates whose underlyings match a logical condition on a set of tickers
-Filters certificates based on their underlyings:
-
-- `OR`: returns certificates that have **at least one underlying** matching any of the provided tickers  
-- `AND`: returns certificates that have underlyings matching **all provided tickers**
-
-## GET /certificates-tickers/{cert_ISINs_csv_list}
+## GET /certificates-tickers/{cert_ISINs_csv_list}?tickers={ticker1},...,{tickerN}
 Returns stocks of certificate identified by one of the ISIN in the {cert_ISINs_csv_list}
+Filters certificates based on their underlyings: returns certificates that have **at least one underlying** matching any of the provided tickers  
 
 ## response
 ```json
@@ -76,6 +70,17 @@ Returns stocks of certificate identified by one of the ISIN in the {cert_ISINs_c
 ]
 ```
 
+# tickers
+
+## GET /tickers/{name_prefix}
+To get all tickers: /tickers/*
+### response
+```json
+[
+  (Ticker, Stock Name)
+]
+```
+
 # quotes
 /quotes/<isin>/<dt>
 /quotes/<isin>/latest
@@ -88,12 +93,4 @@ Ask
 Bid
 Currency
 DT
-
-# tickers
-
-/tickers
-/tickers?prefix=<prefix>
-
-Ticker
-Name
 
