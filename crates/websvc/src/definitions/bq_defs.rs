@@ -41,10 +41,10 @@ pub static ISSUER_COLUMNS: &'static [&str] = &[
 
  #[derive(Debug, Clone)]
 pub struct Tables {
-    pub _ISIN_TICKER: &'static str,
-    pub _QUOTE: &'static str,
-    pub _DETAILS: &'static str,
-    pub _ISSUER: &'static str,
+    pub _ISIN_TICKER: String,
+    pub _QUOTE: String,
+    pub _DETAILS: String,
+    pub _ISSUER: String,
 }
 
 // pub static TABLES: Tables = Tables {

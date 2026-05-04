@@ -250,7 +250,7 @@ async fn get_issuers_by_name_prefix(
         &client, 
         &project_id,
         ISSUER_COLUMNS.to_vec(), 
-        shared_state.TABLE_NAMES._ISSUER, 
+        &shared_state.TABLE_NAMES._ISSUER, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -371,7 +371,7 @@ async fn get_certificates_by_issuer(
         &client,
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        shared_state.TABLE_NAMES._DETAILS,
+        &shared_state.TABLE_NAMES._DETAILS,
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -399,7 +399,7 @@ async fn get_certificate_by_isin(
         &client, 
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        shared_state.TABLE_NAMES._DETAILS, 
+        &shared_state.TABLE_NAMES._DETAILS, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -429,7 +429,7 @@ async fn get_tickers(
 /* returns certificates by ticker */
 async fn get_certs_and_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<String>)
+    path: web::Path<String>
 ) -> impl Responder {
     let certs_csv_list = path.into_inner();
     // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003
@@ -444,7 +444,7 @@ async fn get_certs_and_tickers(
         &client, 
         &project_id,
         vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
-        shared_state.TABLE_NAMES._ISIN_TICKER, 
+        &shared_state.TABLE_NAMES._ISIN_TICKER, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -461,7 +461,7 @@ async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<Strin
         &client, 
         &project_id,
         vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
-        shared_state.TABLE_NAMES._ISIN_TICKER, 
+        &shared_state.TABLE_NAMES._ISIN_TICKER, 
         vec![]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
