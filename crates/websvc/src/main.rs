@@ -101,15 +101,10 @@ async fn main() -> std::io::Result<()> {
             .wrap(cors)
             .app_data(web::Data::new(shared_state.clone()))
             .service(root)
-            .service(get_sources)
-            .service(get_source)
-            .service(get_sources_observations)
-            .service(get_all_by_date)
-            .service(get_by_isin)
-            .service(get_tickers)
-            .service(get_by_tickers)
-            .service(get_certs_and_tickers)
             .service(get_data)
+            .service(get_issuers_by_name_prefix)
+            .service(get_certificates_by_issuer)
+            .service(get_certificate_by_isin)
     })
     .bind(("0.0.0.0", listen_port))?
     .run()
@@ -245,20 +240,31 @@ fn check_response(response: &Vec<String>, info: String) -> bool {
     return false;
 }
 
-#[get("/sources")]
-/* returns list of sources */
-async fn get_sources(
+
+// ## GET /issuers/{name_prefix}
+#[get("/issuers/{name_prefix}")]
+/* returns list of issuers matching the name prefix */
+async fn get_issuers_by_name_prefix(
     data: web::Data<SharedMap>,
+    path: web::Path<String>,
 ) -> impl Responder {
+    let name_prefix = sanitize_input(&path.into_inner());
     // obtain shared state
     let shared_state = data.lock().unwrap();
-    let ds_path = get_ds_name(&shared_state, None, None);
-    // let ds_file = get_ds(ds_path, &data);
-    let sources: Vec<String> = read_csv(&ds_path, None, true).await;
+    // use BigQuery structure as below methods
+    let (client, project_id) = init_bq_client().await;
+    let where_condition = format!("lower(issuer_name) like '{}%'", name_prefix.to_lowercase());
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        ISSUER_COLUMNS.to_vec(), 
+        TABLES._ISSUER, 
+        vec![&where_condition]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
-        // .append_header((header::ALLOW, "*"))
-        .json(sources)
+        .json(rows)
 }
 
 #[get("/isins/{source}")]
@@ -357,32 +363,57 @@ async fn get_by_isin(
 }
 
 #[get("/certificates")]
-/* returns certificates by ticker list as query string ?tickers={ticker_csv_list} */
-async fn get_by_tickers(
+/* returns certificates by issuer */
+async fn get_certificates_by_issuer(
     data: web::Data<SharedMap>,
     query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
-    let ticker_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
-    let ticker_csv_list = sanitize_input(&ticker_csv_list);
+    let issuer = query.get("issuer").unwrap_or(&"".into()).to_string();
+    let issuer = sanitize_input(&issuer);
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+    // create a vector of dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
+    let (client, project_id) = init_bq_client().await;
+    let where_condition = format!("lower(issuer) like '%{}%'", issuer.to_lowercase());
+    let rows = query_bq(
+        &client,
+        &project_id,
+        DETAIL_COLUMNS.to_vec(),
+        TABLES._DETAILS,
+        vec![&where_condition]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(rows)
+}
+
+#[get("/certificates/{isin}")]
+/* returns a specific certificate by ISIN */
+async fn get_certificate_by_isin(
+    data: web::Data<SharedMap>,
+    path: web::Path<String>,
+) -> impl Responder {
+    let isin = path.into_inner();
+    let isin = sanitize_input(&isin);
     // obtain shared state
     let shared_state = data.lock().unwrap();
     // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
     // first row is the header
     // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
-    let mut certificates = Vec::new();
-    certificates.push("isin,certificate name,ask,bid,currency,obsdatetime".to_string());
-    let mut rng = rand::rng();
-    for i in 1..=10 {
-        // random ask and bid values between 100 and 110 for ask, and between 90 and 100 for bid
-        // create a random number using Rnd library
-        let isin = format!("US{:0>10}", rng.random::<u64>() % 10000000);
-        let ask = rng.random::<u32>() % 10 + 98;
-        let bid = rng.random::<u32>() % 10 + 100;
-        certificates.push(format!("{},Certificate {},{},{},USD,2024-06-01-12-00-{}", isin, i, ask, bid, (i % 10) + 10)); 
-    }
+    let (client, project_id) = init_bq_client().await;
+    let where_condition = format!("upper(isin) = '{}'", isin.to_uppercase());
+    let rows = query_bq(
+        &client, 
+        &project_id,
+        DETAIL_COLUMNS.to_vec(),
+        TABLES._DETAILS, 
+        vec![&where_condition]).await;
+    println!("BigQuery project ID: {:?}", project_id);
+    println!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
-        .json(certificates)
+        .json(rows)
 }
 
 #[get("/tickers/{matcher}")]
@@ -411,15 +442,12 @@ async fn get_certs_and_tickers(
     let certs_csv_list = path.into_inner();
     // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003
     // sanitize input to prevent SQL injection one ISIN by one
-    let certs_csv_list = certs_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");
-    // create a where condition for BigQuery query in format certificate_isin IN ('US0000000001','US0000000002','US0000000003')
-    let where_condition = format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','"));
+    let certs_csv_list = certs_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");    
     // obtain shared state
     let shared_state = data.lock().unwrap();
-    // create a vector of 10 dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
     // first row is the header
-    // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
-     let (client, project_id) = init_bq_client().await;
+    let (client, project_id) = init_bq_client().await;
+    let where_condition = format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','"));
     let rows = query_bq(
         &client, 
         &project_id,
@@ -448,17 +476,17 @@ async fn get_data() ->  actix_web::web::Json<Vec<String>> {
     actix_web::web::Json(rows)
 }
 
-fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
-    // Open the file
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
+// fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {
+//     // Open the file
+//     let file = File::open(path)?;
+//     let reader = BufReader::new(file);
 
-    // Collect lines into a Vec<String>
-    let lines: io::Result<Vec<String>> = reader
-        .lines() // Iterator over Result<String, io::Error>
-        .collect();
+//     // Collect lines into a Vec<String>
+//     let lines: io::Result<Vec<String>> = reader
+//         .lines() // Iterator over Result<String, io::Error>
+//         .collect();
 
-    lines
-}
+//     lines
+// }
 
 
