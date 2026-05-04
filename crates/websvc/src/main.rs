@@ -12,13 +12,14 @@ use env_logger::Env;
 use glob::glob_with;
 use glob::MatchOptions;
 
-mod ic_csv;
-use ic_csv::*;
-mod bq;
-use bq::*;
+// mod ic_csv;
+// use ic_csv::*;
 use clap::Parser;
 mod definitions;
 use definitions::args::Args;
+use definitions::bq_defs::*;
+mod bq_helpers;
+use bq_helpers::*;
 use tracing::info;
 
 use rand::prelude::*;
@@ -36,11 +37,7 @@ use serde::Serialize;
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
-    lastDate: String,
-    isin_path_prefix: String,
-    output_path_prefix: String,
-    source_path: String,
-    files: HashMap<String, Arc<Mutex<File>>>,
+    TABLE_NAMES: Tables,
 }
 
 // Type alias for shared state
@@ -56,39 +53,34 @@ async fn main() -> std::io::Result<()> {
     println!("CLI Configuration: {:?}", args);
 
     // TODO: check trailing slash in path prefixes and add if not present
-    let isin_path_prefix = env::var("ISIN_PATH_PREFIX");
-    let isin_path_prefix = match isin_path_prefix {
-        Err(_e)=> &args.isin_fp_prefix,
-        Ok(isin_path_prefix) => &isin_path_prefix.clone()
-    };
-    let source_path = env::var("SOURCE_PATH");
-    let source_path = match source_path {
-        Err(_e)=> &args.source_fp,
-        Ok(source_path) => &source_path.clone()
-    };
-    let output_path_prefix = env::var("OUTPUT_PATH_PREFIX");
-    let output_path_prefix = match output_path_prefix {
-        Err(_e)=> &args.output_fp_prefix,
-        Ok(output_path_prefix) => &output_path_prefix.clone()
-    };
+    // let isin_path_prefix = env::var("ISIN_PATH_PREFIX");
+    // let isin_path_prefix = match isin_path_prefix {
+    //     Err(_e)=> &args.isin_fp_prefix,
+    //     Ok(isin_path_prefix) => &isin_path_prefix.clone()
+    // };
+    // let source_path = env::var("SOURCE_PATH");
+    // let source_path = match source_path {
+    //     Err(_e)=> &args.source_fp,
+    //     Ok(source_path) => &source_path.clone()
+    // };
+    // let output_path_prefix = env::var("OUTPUT_PATH_PREFIX");
+    // let output_path_prefix = match output_path_prefix {
+    //     Err(_e)=> &args.output_fp_prefix,
+    //     Ok(output_path_prefix) => &output_path_prefix.clone()
+    // };
     let listen_port = env::var("LISTEN_PORT");
+    // check if is valid a\otherwise use default 8080
     let listen_port = match listen_port {
-        Err(_e)=> args.listen_port,
-        Ok(listen_port) => listen_port.parse().unwrap_or(args.listen_port)
+        Err(_e) => args.listen_port,
+        Ok(listen_port) => listen_port.parse::<u16>().unwrap_or(args.listen_port),
     };
-    // TO DO: check if {isin_path_prefix}, {output_path_prefix} have trailing slash
-    println!("ENV Configuration: {isin_path_prefix}, {output_path_prefix}, {source_path}, {listen_port}");
+    println!("ENV Configuration: {listen_port}");
 
     env_logger::init_from_env(Env::default().default_filter_or(log_level));
 
-    
-
+    let IS_STAGING = env::var("IS_STAGING").unwrap_or("true".to_string()).to_lowercase() == "true";
     let shared_state: SharedMap = Arc::new(Mutex::new(ContentSystem {
-        lastDate: "1900-01-01-00-00-00".to_string(),
-        isin_path_prefix: isin_path_prefix.to_string(),
-        output_path_prefix: output_path_prefix.to_string(),
-        source_path: source_path.to_string(),
-        files: HashMap::new()
+        TABLE_NAMES: Tables::new(IS_STAGING),
     }));
 
     println!("Server running at http://127.0.0.1:{listen_port}");
@@ -118,95 +110,95 @@ async fn root() -> &'static str {
     "IC Data Extraction Service is running."
 }
 
-fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
-    if dt.to_lowercase().trim() == "latest" {
-        println!("latest required at {}, {}", output_fp_prefix, source);
-        // read directory and get latest file
-        match get_latest_dtime(source, output_fp_prefix) {
-            Ok(latest_dt) => {
-                println!("latest observation datetime: {}", latest_dt);
-                return latest_dt;
-            },
-            Err(e) => {
-                println!("Error getting latest observation datetime: {}", e);
-                return "1900-01-01-00-00-00.csv".to_string();
-            }
-        }
-    }
-    // naive format %Y-%m-%d-%H-%M-%S checker
-    // let parts: Vec<&str> = dt.split('-').collect();
-    // if parts.len() == 6 {
-    [dt,".csv"].concat()
-    // }else{
-    //     Err(anyhow!("observation date format not valid"))
-    // }
-}
+// fn check_dtime(source: &str, dt: &str, output_fp_prefix: &str) -> String {
+//     if dt.to_lowercase().trim() == "latest" {
+//         println!("latest required at {}, {}", output_fp_prefix, source);
+//         // read directory and get latest file
+//         match get_latest_dtime(source, output_fp_prefix) {
+//             Ok(latest_dt) => {
+//                 println!("latest observation datetime: {}", latest_dt);
+//                 return latest_dt;
+//             },
+//             Err(e) => {
+//                 println!("Error getting latest observation datetime: {}", e);
+//                 return "1900-01-01-00-00-00.csv".to_string();
+//             }
+//         }
+//     }
+//     // naive format %Y-%m-%d-%H-%M-%S checker
+//     // let parts: Vec<&str> = dt.split('-').collect();
+//     // if parts.len() == 6 {
+//     [dt,".csv"].concat()
+//     // }else{
+//     //     Err(anyhow!("observation date format not valid"))
+//     // }
+// }
 
-fn get_latest_dtime(source: &str, arg: &str) -> Result<String, io::Error> {
-    let mut latest_time = "1900-01-01-00-00-00.csv".to_string();
-    let dir_path = [arg, source].concat();
-    println!("get_latest_dtime path: {}", dir_path);
-    if !std::path::Path::new(&dir_path).exists() {
-        println!("Directory {} does not exist", dir_path);
-        return Ok(latest_time);
-    }
-    for entry in std::fs::read_dir(dir_path).unwrap() {
-        // file format is <obsdatetime>.csv
-        let entry = entry.unwrap(); 
-        // get observation datetime from filename
-        let filename = entry.file_name().into_string().unwrap();
-        println!("latest: {}", filename);
-        //let obsdatetime = filename[..filename.rfind('.').unwrap()].to_string();
-        // observation datetime is in format YYYY-MM-DD-HH-MM-SS
-        if filename > latest_time {
-            latest_time = filename;
-        }
-    }
-    // return latest time  
-    Ok(latest_time)
-}
+// fn get_latest_dtime(source: &str, arg: &str) -> Result<String, io::Error> {
+//     let mut latest_time = "1900-01-01-00-00-00.csv".to_string();
+//     let dir_path = [arg, source].concat();
+//     println!("get_latest_dtime path: {}", dir_path);
+//     if !std::path::Path::new(&dir_path).exists() {
+//         println!("Directory {} does not exist", dir_path);
+//         return Ok(latest_time);
+//     }
+//     for entry in std::fs::read_dir(dir_path).unwrap() {
+//         // file format is <obsdatetime>.csv
+//         let entry = entry.unwrap(); 
+//         // get observation datetime from filename
+//         let filename = entry.file_name().into_string().unwrap();
+//         println!("latest: {}", filename);
+//         //let obsdatetime = filename[..filename.rfind('.').unwrap()].to_string();
+//         // observation datetime is in format YYYY-MM-DD-HH-MM-SS
+//         if filename > latest_time {
+//             latest_time = filename;
+//         }
+//     }
+//     // return latest time  
+//     Ok(latest_time)
+// }
 
-fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: usize) -> Vec<String> {
-    let options = MatchOptions {
-        case_sensitive: false,
-        require_literal_separator: false,
-        require_literal_leading_dot: false,
-    };
-    let mut obsdatetimes = Vec::new();
-    let mut max_entries = maxobs;
-    for entry in glob_with(&format!("{}{}/*.csv", shared_state.output_path_prefix, source), options).unwrap() {
-        if let Ok(path) = entry {
-            //let filename = String::from(path.to_str().unwrap());
-            // filename is in format <obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
-            // let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
-            // let obsdatetime = filename.strip_suffix(".csv").unwrap().to_string();//.unwrap_or(&obsdatetime).to_string(); // TODO: return Vec<&str> is better?
+// fn get_latest_observations(shared_state: &ContentSystem, source: &str, maxobs: usize) -> Vec<String> {
+//     let options = MatchOptions {
+//         case_sensitive: false,
+//         require_literal_separator: false,
+//         require_literal_leading_dot: false,
+//     };
+//     let mut obsdatetimes = Vec::new();
+//     let mut max_entries = maxobs;
+//     for entry in glob_with(&format!("{}{}/*.csv", shared_state.output_path_prefix, source), options).unwrap() {
+//         if let Ok(path) = entry {
+//             //let filename = String::from(path.to_str().unwrap());
+//             // filename is in format <obsdatetime>.csv and <source> length is variable, so split at first '-' and get obsdatetime and remove .csv extension
+//             // let obsdatetime = (filename.split_at(filename.find('-').unwrap_or(0)+1).1).to_string();
+//             // let obsdatetime = filename.strip_suffix(".csv").unwrap().to_string();//.unwrap_or(&obsdatetime).to_string(); // TODO: return Vec<&str> is better?
 
-            obsdatetimes.push(path.file_stem().unwrap().to_str().unwrap().to_string());
-            max_entries -= 1;
-            if max_entries == 0 {
-                break;
-            }
-        }
-    }
-    // sort obsdatetimes in descending order
-    // obsdatetimes.sort_by(|a, b| b.cmp(a));
-    obsdatetimes
-}
+//             obsdatetimes.push(path.file_stem().unwrap().to_str().unwrap().to_string());
+//             max_entries -= 1;
+//             if max_entries == 0 {
+//                 break;
+//             }
+//         }
+//     }
+//     // sort obsdatetimes in descending order
+//     // obsdatetimes.sort_by(|a, b| b.cmp(a));
+//     obsdatetimes
+// }
 
-fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: Option<&str>) -> String {
-    if obsdatetime.is_some() {
-        // means the request is about a specific observation filename => quotes to read
-        let dt = check_dtime(&source.unwrap_or("404"), &obsdatetime.unwrap(), &shared_state.output_path_prefix);
-        // dt should end with .csv
-        return format!("{}{}/{}", shared_state.output_path_prefix, source.unwrap_or("404"), dt);
-    } else {
-        if source.is_some() {
-            // means a specific source is requested => isins to read
-            return format!("{}{}.csv", shared_state.isin_path_prefix, source.unwrap());
-        } 
-        return shared_state.source_path.clone();
-    };
-}
+// fn get_ds_name(shared_state: &ContentSystem, source: Option<&str>, obsdatetime: Option<&str>) -> String {
+//     if obsdatetime.is_some() {
+//         // means the request is about a specific observation filename => quotes to read
+//         let dt = check_dtime(&source.unwrap_or("404"), &obsdatetime.unwrap(), &shared_state.output_path_prefix);
+//         // dt should end with .csv
+//         return format!("{}{}/{}", shared_state.output_path_prefix, source.unwrap_or("404"), dt);
+//     } else {
+//         if source.is_some() {
+//             // means a specific source is requested => isins to read
+//             return format!("{}{}.csv", shared_state.isin_path_prefix, source.unwrap());
+//         } 
+//         return shared_state.source_path.clone();
+//     };
+// }
 
 // fn get_ds(key: &str, map: &SharedMap) -> File {
 //    /*
@@ -230,15 +222,15 @@ fn sanitize_input(input: &str) -> String {
 
 
 // check if response is empty or contains only header or nodata found
-fn check_response(response: &Vec<String>, info: String) -> bool {
-    if response.len() <= 0 
-        || response[0] == ic_csv::NODATA_FOUND 
-        || (response.len() == 1 && response[0].starts_with("isin,")) {
-        //response.push(info);
-        return true;
-    }
-    return false;
-}
+// fn check_response(response: &Vec<String>, info: String) -> bool {
+//     if response.len() <= 0 
+//         || response[0] == ic_csv::NODATA_FOUND 
+//         || (response.len() == 1 && response[0].starts_with("isin,")) {
+//         //response.push(info);
+//         return true;
+//     }
+//     return false;
+// }
 
 
 // ## GET /issuers/{name_prefix}
@@ -258,7 +250,7 @@ async fn get_issuers_by_name_prefix(
         &client, 
         &project_id,
         ISSUER_COLUMNS.to_vec(), 
-        TABLES._ISSUER, 
+        shared_state.TABLE_NAMES._ISSUER, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -267,100 +259,100 @@ async fn get_issuers_by_name_prefix(
         .json(rows)
 }
 
-#[get("/isins/{source}")]
-/* returns list of ISINs per source */
-async fn get_source(
-    data: web::Data<SharedMap>,
-    path: web::Path<String>,
-) -> impl Responder {
-    let source = sanitize_input(&path.into_inner());
-    // obtain shared state
-    let shared_state = data.lock().unwrap();
-    let ds_path = get_ds_name(&shared_state, Some(&source), None);
-    let sources: Vec<String> = read_csv(&ds_path, None, false).await;
+// #[get("/isins/{source}")]
+// /* returns list of ISINs per source */
+// async fn get_source(
+//     data: web::Data<SharedMap>,
+//     path: web::Path<String>,
+// ) -> impl Responder {
+//     let source = sanitize_input(&path.into_inner());
+//     // obtain shared state
+//     let shared_state = data.lock().unwrap();
+//     let ds_path = get_ds_name(&shared_state, Some(&source), None);
+//     let sources: Vec<String> = read_csv(&ds_path, None, false).await;
 
-    if check_response(&sources, format!("source {} not found", source)) {
-        return HttpResponse::NotFound()
-            .content_type("application/json")
-            .json(sources);
-    }
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(sources)
-}
+//     if check_response(&sources, format!("source {} not found", source)) {
+//         return HttpResponse::NotFound()
+//             .content_type("application/json")
+//             .json(sources);
+//     }
+//     HttpResponse::Ok()
+//         .content_type("application/json")
+//         .json(sources)
+// }
 
-#[get("/observations/{source}/{maxobs}")]
-/* returns list of latest (maxobs) observations per source */
-async fn get_sources_observations(
-    data: web::Data<SharedMap>,
-    path: web::Path<(String, String)>,
-) -> impl Responder {
-    let (source, maxobsStr) = path.into_inner();
-    let source = sanitize_input(&source);
-    let mut maxobs = maxobsStr.parse::<usize>().unwrap_or(1000);
-    // check if maxobs <=0 then return latest 1000 observations
-    if maxobs <= 0 {
-        maxobs = 1000;
-    }
-    // obtain shared state
-    let shared_state = data.lock().unwrap();
-    let obsdatetimes = get_latest_observations(&shared_state, &source, maxobs);
-    if check_response(&obsdatetimes, format!("source {} not found", source)) {
-        return HttpResponse::NotFound()
-            .content_type("application/json")
-            .json(obsdatetimes);
-    }
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(obsdatetimes)
-}
+// #[get("/observations/{source}/{maxobs}")]
+// /* returns list of latest (maxobs) observations per source */
+// async fn get_sources_observations(
+//     data: web::Data<SharedMap>,
+//     path: web::Path<(String, String)>,
+// ) -> impl Responder {
+//     let (source, maxobsStr) = path.into_inner();
+//     let source = sanitize_input(&source);
+//     let mut maxobs = maxobsStr.parse::<usize>().unwrap_or(1000);
+//     // check if maxobs <=0 then return latest 1000 observations
+//     if maxobs <= 0 {
+//         maxobs = 1000;
+//     }
+//     // obtain shared state
+//     let shared_state = data.lock().unwrap();
+//     let obsdatetimes = get_latest_observations(&shared_state, &source, maxobs);
+//     if check_response(&obsdatetimes, format!("source {} not found", source)) {
+//         return HttpResponse::NotFound()
+//             .content_type("application/json")
+//             .json(obsdatetimes);
+//     }
+//     HttpResponse::Ok()
+//         .content_type("application/json")
+//         .json(obsdatetimes)
+// }
 
-#[get("/quotes/{source}/{obsdatetime}")]
-/* returns list of quotes (all ISINs) per source and observation date */
-async fn get_all_by_date(
-    data: web::Data<SharedMap>,
-    path: web::Path<(String, String)>
-) -> impl Responder { 
-    let (source, obsdatetime) = path.into_inner();
-    let source = sanitize_input(&source);
-    let obsdatetime = sanitize_input(&obsdatetime);
-        // obtain shared state
-    let shared_state = data.lock().unwrap();
-    let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
-    let sources: Vec<String> = read_csv(&ds_path, None, true).await;
-    if check_response(&sources, format!("source {} or observation {} not found", source, obsdatetime)) {
-        return HttpResponse::NotFound()
-            .content_type("application/json")
-            .json(sources);
-    }
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(sources)
-}
+// #[get("/quotes/{source}/{obsdatetime}")]
+// /* returns list of quotes (all ISINs) per source and observation date */
+// async fn get_all_by_date(
+//     data: web::Data<SharedMap>,
+//     path: web::Path<(String, String)>
+// ) -> impl Responder { 
+//     let (source, obsdatetime) = path.into_inner();
+//     let source = sanitize_input(&source);
+//     let obsdatetime = sanitize_input(&obsdatetime);
+//         // obtain shared state
+//     let shared_state = data.lock().unwrap();
+//     let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
+//     let sources: Vec<String> = read_csv(&ds_path, None, true).await;
+//     if check_response(&sources, format!("source {} or observation {} not found", source, obsdatetime)) {
+//         return HttpResponse::NotFound()
+//             .content_type("application/json")
+//             .json(sources);
+//     }
+//     HttpResponse::Ok()
+//         .content_type("application/json")
+//         .json(sources)
+// }
 
-#[get("/quotes/{source}/{obsdatetime}/{isin}")]
-/* returns a specific quote (ISIN) per source and observation date */
-async fn get_by_isin(
-    data: web::Data<SharedMap>,
-    path: web::Path<(String, String, String)>
-) -> impl Responder {
-    let (source, obsdatetime, isin) = path.into_inner();
-    let source = sanitize_input(&source);
-    let obsdatetime = sanitize_input(&obsdatetime);
-    let isin = sanitize_input(&isin);
-        // obtain shared state
-    let shared_state = data.lock().unwrap();
-    let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
-    let sources: Vec<String> = read_csv(&ds_path, Some(&isin), true).await;
-    if check_response(&sources, format!("source {} or observation {} or ISIN {} not found", source, obsdatetime, isin)) {
-        return HttpResponse::NotFound()
-            .content_type("application/json")
-            .json(sources);
-    }
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(sources)
-}
+// #[get("/quotes/{source}/{obsdatetime}/{isin}")]
+// /* returns a specific quote (ISIN) per source and observation date */
+// async fn get_by_isin(
+//     data: web::Data<SharedMap>,
+//     path: web::Path<(String, String, String)>
+// ) -> impl Responder {
+//     let (source, obsdatetime, isin) = path.into_inner();
+//     let source = sanitize_input(&source);
+//     let obsdatetime = sanitize_input(&obsdatetime);
+//     let isin = sanitize_input(&isin);
+//         // obtain shared state
+//     let shared_state = data.lock().unwrap();
+//     let ds_path = get_ds_name(&shared_state, Some(&source), Some(&obsdatetime));
+//     let sources: Vec<String> = read_csv(&ds_path, Some(&isin), true).await;
+//     if check_response(&sources, format!("source {} or observation {} or ISIN {} not found", source, obsdatetime, isin)) {
+//         return HttpResponse::NotFound()
+//             .content_type("application/json")
+//             .json(sources);
+//     }
+//     HttpResponse::Ok()
+//         .content_type("application/json")
+//         .json(sources)
+// }
 
 #[get("/certificates")]
 /* returns certificates by issuer */
@@ -379,7 +371,7 @@ async fn get_certificates_by_issuer(
         &client,
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        TABLES._DETAILS,
+        shared_state.TABLE_NAMES._DETAILS,
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -407,7 +399,7 @@ async fn get_certificate_by_isin(
         &client, 
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        TABLES._DETAILS, 
+        shared_state.TABLE_NAMES._DETAILS, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -437,7 +429,7 @@ async fn get_tickers(
 /* returns certificates by ticker */
 async fn get_certs_and_tickers(
     data: web::Data<SharedMap>,
-    path: web::Path<(String)>
+    path: web::Path<String>)
 ) -> impl Responder {
     let certs_csv_list = path.into_inner();
     // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003
@@ -452,7 +444,7 @@ async fn get_certs_and_tickers(
         &client, 
         &project_id,
         vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
-        TABLES._ISIN_TICKER, 
+        shared_state.TABLE_NAMES._ISIN_TICKER, 
         vec![&where_condition]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
@@ -462,13 +454,14 @@ async fn get_certs_and_tickers(
 }
 
 #[get("/test-bigquery")]
-async fn get_data() ->  actix_web::web::Json<Vec<String>> {
+async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
+    let shared_state = data.lock().unwrap();
     let (client, project_id) = init_bq_client().await;
     let rows = query_bq(
         &client, 
         &project_id,
         vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"], 
-        TABLES._ISIN_TICKER, 
+        shared_state.TABLE_NAMES._ISIN_TICKER, 
         vec![]).await;
     println!("BigQuery project ID: {:?}", project_id);
     println!("BigQuery rows: {:?}", rows);
