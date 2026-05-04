@@ -9,10 +9,10 @@ impl Tables {
         let prefix = if is_staging { STAGING_PREFIX } else { "" };
 
         Self {
-            _ISIN_TICKER: format!("invcerts.ISINs.{}_tickers", prefix), 
-            _QUOTE: format!("invcerts.ISINs.{}_quotes", prefix),
-            _DETAILS: format!("invcerts.ISINs.{}_details", prefix),
-            _ISSUER: format!("invcerts.Issuers.{}_issuer", prefix),
+            _ISIN_TICKER: format!("invcerts.ISINs.{}tickers", prefix), 
+            _QUOTE: format!("invcerts.ISINs.{}quotes", prefix),
+            _DETAILS: format!("invcerts.ISINs.{}details", prefix),
+            _ISSUER: format!("invcerts.Issuers.{}issuer", prefix),
         }
     }
 }
@@ -31,8 +31,7 @@ pub async fn query_bq(
     tablename: &str, 
     conditions_in_and: Vec<&str>) -> Vec<String> {
 
-    println!("BigQuery Client is already initialized, using existing client with project ID: {:?}", project_id);
-
+    println!("-- BigQuery Client project ID: {:?}", project_id);
 
     // 2. Prepare the query
     let cols = colnames.join(", ");
@@ -45,6 +44,8 @@ pub async fn query_bq(
 
     let q = format!("SELECT {} FROM {}{} LIMIT {}", cols, tablename, where_clause, HARD_ROW_LIMIT);
     // TODO: sanification of inputs to prevent SQL injection, especially for conditions
+
+    println!("-- Query: {}", q);
     
     let request = QueryRequest {
         query: q,

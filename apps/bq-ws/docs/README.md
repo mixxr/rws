@@ -3,15 +3,9 @@
 ## GET /issuers/{name_prefix}
 To get all issuers: /issuers/*
 ## response
-```json
+```csv
 [
-    {
-    issuer_name: String,
-    specialization: String,
-    geo_region: String,   
-    issuer_rating_description: String, // e.g. S&P's: A (04/07/2018)
-    issuer_rating_class: String, // e.g. AA, BBB, etc.
-    }
+    {issuer_name, specialization, geo_region, issuer_rating_description, issuer_rating_class}
 ]
 ```
 # certificates (description)

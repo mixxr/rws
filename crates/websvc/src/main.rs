@@ -394,7 +394,11 @@ async fn get_certificate_by_isin(
     // first row is the header
     // the vector is composed of 10 certificates with the same ticker but different ISINs and certificate names, and the same ask, bid, currency and obsdatetime
     let (client, project_id) = init_bq_client().await;
-    let where_condition = format!("upper(isin) = '{}'", isin.to_uppercase());
+    let where_condition = match isin.as_str() {
+        "" => "".into(),
+        "*" => "".into(),
+        _ => format!("upper(isin) = '{}'", isin.to_uppercase()),
+    };
     let rows = query_bq(
         &client, 
         &project_id,
