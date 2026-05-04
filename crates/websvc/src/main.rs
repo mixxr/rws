@@ -97,6 +97,8 @@ async fn main() -> std::io::Result<()> {
             .service(get_issuers_by_name_prefix)
             .service(get_certificates_by_issuer)
             .service(get_certificate_by_isin)
+            .service(get_certs_and_tickers)
+            .service(get_tickers_by_name_prefix)
     })
     .bind(("0.0.0.0", listen_port))?
     .run()
@@ -261,7 +263,8 @@ async fn get_issuers_by_name_prefix(
 
 #[get("/tickers/{name_prefix}")]
 /* returns list of tickers (ticker, stock name) matching the name prefix */
-async fn get_ticklers_by_name_prefix(
+// TO-DO: return unique stock names with their tickers
+async fn get_tickers_by_name_prefix(
     data: web::Data<SharedMap>,
     path: web::Path<String>,
 ) -> impl Responder {
@@ -273,7 +276,7 @@ async fn get_ticklers_by_name_prefix(
     let where_condition = match name_prefix.as_str() {
         "" => "".into(),
         "*" => "".into(),
-        _ => format!("lower(stock_name) like '{}%'", name_prefix.to_lowercase()),
+        _ => format!("lower(stock_name) like '%{}%'", name_prefix.to_lowercase()),
     };
     let rows = query_bq(
         &client, 
@@ -441,23 +444,6 @@ async fn get_certificate_by_isin(
         .json(rows)
 }
 
-#[get("/tickers/{matcher}")]
-/* returns list of latest (maxobs) observations per source */
-async fn get_tickers(
-    data: web::Data<SharedMap>,
-    path: web::Path<String>,
-) -> impl Responder {
-    let matcher = path.into_inner();
-    let matcher = sanitize_input(&matcher);
-    // obtain shared state
-    let shared_state = data.lock().unwrap();
-    // create a vector of dummy tickers for testing. Each entry should be in format <ticker>,<name>
-    let tickers = vec!["AAPL,Apple Inc.".to_string(), "MSFT,Microsoft Corp.".to_string(), "GOOGL,Alphabet Inc.".to_string()];
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(tickers)
-}
-
 #[get("/certificates-tickers/{certs_csv_list}")]
 /* returns certificates by ticker */
 /* optional parameter:
@@ -481,8 +467,8 @@ async fn get_certs_and_tickers(
     // first row is the header
     let (client, project_id) = init_bq_client().await;
     let where_condition = match certs_csv_list.as_str() {
-        "" => "(1=1)".into(),
-        "*" => "(1=1)".into(),
+        "" => "".into(),
+        "*" => "".into(),
         _ => format!("certificate_isin IN ('{}')", certs_csv_list.replace(",", "','")),
     };
     let filter_condition = match tickers_csv_list.as_str() {
@@ -504,7 +490,7 @@ async fn get_certs_and_tickers(
 }
 
 
-#[get("/test-bigquery")]
+#[get("/health")]
 async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
     let shared_state = data.lock().unwrap();
     let (client, project_id) = init_bq_client().await;

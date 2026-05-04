@@ -8,6 +8,14 @@ To get all issuers: /issuers/*
     {issuer_name, specialization, geo_region, issuer_rating_description, issuer_rating_class}
 ]
 ```
+### Examples
+
+```examples
+GET /issuers/*
+GET /issuers/leon
+```
+
+
 # certificates (description)
 
 ## GET /certificates/{isin}
@@ -42,6 +50,13 @@ To get all issuers: /issuers/*
     }
 ]
 ```
+### Examples
+
+```examples
+GET /certificates/*
+GET /certificates?issuer=leon
+GET /certificates
+```
 
 # certificates-tickers
 
@@ -70,6 +85,13 @@ Filters certificates based on their underlyings: returns certificates that have 
 ]
 ```
 
+### Examples
+
+```examples
+GET /certificates-tickers/*
+GET /certificates-tickers/*?tickers=NYSE:IONQ
+```
+
 # tickers
 
 ## GET /tickers/{name_prefix}
@@ -79,6 +101,12 @@ To get all tickers: /tickers/*
 [
   (Ticker, Stock Name)
 ]
+```
+### Examples
+
+```examples
+GET /tickers/*
+GET /tickers/ION
 ```
 
 # quotes

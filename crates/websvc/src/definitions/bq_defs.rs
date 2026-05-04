@@ -2,6 +2,7 @@
 pub static NODATA_FOUND: &str = "No data found";
 pub static HARD_ROW_LIMIT: usize = 1000;
 pub static STAGING_PREFIX: &str = "staging_";
+pub static COL_SEPARATOR: &str = "; "; // for joining multiple column values into a single string in the response
 
 // static vector of column names for details query, to avoid repetition and potential typos
 // vec!["isin", "issue", "name", "certificate_type_tags","memory_effect", "phase", "currency", "industry", "callable", "strike_date", "issue_date", "rembursement_date", "autocallable_date", "capital_barrier", "airbag", "risk_level", "coupon_amount", "coupon_recurrence", "coupon_type", "coupon_barrier", "leverage", "exchange_risk"],

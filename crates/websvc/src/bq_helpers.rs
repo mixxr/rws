@@ -12,7 +12,7 @@ impl Tables {
             _isin_ticker: format!("invcerts.ISINs.{}tickers", prefix), 
             _quote: format!("invcerts.ISINs.{}quotes", prefix),
             _details: format!("invcerts.ISINs.{}details", prefix),
-            _issuer: format!("invcerts.Issuers.{}issuer", prefix),
+            _issuer: format!("invcerts.ISINs.{}issuer", prefix),
         }
     }
 }
@@ -35,6 +35,9 @@ pub async fn query_bq(
 
     // 2. Prepare the query
     let cols = colnames.join(", ");
+
+    // remove empty conditions and trim whitespace
+    let conditions_in_and = conditions_in_and.into_iter().filter(|c| !c.trim().is_empty()).collect::<Vec<_>>();
 
     let where_clause = if conditions_in_and.is_empty() {
         "".to_string()
@@ -61,7 +64,7 @@ pub async fn query_bq(
             values.push(value);
         }
         // Join all values into a single CSV-like string
-        rows.push(values.join(", "));
+        rows.push(values.join(COL_SEPARATOR));
     }
 
     if rows.is_empty() {
