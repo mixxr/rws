@@ -50,6 +50,8 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init();
     // args → fallback to env var → fallback to default
+    let listen_addr = "0.0.0.0";
+
     let listen_port = args.listen_port
         .or_else(|| env::var("LISTEN_PORT").ok().and_then(|v| v.parse().ok()))
         .unwrap_or(8080);
@@ -81,7 +83,7 @@ async fn main() -> std::io::Result<()> {
     //     Ok(output_path_prefix) => &output_path_prefix.clone()
     // };
 
-    println!("Server running at http://127.0.0.1:{listen_port}");
+    log::info!("Server running at http://{listen_addr}:{listen_port}");
 
     HttpServer::new(move || {
         //let cors = Cors::default().allow_any_origin().send_wildcard();
@@ -98,7 +100,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_certs_and_tickers)
             .service(get_tickers_by_name_prefix)
     })
-    .bind(("0.0.0.0", listen_port))?
+    .bind((listen_addr, listen_port))?
     .run()
     .await
  
@@ -271,6 +273,12 @@ async fn get_tickers_by_name_prefix(
     path: web::Path<String>,
 ) -> impl Responder {
     let name_prefix = sanitize_input(&path.into_inner());
+    // name_prefix is in format (optionally) like 'exchange:ticker' or 'ticker' or '*'. In case it was exchange:ticker then we should filter on stock_google_finance_ticker column, otherwise we should filter on stock_name column. If name_prefix is '*' or empty then we should return all tickers and stock names
+    let column_to_filter = if name_prefix.contains(":") {
+        "stock_google_finance_ticker"
+    } else {
+        "stock_name"
+    };
     // obtain shared state
     let shared_state = data.lock().unwrap();
     // use BigQuery structure as below methods
@@ -278,7 +286,7 @@ async fn get_tickers_by_name_prefix(
     let where_condition = match name_prefix.as_str() {
         "" => "".into(),
         "*" => "".into(),
-        _ => format!("lower(stock_name) like '{}%'", name_prefix.to_lowercase()),
+        _ => format!("lower({}) like '{}%'", column_to_filter, name_prefix.to_lowercase()),
     };
     let rows = query_bq(
         &client, 
