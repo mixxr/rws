@@ -46,11 +46,23 @@ type SharedMap = Arc<Mutex<ContentSystem>>;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let args = Args::parse();
-    let path = std::env::current_dir().unwrap();
-    let log_level = "debug";
+    // let path = std::env::current_dir().unwrap();
 
-    println!("The current directory is {}", path.display());
-    println!("CLI Configuration: {:?}", args);
+    env_logger::init();
+    // args → fallback to env var → fallback to default
+    let listen_port = args.listen_port
+        .or_else(|| env::var("LISTEN_PORT").ok().and_then(|v| v.parse().ok()))
+        .unwrap_or(8080);
+
+    let is_staging = args.is_staging
+        .or_else(|| env::var("IS_STAGING").ok().and_then(|v| v.parse().ok()))
+        .unwrap_or(true);
+
+    let shared_state: SharedMap = Arc::new(Mutex::new(ContentSystem {
+        TABLE_NAMES: Tables::new(is_staging),
+    }));
+
+    println!("Configuration:\n- Listen Port: {listen_port}\n- Is Staging: {is_staging}\n- Log Level: {}", std::env::var("RUST_LOG").unwrap_or("ERROR".to_string()));
 
     // TODO: check trailing slash in path prefixes and add if not present
     // let isin_path_prefix = env::var("ISIN_PATH_PREFIX");
@@ -68,20 +80,6 @@ async fn main() -> std::io::Result<()> {
     //     Err(_e)=> &args.output_fp_prefix,
     //     Ok(output_path_prefix) => &output_path_prefix.clone()
     // };
-    let listen_port = env::var("LISTEN_PORT");
-    // check if is valid a\otherwise use default 8080
-    let listen_port = match listen_port {
-        Err(_e) => args.listen_port,
-        Ok(listen_port) => listen_port.parse::<u16>().unwrap_or(args.listen_port),
-    };
-    println!("ENV Configuration: {listen_port}");
-
-    env_logger::init_from_env(Env::default().default_filter_or(log_level));
-
-    let IS_STAGING = env::var("IS_STAGING").unwrap_or("true".to_string()).to_lowercase() == "true";
-    let shared_state: SharedMap = Arc::new(Mutex::new(ContentSystem {
-        TABLE_NAMES: Tables::new(IS_STAGING),
-    }));
 
     println!("Server running at http://127.0.0.1:{listen_port}");
 
@@ -219,7 +217,11 @@ async fn root() -> &'static str {
 
 // sanity check for input parameters: only allow alphanumeric characters, hyphens and underscores, and trim whitespace
 fn sanitize_input(input: &str) -> String {
-    input.trim().replace(|c: char| !c.is_alphanumeric() && c != '-' && c != '_', "")
+    input
+        .trim()
+        .chars()
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | ':' | '.'))
+        .collect()
 }
 
 
@@ -254,8 +256,8 @@ async fn get_issuers_by_name_prefix(
         ISSUER_COLUMNS.to_vec(), 
         &shared_state.TABLE_NAMES._issuer, 
         vec![&where_condition]).await;
-    println!("BigQuery project ID: {:?}", project_id);
-    println!("BigQuery rows: {:?}", rows);
+    log::debug!("BigQuery project ID: {:?}", project_id);
+    log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
@@ -284,8 +286,8 @@ async fn get_tickers_by_name_prefix(
         vec!["stock_google_finance_ticker", "stock_name"],
         &shared_state.TABLE_NAMES._isin_ticker, 
         vec![&where_condition]).await;
-    println!("BigQuery project ID: {:?}", project_id);
-    println!("BigQuery rows: {:?}", rows);
+    log::debug!("BigQuery project ID: {:?}", project_id);
+    log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
@@ -405,8 +407,8 @@ async fn get_certificates_by_issuer(
         DETAIL_COLUMNS.to_vec(),
         &shared_state.TABLE_NAMES._details,
         vec![&where_condition]).await;
-    println!("BigQuery project ID: {:?}", project_id);
-    println!("BigQuery rows: {:?}", rows);
+    log::debug!("BigQuery project ID: {:?}", project_id);
+    log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
@@ -437,8 +439,8 @@ async fn get_certificate_by_isin(
         DETAIL_COLUMNS.to_vec(),
         &shared_state.TABLE_NAMES._details, 
         vec![&where_condition]).await;
-    println!("BigQuery project ID: {:?}", project_id);
-    println!("BigQuery rows: {:?}", rows);
+    log::debug!("BigQuery project ID: {:?}", project_id);
+    log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
@@ -482,8 +484,8 @@ async fn get_certs_and_tickers(
         ISIN_TICKER_COLUMNS.to_vec(),
         &shared_state.TABLE_NAMES._isin_ticker, 
         vec![&where_condition, &filter_condition]).await;
-    println!("BigQuery project ID: {:?}", project_id);
-    println!("BigQuery rows: {:?}", rows);
+    log::debug!("BigQuery project ID: {:?}", project_id);
+    log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
@@ -500,8 +502,8 @@ async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<Strin
         ISIN_TICKER_COLUMNS.to_vec(),
         &shared_state.TABLE_NAMES._isin_ticker, 
         vec![]).await;
-    println!("BigQuery project ID: {:?}", project_id);
-    println!("BigQuery rows: {:?}", rows);
+    log::debug!("BigQuery project ID: {:?}", project_id);
+    log::debug!("BigQuery rows: {:?}", rows);
 
     actix_web::web::Json(rows)
 }

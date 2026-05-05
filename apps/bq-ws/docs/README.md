@@ -1,3 +1,9 @@
+# Configuration
+## ENV VARS
+- IS_STAGING
+- LISTEN_PORT
+- RUST_LOG
+
 # issuers
 
 ## GET /issuers/{name_prefix}
