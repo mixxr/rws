@@ -20,7 +20,7 @@ impl Tables {
 pub async fn init_bq_client() -> (Client, String) {
     let (config, project_id) = ClientConfig::new_with_auth().await.unwrap();
     let client = Client::new(config).await.unwrap();
-    println!("BigQuery Client initialized with project ID: {:?}", project_id);
+    log::debug!("BigQuery Client initialized with project ID: {:?}", project_id);
     (client, project_id.unwrap_or_default())
 }
 
@@ -31,7 +31,7 @@ pub async fn query_bq(
     tablename: &str, 
     conditions_in_and: Vec<&str>) -> Vec<String> {
 
-    println!("-- BigQuery Client project ID: {:?}", project_id);
+    log::debug!("-- BigQuery Client project ID: {:?}", project_id);
 
     // 2. Prepare the query
     let cols = colnames.join(", ");
@@ -48,7 +48,7 @@ pub async fn query_bq(
     let q = format!("SELECT {} FROM {}{} LIMIT {}", cols, tablename, where_clause, HARD_ROW_LIMIT);
     // TODO: sanification of inputs to prevent SQL injection, especially for conditions
 
-    println!("-- Query: {}", q);
+    log::debug!("-- Query: {}", q);
     
     let request = QueryRequest {
         query: q,

@@ -1,5 +1,5 @@
 use clap::*;
-use commons::definitions::globals::*; 
+//use commons::definitions::globals::*; 
 
 #[derive(Parser, Debug)]
 #[command(version, about = "Digital Posture IC Web Service", long_about = None)]

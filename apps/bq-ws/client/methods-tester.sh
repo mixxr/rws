@@ -3,7 +3,7 @@
 HOST=${THOST:-"localhost"}
 # test if TPORT env var exists, if not use default 8080
 PORT=${TPORT:-"8080"}
-echo "Testing $HOST:$PORT..."
+echo "Testing $HOST:$PORT...Bearer $SECRET_KEY"
 
 # read methods from ../docs/README.md
 # METHODS=$(grep -oP '(?<=### ).*' ../docs/README.md)
@@ -17,9 +17,11 @@ mapfile -t METHODS < <(
   ' ../docs/README.md
 )
 
-curl http://$HOST:$PORT/ -i
+curl http://$HOST:$PORT/ -i \
+    -H "Authorization: Bearer $SECRET_KEY"
 echo -e "\n"
-
+COUNTER=0
+spinner='|/-\'
 for METHOD in "${METHODS[@]}"; do
     # echo "Testing method: $METHOD"
 
@@ -29,7 +31,8 @@ for METHOD in "${METHODS[@]}"; do
 
     RESPONSE=$(curl -s -w "\n%{http_code}" -X $VERB "http://$HOST:$PORT$URL_PATH" \
         -H "Content-Type: application/json" \
-        -H "Accept: application/json")
+        -H "Accept: application/json" \
+        -H "Authorization: Bearer $SECRET_KEY")
     
     BODY=$(echo "$RESPONSE" | sed '$d')
     STATUS=$(echo "$RESPONSE" | tail -n 1)
@@ -39,7 +42,8 @@ for METHOD in "${METHODS[@]}"; do
     else
         echo -e "\033[1mFAILURE\033[0m: Status code $STATUS or response is '$BODY'"
     fi
-    echo -e "\n"
+    echo -e "${spinner:$COUNTER:1}"
+    COUNTER=$(( (COUNTER+1) % 4))
 
 done
 

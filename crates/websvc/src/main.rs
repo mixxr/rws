@@ -4,11 +4,11 @@ use std::collections::HashMap;
 
 use std::sync::{Arc, Mutex};
 use actix_cors::Cors;
-use actix_web::http::header;
-use actix_web::middleware::Logger;
+//use actix_web::http::header;
+use actix_web::middleware::{self, Logger};
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, web};
 //use serde::Serialize;
-use env_logger::Env;
+//use env_logger::Env;
 // use glob::glob_with;
 // use glob::MatchOptions;
 
@@ -20,11 +20,12 @@ use definitions::args::Args;
 use definitions::bq_defs::*;
 mod bq_helpers;
 use bq_helpers::*;
+mod svc_helpers;
 //use tracing::info;
 
 //use rand::prelude::*;
 
-use google_cloud_bigquery::client::{Client, ClientConfig};
+// use google_cloud_bigquery::client::{Client, ClientConfig};
 // use google_cloud_bigquery::http::job::query::QueryRequest;
 // use google_cloud_bigquery::query::row::Row;
 //use serde::Serialize;
@@ -37,7 +38,7 @@ use google_cloud_bigquery::client::{Client, ClientConfig};
  
 #[derive(Debug, Clone)]
 struct ContentSystem {
-    TABLE_NAMES: Tables,
+    table_names: Tables,
 }
 
 // Type alias for shared state
@@ -50,6 +51,15 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init();
     // args → fallback to env var → fallback to default
+    let secret_key = match env::var("SECRET_KEY") {
+        Ok(v) => v,
+        Err(_) => {
+            eprintln!("Error: SECRET_KEY environment variable is not set");
+            std::process::exit(1);
+        }
+    };
+    log::debug!("SECRET_KEY: {secret_key}");
+
     let listen_addr = "0.0.0.0";
 
     let listen_port = args.listen_port
@@ -61,7 +71,7 @@ async fn main() -> std::io::Result<()> {
         .unwrap_or(true);
 
     let shared_state: SharedMap = Arc::new(Mutex::new(ContentSystem {
-        TABLE_NAMES: Tables::new(is_staging),
+        table_names: Tables::new(is_staging),
     }));
 
     println!("Configuration:\n- Listen Port: {listen_port}\n- Is Staging: {is_staging}\n- Log Level: {}", std::env::var("RUST_LOG").unwrap_or("ERROR".to_string()));
@@ -89,8 +99,12 @@ async fn main() -> std::io::Result<()> {
         //let cors = Cors::default().allow_any_origin().send_wildcard();
         let cors = Cors::default().allow_any_origin();
         App::new()
+            .app_data(web::Data::new(svc_helpers::AppConfig {
+                    secret: secret_key.clone(),
+                }))
             .wrap(Logger::default())
             .wrap(cors)
+            .wrap(middleware::from_fn(svc_helpers::auth_middleware))
             .app_data(web::Data::new(shared_state.clone()))
             .service(root)
             .service(get_data)
@@ -246,6 +260,9 @@ async fn get_issuers_by_name_prefix(
     data: web::Data<SharedMap>,
     path: web::Path<String>,
 ) -> impl Responder {
+    // let config = req
+    //     .app_data::<actix_web::web::Data<ContentSystem>>()
+    //     .expect("ContentSystem missing");
     let name_prefix = sanitize_input(&path.into_inner());
     // obtain shared state
     let shared_state = data.lock().unwrap();
@@ -256,7 +273,7 @@ async fn get_issuers_by_name_prefix(
         &client, 
         &project_id,
         ISSUER_COLUMNS.to_vec(), 
-        &shared_state.TABLE_NAMES._issuer, 
+        &shared_state.table_names._issuer, 
         vec![&where_condition]).await;
     log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);
@@ -292,7 +309,7 @@ async fn get_tickers_by_name_prefix(
         &client, 
         &project_id,
         vec!["stock_google_finance_ticker", "stock_name"],
-        &shared_state.TABLE_NAMES._isin_ticker, 
+        &shared_state.table_names._isin_ticker, 
         vec![&where_condition]).await;
     log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);
@@ -413,7 +430,7 @@ async fn get_certificates_by_issuer(
         &client,
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        &shared_state.TABLE_NAMES._details,
+        &shared_state.table_names._details,
         vec![&where_condition]).await;
     log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);
@@ -445,7 +462,7 @@ async fn get_certificate_by_isin(
         &client, 
         &project_id,
         DETAIL_COLUMNS.to_vec(),
-        &shared_state.TABLE_NAMES._details, 
+        &shared_state.table_names._details, 
         vec![&where_condition]).await;
     log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);
@@ -490,7 +507,7 @@ async fn get_certs_and_tickers(
         &client, 
         &project_id,
         ISIN_TICKER_COLUMNS.to_vec(),
-        &shared_state.TABLE_NAMES._isin_ticker, 
+        &shared_state.table_names._isin_ticker, 
         vec![&where_condition, &filter_condition]).await;
     log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);
@@ -508,7 +525,7 @@ async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<Strin
         &client, 
         &project_id,
         ISIN_TICKER_COLUMNS.to_vec(),
-        &shared_state.TABLE_NAMES._isin_ticker, 
+        &shared_state.table_names._isin_ticker, 
         vec![]).await;
     log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);

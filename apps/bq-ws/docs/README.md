@@ -3,6 +3,10 @@
 - IS_STAGING
 - LISTEN_PORT
 - RUST_LOG
+- SECRET_KEY
+
+## Authorization
+- Authorization: Bearer MY_SECRET_KEY
 
 # issuers
 
@@ -61,7 +65,7 @@ GET /issuers/leon
 ```examples
 GET /certificates/*
 GET /certificates?issuer=leon
-GET /certificates
+GET /certificates/CH1550424647
 ```
 
 # certificates-tickers
@@ -95,7 +99,10 @@ Filters certificates based on their underlyings: returns certificates that have 
 
 ```examples
 GET /certificates-tickers/*
-GET /certificates-tickers/*?tickers=NYSE:IONQ
+GET /certificates-tickers/*?tickers=BIT:BMPS
+GET /certificates-tickers/DE000VG656A7
+GET /certificates-tickers/DE000VG656A7?tickers=BIT:BMPS
+GET /certificates-tickers/DE000VG656A7,NLBNPIT30309?tickers=BIT:BMPS,VIE:RBI
 ```
 
 # tickers
@@ -103,7 +110,8 @@ GET /certificates-tickers/*?tickers=NYSE:IONQ
 ## GET /tickers/{name_prefix}
 Returns ticker and stock name by stock name prefix.
 To get all tickers: /tickers/*
-Add the exchange (eg. NYSE, BIT) to retrieve via symbol: /tickers/{exchange}:{symbol}
+- Add the exchange (eg. NYSE, BIT) to retrieve via symbol: /tickers/{exchange}:{symbol}
+
 ### response
 ```json
 [
