@@ -1,7 +1,10 @@
 #!/bin/bash
 
-HOST="localhost"
-PORT="8080"
+HOST=${THOST:-"localhost"}
+# test if TPORT env var exists, if not use default 8080
+PORT=${TPORT:-"8080"}
+echo "Testing $HOST:$PORT..."
+
 # read methods from ../docs/README.md
 # METHODS=$(grep -oP '(?<=### ).*' ../docs/README.md)
 
@@ -21,7 +24,7 @@ for METHOD in "${METHODS[@]}"; do
     # echo "Testing method: $METHOD"
 
     read -r VERB URL_PATH <<< "$METHOD"
-    echo "Testing $VERB $URL_PATH"
+    echo "Testing $VERB  http://$HOST:$PORT$URL_PATH"
     # invoke method and test response status code is 200
 
     RESPONSE=$(curl -s -w "\n%{http_code}" -X $VERB "http://$HOST:$PORT$URL_PATH" \

@@ -278,7 +278,7 @@ async fn get_tickers_by_name_prefix(
     let where_condition = match name_prefix.as_str() {
         "" => "".into(),
         "*" => "".into(),
-        _ => format!("lower(stock_name) like '%{}%'", name_prefix.to_lowercase()),
+        _ => format!("lower(stock_name) like '{}%'", name_prefix.to_lowercase()),
     };
     let rows = query_bq(
         &client, 

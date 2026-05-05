@@ -101,7 +101,9 @@ GET /certificates-tickers/*?tickers=NYSE:IONQ
 # tickers
 
 ## GET /tickers/{name_prefix}
+Returns ticker and stock name by stock name prefix.
 To get all tickers: /tickers/*
+Add the exchange (eg. NYSE, BIT) to retrieve via symbol: /tickers/{exchange}:{symbol}
 ### response
 ```json
 [
@@ -112,7 +114,8 @@ To get all tickers: /tickers/*
 
 ```examples
 GET /tickers/*
-GET /tickers/ION
+GET /tickers/ion
+GET /tickers/NYSE:IONQ
 ```
 
 # quotes
