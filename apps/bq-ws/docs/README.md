@@ -30,6 +30,7 @@ GET /issuers/leon
 
 ## GET /certificates/{isin}
 ## GET /certificates?issuer={issuer}
+## GET /certificates?tickers={ticker1},...,{tickerN}
 
 ## response
 ```json
@@ -37,7 +38,7 @@ GET /issuers/leon
     {
     isin: String,
     issuer: String,
-    name: String, // the name of the certificate, try to add the underlying stock tickers to the name if possible
+    name: String, // the name of the certificate, try to add the underlying stock tickers 
     certificate_type_tags: String, // e.g. step-down, memory, cash collect, booster, etc.
     memory_effect: String, // yes, no, etc.
     phase: String, // rembursed, active, etc.
@@ -83,14 +84,6 @@ Filters certificates based on their underlyings: returns certificates that have 
     "stock_name": "string",
     "stock_google_finance_ticker": "string",
     "stock_isin": "string",
-    "stock_exchange": "string",
-    "stock_sector": "string",
-    "stock_industry": "string",
-    "stock_specializations": "string",
-    "stock_capitalization": "string",
-    "stock_pe": "string",
-    "stock_beta": "string",
-    "stock_volatility": "string"
   }
 ]
 ```

@@ -41,3 +41,10 @@ These credentials will be used by any library that requests Application Default 
 Quota project "<prj name>" was added to ADC which can be used by Google client libraries for billing and quota. Note that some services may still bill the project 
 owning the resource.
 ```
+
+## unexpected response
+```
+WARNING: 
+Cannot find a quota project to add to ADC. You might receive a "quota exceeded" or "API not enabled" error. Run $ gcloud auth application-default set-quota-project to add a quota project.
+```
+- in this case please run: `gcloud auth application-default set-quota-project <project name>`

@@ -17,6 +17,18 @@ impl Tables {
     }
 }
 
+pub fn like_condition(column: &str, value: &str, use_lower: bool) -> String {
+    if value.trim().is_empty() {
+        String::new()
+    } else {
+        if use_lower {
+            format!("lower({}) like '%{}%'", column, value.to_lowercase())
+        } else {
+            format!("{} like '%{}%'", column, value)
+        }
+    }
+}
+
 pub async fn init_bq_client() -> (Client, String) {
     let (config, project_id) = ClientConfig::new_with_auth().await.unwrap();
     let client = Client::new(config).await.unwrap();

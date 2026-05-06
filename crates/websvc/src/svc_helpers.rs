@@ -3,6 +3,7 @@ use actix_web::{
     dev::{ServiceRequest, ServiceResponse},
     middleware::Next,
     Error, HttpResponse,
+    http::Method
 };
 
 pub struct AppConfig {
@@ -16,10 +17,14 @@ pub async fn auth_middleware<B>(
 where
     B: MessageBody + 'static,
 {
+    println!("method {:?} {:?}", req.method(), req.headers().get("Authorization"));
+    if req.method() == Method::OPTIONS {
+        let res = next.call(req).await?;
+        return Ok(res.map_into_boxed_body());
+    }
     let config = req
         .app_data::<actix_web::web::Data<AppConfig>>()
         .expect("AppConfig missing");
-
     let authorized = req
         .headers()
         .get("Authorization")

@@ -96,14 +96,20 @@ async fn main() -> std::io::Result<()> {
     log::info!("Server running at http://{listen_addr}:{listen_port}");
 
     HttpServer::new(move || {
-        //let cors = Cors::default().allow_any_origin().send_wildcard();
-        let cors = Cors::default().allow_any_origin();
+        // let cors = Cors::default().allow_any_origin().send_wildcard();
+        // let cors = Cors::default().allow_any_origin();
         App::new()
             .app_data(web::Data::new(svc_helpers::AppConfig {
                     secret: secret_key.clone(),
                 }))
             .wrap(Logger::default())
-            .wrap(cors)
+            // .wrap(cors)
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header()
+            )
             .wrap(middleware::from_fn(svc_helpers::auth_middleware))
             .app_data(web::Data::new(shared_state.clone()))
             .service(root)
@@ -113,6 +119,13 @@ async fn main() -> std::io::Result<()> {
             .service(get_certificate_by_isin)
             .service(get_certs_and_tickers)
             .service(get_tickers_by_name_prefix)
+            // .default_service(web::route().method(actix_web::http::Method::OPTIONS).to(|| async {
+            //     HttpResponse::Ok()
+            //     .insert_header(("Access-Control-Allow-Origin", "*"))
+            //     .insert_header(("Access-Control-Allow-Methods", "GET, POST, OPTIONS"))
+            //     .insert_header(("Access-Control-Allow-Headers", "Authorization, Content-Type"))
+            //     .finish()
+            // }))
     })
     .bind((listen_addr, listen_port))?
     .run()
@@ -421,17 +434,23 @@ async fn get_certificates_by_issuer(
 ) -> impl Responder {
     let issuer = query.get("issuer").unwrap_or(&"".into()).to_string();
     let issuer = sanitize_input(&issuer);
+    let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
+    let tickers_csv_list = tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");
     // obtain shared state
     let shared_state = data.lock().unwrap();
     // create a vector of dummy certificates for testing. Each entry should be in format <isin>,<certificate name>,<ask>,<bid>,<currency>,<obsdatetime>
     let (client, project_id) = init_bq_client().await;
-    let where_condition = format!("lower(issuer) like '%{}%'", issuer.to_lowercase());
+    let i_where_condition = like_condition("issuer", &issuer, true);
+    let ts_where_condition = match tickers_csv_list.as_str() {
+        "" => "".into(),
+        _ => format!("isin in (SELECT certificate_isin FROM {} WHERE stock_google_finance_ticker in ('{}'))", &shared_state.table_names._isin_ticker, tickers_csv_list.replace(",", "','"))
+    };
     let rows = query_bq(
         &client,
         &project_id,
         DETAIL_COLUMNS.to_vec(),
         &shared_state.table_names._details,
-        vec![&where_condition]).await;
+        vec![&i_where_condition, &ts_where_condition]).await;
     
     log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
@@ -520,8 +539,8 @@ async fn get_certs_and_tickers(
 #[get("/health")]
 async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
     let shared_state = data.lock().unwrap();
-    log::debug!("BigQuery project ID: {:?}", project_id);
     let (client, project_id) = init_bq_client().await;
+    log::debug!("BigQuery project ID: {:?}", project_id);
     let rows = query_bq(
         &client, 
         &project_id,

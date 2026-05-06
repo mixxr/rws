@@ -46,7 +46,8 @@ pub static ISIN_TICKER_COLUMNS: &'static [&str] = &[
     "certificate_isin",
     "certificate_name",
     "stock_google_finance_ticker",
-    "stock_name"
+    "stock_name",
+    "stock_isin"
 ];
 
 
