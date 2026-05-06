@@ -275,7 +275,7 @@ async fn get_issuers_by_name_prefix(
         ISSUER_COLUMNS.to_vec(), 
         &shared_state.table_names._issuer, 
         vec![&where_condition]).await;
-    log::debug!("BigQuery project ID: {:?}", project_id);
+    
     log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
@@ -311,7 +311,7 @@ async fn get_tickers_by_name_prefix(
         vec!["stock_google_finance_ticker", "stock_name"],
         &shared_state.table_names._isin_ticker, 
         vec![&where_condition]).await;
-    log::debug!("BigQuery project ID: {:?}", project_id);
+    
     log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
@@ -432,7 +432,7 @@ async fn get_certificates_by_issuer(
         DETAIL_COLUMNS.to_vec(),
         &shared_state.table_names._details,
         vec![&where_condition]).await;
-    log::debug!("BigQuery project ID: {:?}", project_id);
+    
     log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
@@ -464,7 +464,7 @@ async fn get_certificate_by_isin(
         DETAIL_COLUMNS.to_vec(),
         &shared_state.table_names._details, 
         vec![&where_condition]).await;
-    log::debug!("BigQuery project ID: {:?}", project_id);
+    
     log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
@@ -509,7 +509,7 @@ async fn get_certs_and_tickers(
         ISIN_TICKER_COLUMNS.to_vec(),
         &shared_state.table_names._isin_ticker, 
         vec![&where_condition, &filter_condition]).await;
-    log::debug!("BigQuery project ID: {:?}", project_id);
+    
     log::debug!("BigQuery rows: {:?}", rows);
     HttpResponse::Ok()
         .content_type("application/json")
@@ -520,6 +520,7 @@ async fn get_certs_and_tickers(
 #[get("/health")]
 async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
     let shared_state = data.lock().unwrap();
+    log::debug!("BigQuery project ID: {:?}", project_id);
     let (client, project_id) = init_bq_client().await;
     let rows = query_bq(
         &client, 
@@ -527,7 +528,6 @@ async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<Strin
         ISIN_TICKER_COLUMNS.to_vec(),
         &shared_state.table_names._isin_ticker, 
         vec![]).await;
-    log::debug!("BigQuery project ID: {:?}", project_id);
     log::debug!("BigQuery rows: {:?}", rows);
 
     actix_web::web::Json(rows)
