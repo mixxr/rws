@@ -15,7 +15,7 @@ To get all issuers: /issuers/*
 ## response
 ```csv
 [
-    {issuer_name, specialization, geo_region, issuer_rating_description, issuer_rating_class}
+    {issuer_name; specialization; geo_region; issuer_rating_description; issuer_rating_class}
 ]
 ```
 ### Examples
@@ -111,7 +111,7 @@ To get all tickers: /tickers/*
 ### response
 ```json
 [
-  (Ticker, Stock Name)
+  (Ticker; Stock Name)
 ]
 ```
 ### Examples
@@ -133,9 +133,9 @@ Returns cumulative data
 
 ### response
 ```json
-[
-  (ISIN, Issuer, Name, Coupon, Ex-Date, Ask, Bid, Growth_1D ,Growth_3Ds, Growth_1W, Growth_2W, Growth_4W)
-]
+[vec(
+  "ISIN; Issuer; Name; Coupon; Ex-Date; Ask; Bid; Growth_1D; Growth_3Ds; Growth_1W; Growth_2W; Growth_4W"
+)]
 ```
 ### Examples
 

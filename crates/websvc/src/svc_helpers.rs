@@ -5,9 +5,49 @@ use actix_web::{
     Error, HttpResponse,
     http::Method
 };
+use std::sync::{Arc, Mutex};
+use crate::definitions;
 
 pub struct AppConfig {
     pub secret: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct Tables {
+    pub _isin_ticker: String,
+    pub _quote: String,
+    pub _details: String,
+    pub _issuer: String,
+}
+
+impl Tables {
+    pub fn new(is_staging: bool) -> Self {
+        let prefix = if is_staging { definitions::bq_defs::STAGING_PREFIX } else { "" };
+
+        Self {
+            _isin_ticker: format!("invcerts.ISINs.{}tickers", prefix), 
+            _quote: format!("invcerts.ISINs.{}quotes", prefix),
+            _details: format!("invcerts.ISINs.{}details", prefix),
+            _issuer: format!("invcerts.ISINs.{}issuer", prefix),
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct ContentSystem {
+    pub table_names: Tables,
+}
+
+// Type alias for shared state
+pub type SharedMap = Arc<Mutex<ContentSystem>>;
+
+// sanity check for input parameters: only allow alphanumeric characters, hyphens and underscores, and trim whitespace
+pub fn sanitize_input(input: &str) -> String {
+    input
+        .trim()
+        .chars()
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | ':' | '.'))
+        .collect()
 }
 
 pub async fn auth_middleware<B>(

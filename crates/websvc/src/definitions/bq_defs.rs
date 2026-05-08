@@ -53,14 +53,24 @@ pub static ISIN_TICKER_COLUMNS: &'static [&str] = &[
     "stock_sector"
 ];
 
+// static vector of cols for certificate_growth
+// (ISIN, Issuer, Name, Coupon, Ex-Date, Ask, Bid, Growth_1D ,Growth_3Ds, Growth_1W, Growth_2W, Growth_4W)
+pub static CERTIFICATE_GROWTH_COLUMNS: &'static [&str] = &[
+    "isin",
+    "issuer",
+    "name",
+    "coupon_amount",
+    "coupon_recurrence",
+    "coupon_next_ex_date",
+    "ask",
+    "bid",
+    "growth_1d",
+    "growth_3d",
+    "growth_1w",
+    "growth_2w",
+    "growth_4w"
+];
 
- #[derive(Debug, Clone)]
-pub struct Tables {
-    pub _isin_ticker: String,
-    pub _quote: String,
-    pub _details: String,
-    pub _issuer: String,
-}
 
 // pub static TABLES: Tables = Tables {
 //     _ISIN_TICKER: "invcerts.ISINs.isin_ticker",

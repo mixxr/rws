@@ -4,19 +4,6 @@ use google_cloud_bigquery::query::row::Row;
 
 use crate::definitions::bq_defs::*;
 
-impl Tables {
-    pub fn new(is_staging: bool) -> Self {
-        let prefix = if is_staging { STAGING_PREFIX } else { "" };
-
-        Self {
-            _isin_ticker: format!("invcerts.ISINs.{}tickers", prefix), 
-            _quote: format!("invcerts.ISINs.{}quotes", prefix),
-            _details: format!("invcerts.ISINs.{}details", prefix),
-            _issuer: format!("invcerts.ISINs.{}issuer", prefix),
-        }
-    }
-}
-
 pub fn like_condition(column: &str, value: &str, use_lower: bool) -> String {
     if value.trim().is_empty() {
         String::new()
