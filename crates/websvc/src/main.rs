@@ -406,18 +406,36 @@ async fn get_tickers_by_name_prefix(
 //         .json(sources)
 // }
 #[get("/test")]
-async fn get_test() -> impl Responder {
+async fn get_test(
+    query: web::Query<HashMap<String, String>>,
+) -> impl Responder {
+    let ask = query.get("ask").unwrap_or(&"100".into()).to_string();
+    let ask = sanitize_input(&ask);
+    let where1 = format!(
+        r#"NR==1 || ($6 > {} && $8 > 0)"#,
+        ask
+    );
     let output = Command::new("awk")
         .arg("-F;")
-        .arg(r#"NR==1 || $6 > 100 || $8 > 0"#)
+        .arg(&where1)
         .arg("certs_growth.csv")
         .output()
         .expect("failed to execute awk");
 
-    println!("{}", String::from_utf8_lossy(&output.stdout));
-        HttpResponse::Ok()
-            .content_type("application/json")
-            .json(vec!["test1", "test2", "test3"])
+    // Convert stdout -> String
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    // Convert lines -> Vec<String>
+    let rows: Vec<String> = stdout
+        .lines()
+        .map(|line| line.to_string())
+        .collect();
+
+    println!("RESULTS for {ask}:{}", rows.len());
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(rows)
 }
 
 #[get("/health")]
