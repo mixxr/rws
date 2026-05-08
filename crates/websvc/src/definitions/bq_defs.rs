@@ -25,6 +25,7 @@ pub static DETAIL_COLUMNS: &'static [&str] = &[
     "risk_level",
     "coupon_amount",
     "coupon_recurrence",
+    "coupon_next_ex_date",
     "coupon_type",
     "coupon_barrier",
     "leverage",
@@ -47,7 +48,9 @@ pub static ISIN_TICKER_COLUMNS: &'static [&str] = &[
     "certificate_name",
     "stock_google_finance_ticker",
     "stock_name",
-    "stock_isin"
+    "stock_isin",
+    "stock_industry",
+    "stock_sector"
 ];
 
 

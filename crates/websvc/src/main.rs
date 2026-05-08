@@ -535,6 +535,10 @@ async fn get_certs_and_tickers(
         .json(rows)
 }
 
+#[get("/certificates-growth")]
+async fn get_growth((data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
+    
+}
 
 #[get("/health")]
 async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
