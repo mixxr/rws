@@ -14,4 +14,7 @@ pub struct Args {
 
     #[arg(short = 's', long)]
     pub is_staging: Option<bool>,
+
+    #[arg(short = 't', long)]
+    pub is_test_mode: Option<bool>,
 }

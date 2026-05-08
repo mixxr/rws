@@ -1,6 +1,7 @@
 use std::{env};
 //use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
+use std::process::Command;
 
 
 use actix_cors::Cors;
@@ -43,6 +44,10 @@ async fn main() -> std::io::Result<()> {
 
     let listen_addr = "0.0.0.0";
 
+    let is_test_mode = args.is_test_mode
+        .or_else(|| env::var("IS_TEST_MODE").ok().and_then(|v| v.parse().ok()))
+        .unwrap_or(false);
+
     let listen_port = args.listen_port
         .or_else(|| env::var("LISTEN_PORT").ok().and_then(|v| v.parse().ok()))
         .unwrap_or(8080);
@@ -55,7 +60,7 @@ async fn main() -> std::io::Result<()> {
         table_names: Tables::new(is_staging),
     }));
 
-    println!("Configuration:\n- Listen Port: {listen_port}\n- Is Staging: {is_staging}\n- Log Level: {}", std::env::var("RUST_LOG").unwrap_or("ERROR".to_string()));
+    println!("Configuration:\n- Listen Port: {listen_port}\n- Is Staging: {is_staging}\n- Is Test Mode: {is_test_mode}\n- Log Level: {}", std::env::var("RUST_LOG").unwrap_or("ERROR".to_string()));
 
     // TODO: check trailing slash in path prefixes and add if not present
     // let isin_path_prefix = env::var("ISIN_PATH_PREFIX");
@@ -82,6 +87,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(svc_helpers::AppConfig {
                     secret: secret_key.clone(),
+                    is_test_mode: is_test_mode,
                 }))
             .wrap(Logger::default())
             // .wrap(cors)
@@ -101,6 +107,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_certs_and_tickers)
             .service(get_tickers_by_name_prefix)
             .service(get_growth)
+            .service(get_test)
             // .default_service(web::route().method(actix_web::http::Method::OPTIONS).to(|| async {
             //     HttpResponse::Ok()
             //     .insert_header(("Access-Control-Allow-Origin", "*"))
@@ -414,7 +421,7 @@ async fn get_test() -> impl Responder {
 }
 
 #[get("/health")]
-async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<String>> {
+async fn get_data(data: web::Data<SharedMap>)  -> impl Responder  {
     let shared_state = data.lock().unwrap();
     let (client, project_id) = init_bq_client().await;
     log::debug!("BigQuery project ID: {:?}", project_id);
@@ -426,7 +433,9 @@ async fn get_data(data: web::Data<SharedMap>) ->  actix_web::web::Json<Vec<Strin
         vec![]).await;
     log::debug!("BigQuery rows: {:?}", rows);
 
-    actix_web::web::Json(rows)
+            HttpResponse::Ok()
+            .content_type("application/json")
+            .json(vec!["counter", &rows.len().to_string()])
 }
 
 // fn read_file_lines(path: &str, isin: &str) -> io::Result<Vec<String>> {

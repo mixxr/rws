@@ -10,6 +10,7 @@ use crate::definitions;
 
 pub struct AppConfig {
     pub secret: String,
+    pub is_test_mode: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -65,6 +66,13 @@ where
     let config = req
         .app_data::<actix_web::web::Data<AppConfig>>()
         .expect("AppConfig missing");
+    
+    // test if test mode is enabled, if so skip authentication
+    if config.is_test_mode {
+        log::debug!("Test mode enabled, skipping authentication");
+        let res = next.call(req).await?;
+        return Ok(res.map_into_boxed_body());
+    }
     let authorized = req
         .headers()
         .get("Authorization")
