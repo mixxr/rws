@@ -109,6 +109,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_tickers_by_name_prefix)
             .service(get_growth)
             .service(get_test)
+            .service(get_test_record)
             // .default_service(web::route().method(actix_web::http::Method::OPTIONS).to(|| async {
             //     HttpResponse::Ok()
             //     .insert_header(("Access-Control-Allow-Origin", "*"))
