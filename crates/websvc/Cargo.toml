@@ -14,3 +14,4 @@ clap = { version = "4.5.54", features = ["derive"] }
 actix-cors = "0.7.1"
 google-cloud-bigquery = { version="0.15.0", features = ["auth"] }
 log = "0.4.29"
+csv = "1.4.0"
