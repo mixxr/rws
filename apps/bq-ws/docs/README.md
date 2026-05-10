@@ -1,14 +1,16 @@
 # Configuration
 ## ENV VARS
 - IS_STAGING
+- IS_TEST_MODE
 - LISTEN_PORT
 - RUST_LOG
 - SECRET_KEY
 
 ## AUTHORIZATION
 - Authorization: Bearer MY_SECRET_KEY
+- bypassed if `IS_TEST_MODE` is `true`
 
-# ISSUERS
+# ISSUERS (File)
 
 ## GET /issuers/{name_prefix}
 To get all issuers: /issuers/*
@@ -26,7 +28,7 @@ GET /issuers/leon
 ```
 
 
-# CERTIFICATES (description)
+# CERTIFICATES
 
 ## GET /certificates/{isin}
 ## GET /certificates?issuer={issuer}

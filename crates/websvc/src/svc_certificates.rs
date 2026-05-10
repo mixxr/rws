@@ -42,6 +42,7 @@ pub async fn get_certificates_by_issuer(
 }
 
 #[get("/certificates/{isin}")]
+// TODO: file based implementation
 /* returns a specific certificate by ISIN */
 pub async fn get_certificate_by_isin(
     data: web::Data<SharedMap>,
@@ -119,7 +120,7 @@ pub async fn get_certs_and_tickers(
 }
 
 #[get("/certificates-growth")]
-/*## GET /certificates-growth?growth1={[up|down]}&parvalue={[over|below]}
+/*## GET /certificates-growth?{growth1=[up|down]]}&{parvalue=[over|below]}
 Returns cumulative data
 - growth1d
 - parvalue: if it is over or below the par value
@@ -145,55 +146,96 @@ pub async fn get_growth(
         "below" => "ask<100".to_string(),
         _ => "".to_string()
     };
-    let shared_state = data.lock().unwrap();
-    // first row is the header
-    let (client, project_id) = bq_helpers::init_bq_client().await;
-    let rows = bq_helpers::query_bq(
-        &client, 
-        &project_id,
-        bq_defs::CERTIFICATE_GROWTH_COLUMNS.to_vec(),
-        &shared_state.table_names._isin_ticker, 
-        vec![&where_condition1, &where_condition2]).await;
+    // let shared_state = data.lock().unwrap();
+    // // first row is the header
+    // let (client, project_id) = bq_helpers::init_bq_client().await;
+    // let rows = bq_helpers::query_bq(
+    //     &client, 
+    //     &project_id,
+    //     bq_defs::CERTIFICATE_GROWTH_COLUMNS.to_vec(),
+    //     &shared_state.table_names._isin_ticker, 
+    //     vec![&where_condition1, &where_condition2]).await;
     
-    log::debug!("BigQuery rows: {:?}", rows);
+    // log::debug!("BigQuery rows: {:?}", rows);
+    // HttpResponse::Ok()
+    //     .content_type("application/json")
+    //     .json(rows)
+    // Parse to f64
+    // let ask_threshold: f64 = parvalue.parse().unwrap_or(0.0);
+    // let q1d_threshold: f64 = growth1d.parse().unwrap_or(-100.0);
+
+    // Final rows
+    let mut rows: Vec<String> = Vec::new();
+
+    // CSV reader
+    let mut rdr = match csv::ReaderBuilder::new()
+        .delimiter(b';')
+        .from_path("certs_growth.csv")
+    {
+        Ok(r) => r,
+        Err(e) => {
+            log::error!("Error reading CSV file: {}", e);
+            return HttpResponse::Ok()
+                .content_type("application/json")
+                .json(vec!["No Data Available".to_string()]);
+        }
+    };
+
+    // Add header
+    if let Ok(headers) = rdr.headers() {
+        rows.push(
+            headers.iter()
+                .collect::<Vec<_>>()
+                .join(";")
+        );
+    }
+
+    // Read records
+    for result in rdr.records() {
+
+        let record = match result {
+            Ok(r) => r,
+            Err(_) => continue,
+        };
+
+        // // Ensure enough columns
+        // if record.len() < 8 {
+        //     continue;
+        // }
+
+        if !where_condition1.is_empty() {
+            let growth1d_value: f64 = record[7].parse().unwrap_or(0.0);
+            if where_condition1.contains("growth_1d>0") && growth1d_value <= 0.0 {
+                continue; // Skip if growth1d is not up
+            }
+            if where_condition1.contains("growth_1d<0") && growth1d_value >= 0.0 {
+                continue; // Skip if growth1d is not down
+            }
+        }
+        if !where_condition2.is_empty() {
+            let ask_value: f64 = record[5].parse().unwrap_or(0.0);
+            if where_condition2.contains("ask>=100") && ask_value < 100.0 {
+                continue; // Skip if ask is not over par value
+            }
+            if where_condition2.contains("ask<100") && ask_value >= 100.0 {
+                continue; // Skip if ask is not below par value
+            }
+        }
+        
+        rows.push(
+            record.iter()
+                .collect::<Vec<_>>()
+                .join(";")
+        );
+    }
+
+    println!("RESULTS for {parvalue} and {growth1d}: {}", rows.len());
+
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)
 }
 
-pub async fn get_growth_static(
-    data: web::Data<SharedMap>,
-    query: web::Query<HashMap<String, String>>
-) ->  impl Responder {
-    let growth1d = query.get("growth1d").unwrap_or(&"".into()).to_string();
-    let growth1d = sanitize_input(&growth1d);
-    let parvalue = query.get("parvalue").unwrap_or(&"".into()).to_string();
-    let parvalue = sanitize_input(&parvalue);
 
-    let where_condition1 = match growth1d.as_str() {
-        "up" => "growth_1d>0".to_string(),
-        "down" => "growth_1d<0".to_string(),
-        _ => "".to_string()
-    };
-    let where_condition2 = match parvalue.as_str() {
-        "over" => "ask>=100".to_string(),
-        "below" => "ask<100".to_string(),
-        _ => "".to_string()
-    };
-    let shared_state = data.lock().unwrap();
-    // first row is the header
-    let (client, project_id) = bq_helpers::init_bq_client().await;
-    let rows = bq_helpers::query_bq(
-        &client, 
-        &project_id,
-        bq_defs::CERTIFICATE_GROWTH_COLUMNS.to_vec(),
-        &shared_state.table_names._isin_ticker, 
-        vec![&where_condition1, &where_condition2]).await;
-    
-    log::debug!("BigQuery rows: {:?}", rows);
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(rows)
-}
 
 

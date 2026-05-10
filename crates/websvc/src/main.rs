@@ -13,7 +13,6 @@ use std::sync::{Arc, Mutex};
 // mod ic_csv;
 // use ic_csv::*;
 use clap::Parser;
-use csv::ReaderBuilder;
 
 mod definitions;
 mod bq_helpers;
@@ -108,8 +107,6 @@ async fn main() -> std::io::Result<()> {
             .service(get_certs_and_tickers)
             .service(get_tickers_by_name_prefix)
             .service(get_growth)
-            .service(get_test)
-            .service(get_test_record)
             // .default_service(web::route().method(actix_web::http::Method::OPTIONS).to(|| async {
             //     HttpResponse::Ok()
             //     .insert_header(("Access-Control-Allow-Origin", "*"))
@@ -434,93 +431,6 @@ async fn get_test(
         .collect();
 
     println!("RESULTS for {ask}:{}", rows.len());
-
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .json(rows)
-}
-
-#[get("/test2")]
-async fn get_test_record(
-    query: web::Query<HashMap<String, String>>,
-) -> impl Responder {
-
-    // Query parameter
-    let ask = query.get("ask").unwrap_or(&"100".into()).to_string();
-
-    // Optional sanitize
-    let ask = sanitize_input(&ask);
-
-    // Parse to f64
-    let ask_threshold: f64 = ask.parse().unwrap_or(100.0);
-
-    // Final rows
-    let mut rows: Vec<String> = Vec::new();
-
-    // CSV reader
-    let mut rdr = match ReaderBuilder::new()
-        .delimiter(b';')
-        .from_path("certs_growth.csv")
-    {
-        Ok(r) => r,
-        Err(e) => {
-            return HttpResponse::InternalServerError()
-                .body(format!("CSV error: {}", e));
-        }
-    };
-
-    // Add header
-    if let Ok(headers) = rdr.headers() {
-        rows.push(
-            headers.iter()
-                .collect::<Vec<_>>()
-                .join(";")
-        );
-    }
-
-    // Read records
-    for result in rdr.records() {
-
-        let record = match result {
-            Ok(r) => r,
-            Err(_) => continue,
-        };
-
-        // Ensure enough columns
-        if record.len() < 8 {
-            continue;
-        }
-
-        let ask_value: f64 = record[5].parse().unwrap_or(0.0);
-        let growth1d_value: f64 = record[7].parse().unwrap_or(0.0);
-
-        // // Ask = column 5
-        // let ask_value: f64 = record
-        //     .get(5)
-        //     .unwrap_or("0")
-        //     .parse()
-        //     .unwrap_or(0.0);
-
-        // // Growth_1D = column 7
-        // let growth_value: f64 = record
-        //     .get(7)
-        //     .unwrap_or("0")
-        //     .parse()
-        //     .unwrap_or(0.0);
-
-        // Filter:
-        // Ask > threshold AND Growth_1D > 0
-        if ask_value > ask_threshold && growth1d_value > 0.0 {
-
-            rows.push(
-                record.iter()
-                    .collect::<Vec<_>>()
-                    .join(";")
-            );
-        }
-    }
-
-    println!("RESULTS for {ask}: {}", rows.len());
 
     HttpResponse::Ok()
         .content_type("application/json")
