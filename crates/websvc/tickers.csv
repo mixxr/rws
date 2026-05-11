@@ -114,3 +114,87 @@ DEAUTO10009;Electric & Combustion Basket;Tesla;NASDAQ:TSLA;US88160R1014;Electric
 DEAUTO10009;Electric & Combustion Basket;BMW;ETR:BMW;DE0005190003;Automotive;Consumer Cyclical
 ITAUTO10010;NextGen Mobility Basket;Stellantis;BIT:STLAM;NL00150001Q9;Automotive;Consumer Cyclical
 ITAUTO10010;NextGen Mobility Basket;Ford;NYSE:F;US3453708600;Automotive;Consumer Cyclical
+DEAI10015;AI Infrastructure Basket;NVIDIA;NASDAQ:NVDA;US67066G1040;Semiconductors;Technology
+DEAI10015;AI Infrastructure Basket;Broadcom;NASDAQ:AVGO;US11135F1012;Semiconductors;Technology
+DEAI10015;AI Infrastructure Basket;ASML;AMS:ASML;NL0010273215;Semiconductor Equipment;Technology
+DEAI10015;AI Infrastructure Basket;Microsoft;NASDAQ:MSFT;US5949181045;Cloud Software;Technology
+ITAI10016;AI Software Leaders Basket;Salesforce;NYSE:CRM;US79466L3024;CRM Software;Technology
+ITAI10016;AI Software Leaders Basket;Oracle;NYSE:ORCL;US68389X1054;Database Software;Technology
+ITAI10016;AI Software Leaders Basket;SAP;ETR:SAP;DE0007164600;Enterprise Software;Technology
+ITAI10016;AI Software Leaders Basket;Alphabet;NASDAQ:GOOGL;US02079K3059;Internet;Technology
+NLSEM10017;Advanced Chip Fabrication Basket;TSMC;NYSE:TSM;US8740391003;Semiconductors;Technology
+NLSEM10017;Advanced Chip Fabrication Basket;Intel;NASDAQ:INTC;US4581401001;Semiconductors;Technology
+NLSEM10017;Advanced Chip Fabrication Basket;AMD;NASDAQ:AMD;US0079031078;Semiconductors;Technology
+NLSEM10017;Advanced Chip Fabrication Basket;Infineon;ETR:IFX;DE0006231004;Semiconductors;Technology
+CHDEF10018;NATO Defense Basket;Lockheed Martin;NYSE:LMT;US5398301094;Aerospace & Defense;Industrials
+CHDEF10018;NATO Defense Basket;RTX Corporation;NYSE:RTX;US75513E1010;Aerospace & Defense;Industrials
+CHDEF10018;NATO Defense Basket;Leonardo;BIT:LDO;IT0003856405;Aerospace & Defense;Industrials
+CHDEF10018;NATO Defense Basket;Thales;EPA:HO;FR0000121329;Defense Electronics;Industrials
+DEAUTO10019;European EV Basket;Tesla;NASDAQ:TSLA;US88160R1014;Electric Vehicles;Automotive
+DEAUTO10019;European EV Basket;Stellantis;BIT:STLAM;NL00150001Q9;Automotive;Consumer Cyclical
+DEAUTO10019;European EV Basket;Volkswagen;ETR:VOW3;DE0007664039;Automotive;Consumer Cyclical
+ITAUTO10020;Luxury Automotive Basket;BMW;ETR:BMW;DE0005190003;Automotive;Consumer Cyclical
+ITAUTO10020;Luxury Automotive Basket;Mercedes-Benz Group;ETR:MBG;DE0007100000;Automotive;Consumer Cyclical
+ITAUTO10020;Luxury Automotive Basket;Ferrari;BIT:RACE;NL0011585146;Luxury Automotive;Consumer Cyclical
+NLCLOUD10021;Cloud Computing Basket;Microsoft;NASDAQ:MSFT;US5949181045;Cloud Software;Technology
+NLCLOUD10021;Cloud Computing Basket;Amazon;NASDAQ:AMZN;US0231351067;Cloud Services;Technology
+NLCLOUD10021;Cloud Computing Basket;Oracle;NYSE:ORCL;US68389X1054;Database Software;Technology
+NLCLOUD10021;Cloud Computing Basket;Salesforce;NYSE:CRM;US79466L3024;CRM Software;Technology
+CHQNT10022;Quantum AI Basket;IBM;NYSE:IBM;US4592001014;Quantum Research;Technology
+CHQNT10022;Quantum AI Basket;Rigetti Computing;NASDAQ:RGTI;US76655K1034;Quantum Computing;Technology
+CHQNT10022;Quantum AI Basket;Alphabet;NASDAQ:GOOGL;US02079K3059;Quantum Research;Technology
+DEBANK10023;Euro Banking Stability Basket;BNP Paribas;EPA:BNP;FR0000131104;Banks;Financial Services
+DEBANK10023;Euro Banking Stability Basket;UBS;SWX:UBSG;CH0244767585;Capital Markets;Financial Services
+DEBANK10023;Euro Banking Stability Basket;Deutsche Bank;ETR:DBK;DE0005140008;Banks;Financial Services
+ITBANK10024;Italian Banking Basket;Banca MPS;BIT:BMPS;IT0005508921;Banks;Financial Services
+ITBANK10024;Italian Banking Basket;UniCredit;BIT:UCG;IT0005239360;Banks;Financial Services
+ITBANK10024;Italian Banking Basket;Intesa Sanpaolo;BIT:ISP;IT0000072618;Banks;Financial Services
+NLTECH10025;Big Tech Momentum Basket;Apple;NASDAQ:AAPL;US0378331005;Consumer Electronics;Technology
+NLTECH10025;Big Tech Momentum Basket;Microsoft;NASDAQ:MSFT;US5949181045;Software;Technology
+NLTECH10025;Big Tech Momentum Basket;NVIDIA;NASDAQ:NVDA;US67066G1040;Semiconductors;Technology
+NLTECH10025;Big Tech Momentum Basket;Alphabet;NASDAQ:GOOGL;US02079K3059;Internet;Technology
+CHIND10026;Industrial Automation Basket;Siemens;ETR:SIE;DE0007236101;Industrial Automation;Industrials
+CHIND10026;Industrial Automation Basket;Schneider Electric;EPA:SU;FR0000121972;Electrical Equipment;Industrials
+CHIND10026;Industrial Automation Basket;ABB;SWX:ABBN;CH0012221716;Industrial Equipment;Industrials
+DECYB10027;Cybersecurity Leaders Basket;Palo Alto Networks;NASDAQ:PANW;US6974351057;Cybersecurity;Technology
+DECYB10027;Cybersecurity Leaders Basket;CrowdStrike;NASDAQ:CRWD;US22788C1053;Cybersecurity;Technology
+DECYB10027;Cybersecurity Leaders Basket;Fortinet;NASDAQ:FTNT;US34959E1091;Cybersecurity;Technology
+ITMED10028;Healthcare Innovation Basket;Pfizer;NYSE:PFE;US7170811035;Pharmaceuticals;Healthcare
+ITMED10028;Healthcare Innovation Basket;Roche;SWX:ROG;CH0012032048;Biotechnology;Healthcare
+ITMED10028;Healthcare Innovation Basket;Novo Nordisk;CPH:NOVO-B;DK0062498333;Pharmaceuticals;Healthcare
+NLGREEN10029;Green Energy Basket;NextEra Energy;NYSE:NEE;US65339F1012;Renewable Energy;Utilities
+NLGREEN10029;Green Energy Basket;Enel;BIT:ENEL;IT0003128367;Electric Utilities;Utilities
+NLGREEN10029;Green Energy Basket;Iberdrola;BME:IBE;ES0144580Y14;Renewable Energy;Utilities
+CHSPACE10030;Space & Satellite Basket;Airbus;EPA:AIR;NL0000235190;Aerospace & Defense;Industrials
+CHSPACE10030;Space & Satellite Basket;Boeing;NYSE:BA;US0970231058;Aerospace;Industrials
+CHSPACE10030;Space & Satellite Basket;Northrop Grumman;NYSE:NOC;US6668071029;Defense;Industrials
+DEFIN10031;Fintech Growth Basket;PayPal;NASDAQ:PYPL;US70450Y1038;Fintech;Technology
+DEFIN10031;Fintech Growth Basket;Block;NYSE:SQ;US8522341036;Digital Payments;Technology
+DEFIN10031;Fintech Growth Basket;Adyen;AMS:ADYEN;NL0012969182;Payments;Technology
+ITAI10032;AI Consumer Basket;Apple;NASDAQ:AAPL;US0378331005;Consumer Electronics;Technology
+ITAI10032;AI Consumer Basket;Amazon;NASDAQ:AMZN;US0231351067;E-Commerce;Consumer Cyclical
+ITAI10032;AI Consumer Basket;NVIDIA;NASDAQ:NVDA;US67066G1040;Semiconductors;Technology
+NLROBO10033;Robotics & Automation Basket;ABB;SWX:ABBN;CH0012221716;Industrial Equipment;Industrials
+NLROBO10033;Robotics & Automation Basket;Fanuc;TYO:6954;JP3802400006;Industrial Robotics;Industrials
+NLROBO10033;Robotics & Automation Basket;Siemens;ETR:SIE;DE0007236101;Industrial Automation;Industrials
+CHBIO10034;Biotech Leaders Basket;Moderna;NASDAQ:MRNA;US60770K1079;Biotechnology;Healthcare
+CHBIO10034;Biotech Leaders Basket;BioNTech;NASDAQ:BNTX;US09075V1026;Biotechnology;Healthcare
+CHBIO10034;Biotech Leaders Basket;Roche;SWX:ROG;CH0012032048;Pharmaceuticals;Healthcare
+DEGAME10035;Gaming & Graphics Basket;NVIDIA;NASDAQ:NVDA;US67066G1040;Graphics Processors;Technology
+DEGAME10035;Gaming & Graphics Basket;AMD;NASDAQ:AMD;US0079031078;Semiconductors;Technology
+DEGAME10035;Gaming & Graphics Basket;Sony;TYO:6758;JP3435000009;Gaming Hardware;Technology
+ITLUX10036;Luxury Brands Basket;LVMH;EPA:MC;FR0000121014;Luxury Goods;Consumer Cyclical
+ITLUX10036;Luxury Brands Basket;Ferrari;BIT:RACE;NL0011585146;Luxury Automotive;Consumer Cyclical
+ITLUX10036;Luxury Brands Basket;Hermès;EPA:RMS;FR0000052292;Luxury Goods;Consumer Cyclical
+NLTEL10037;Telecom Infrastructure Basket;Cisco;NASDAQ:CSCO;US17275R1023;Networking;Technology
+NLTEL10037;Telecom Infrastructure Basket;Nokia;HEL:NOKIA;FI0009000681;Telecom Equipment;Technology
+NLTEL10037;Telecom Infrastructure Basket;Ericsson;STO:ERIC-B;SE0000108656;Telecom Equipment;Technology
+CHPAY10038;Digital Payments Basket;Visa;NYSE:V;US92826C8394;Payments;Financial Services
+CHPAY10038;Digital Payments Basket;Mastercard;NYSE:MA;US57636Q1040;Payments;Financial Services
+CHPAY10038;Digital Payments Basket;PayPal;NASDAQ:PYPL;US70450Y1038;Fintech;Technology
+DEAGRI10039;AgriTech Basket;Deere & Co;NYSE:DE;US2441991054;Agricultural Machinery;Industrials
+DEAGRI10039;AgriTech Basket;Corteva;NYSE:CTVA;US22052L1044;Agricultural Chemicals;Materials
+DEAGRI10039;AgriTech Basket;Nutrien;NYSE:NTR;CA67077M1086;Fertilizers;Materials
+ITCHIP10040;AI Semiconductor Basket;Broadcom;NASDAQ:AVGO;US11135F1012;Semiconductors;Technology
+ITCHIP10040;AI Semiconductor Basket;Qualcomm;NASDAQ:QCOM;US7475251036;Semiconductors;Technology
+ITCHIP10040;AI Semiconductor Basket;TSMC;NYSE:TSM;US8740391003;Semiconductors;Technology
