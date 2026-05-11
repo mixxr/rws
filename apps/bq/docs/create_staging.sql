@@ -44,6 +44,7 @@ CREATE TABLE `invcerts.ISINs.staging_details` (
   coupon_amount STRING,
   coupon_recurrence STRING,
   coupon_type STRING,
+  coupon_next_ex_date STRING,
   coupon_barrier STRING,       -- stored as percentage
   
   leverage STRING,

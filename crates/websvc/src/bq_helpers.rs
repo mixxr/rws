@@ -59,7 +59,9 @@ pub async fn query_bq(
     while let Some(row) = iter.next().await.unwrap() {
        let mut values = Vec::new();
         for (idx, _) in colnames.iter().enumerate() {
-            let value: String = row.column(idx).unwrap();
+            let value = row
+            .column::<String>(idx)
+            .unwrap_or_default();
             values.push(value);
         }
         // Join all values into a single CSV-like string

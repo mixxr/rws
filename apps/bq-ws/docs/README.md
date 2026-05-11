@@ -17,7 +17,8 @@ To get all issuers: /issuers/*
 ## response
 ```csv
 [
-    "issuer_name; specialization; geo_region; issuer_rating_description; issuer_rating_class"
+    "issuer_name; specialization; geo_region; issuer_rating_description; issuer_rating_class",
+    "EFG International Finance (Guernsey) Ltd.; Financial Services; Guernsey; Guaranteed by EFG International AG, Zurich"
 ]
 ```
 ### Examples
@@ -37,31 +38,8 @@ GET /issuers/leon
 ## response
 ```json
 [
-    {
-    isin: String,
-    issuer: String,
-    name: String, // the name of the certificate, try to add the underlying stock tickers 
-    certificate_type_tags: String, // e.g. step-down, memory, cash collect, booster, etc.
-    memory_effect: String, // yes, no, etc.
-    phase: String, // rembursed, active, etc.
-    currency: String,
-    industry: String,  // try to infer the industry of the certificate based on the underlying stocks' industries
-    callable: String, // yes, no, autocallable,
-    strike_date: String, // format YYYY-MM-DD
-    issue_date: String, // format YYYY-MM-DD
-    rembursement_date: String, // format YYYY-MM-DD
-    autocallable_date: String, // format YYYY-MM-DD
-    capital_barrier: String, // e.g. 100% of the strike price, 50% of the underlying stock price, etc.
-    airbag: String, // yes, no, etc.
-    risk_level: String, // low, medium, high, etc.
-    coupon_amount: String,
-    coupon_recurrence: String,
-    coupon_next_ex_date: String, // when the next coupon will be payed
-    coupon_type: String, // fixed, variable, etc.
-    coupon_barrier: String, // e.g. 100% of the strike price, 50% of the underlying stock price, etc.
-    leverage: String,
-    exchange_risk: String,
-    }
+  "isin;issuer;name;certificate_type_tags;memory_effect;phase;currency;industry;callable;strike_date;issue_date;rembursement_date;autocallable_date;capital_barrier;airbag;risk_level;coupon_amount;coupon_recurrence;coupon_next_ex_date;coupon_type;coupon_barrier;leverage;exchange_risk",
+  "NLBNPIT21TB7;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (PATH, KLAC, AI);step-down,cash-collect;Yes;Open;EUR;Technology;Yes;2024-04-08;2024-04-12;2027-04-19;2025-04-19;40% of underlying strike;No;High;7%;Quarterly;2026-07-15;Conditional;40%;None;Yes"
 ]
 ```
 ### Examples

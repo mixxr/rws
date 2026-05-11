@@ -42,6 +42,7 @@ CREATE TABLE `invcerts.ISINs.details` (
   coupon_amount STRING,
   coupon_recurrence STRING,
   coupon_type STRING,
+  coupon_next_ex_date STRING,
   coupon_barrier FLOAT64,       -- stored as percentage
   
   leverage BOOL,
