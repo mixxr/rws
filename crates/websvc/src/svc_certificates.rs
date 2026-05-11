@@ -7,6 +7,7 @@ use crate::svc_helpers::{AppConfig, ContentSystem, SharedMap, sanitize_input, au
 use crate::bq_helpers;
 use crate::definitions;
 use definitions::bq_defs;
+use definitions::csv_query_engine;
 
 
 #[get("/certificates")]
@@ -128,6 +129,47 @@ Returns cumulative data
 **Note**: One of the parameter is needed otherwise an empty response is provided.
 */
 pub async fn get_growth(
+    query: web::Query<HashMap<String, String>>,
+) -> impl Responder {
+    let growth1d = sanitize_input(&query.get("growth1d").unwrap_or(&"".into()));
+    let parvalue = sanitize_input(&query.get("parvalue").unwrap_or(&"".into()));
+
+    let engine = csv_query_engine::CsvQueryEngine::new("certs_growth.csv");
+
+    let where_growth = growth1d.clone();
+    let where_par = parvalue.clone();
+
+    let result = engine.run(
+        move |r| {
+            let growth: f64 = r.get(7).unwrap_or("0").parse().unwrap_or(0.0);
+            let ask: f64 = r.get(5).unwrap_or("0").parse().unwrap_or(0.0);
+
+            let mut ok = true;
+
+            match where_growth.as_str() {
+                "up" => ok &= growth > 0.0,
+                "down" => ok &= growth < 0.0,
+                _ => {}
+            }
+
+            match where_par.as_str() {
+                "over" => ok &= ask >= 100.0,
+                "below" => ok &= ask < 100.0,
+                _ => {}
+            }
+
+            ok
+        },
+        |r| r.iter().collect::<Vec<_>>().join(";"),
+    );
+
+    match result {
+        Ok(rows) => HttpResponse::Ok().json(rows),
+        Err(_) => HttpResponse::InternalServerError().json(vec!["error"]),
+    }
+}
+
+pub async fn get_growth_file(
     data: web::Data<SharedMap>,
     query: web::Query<HashMap<String, String>>
 ) ->  impl Responder {
@@ -146,23 +188,6 @@ pub async fn get_growth(
         "below" => "ask<100".to_string(),
         _ => "".to_string()
     };
-    // let shared_state = data.lock().unwrap();
-    // // first row is the header
-    // let (client, project_id) = bq_helpers::init_bq_client().await;
-    // let rows = bq_helpers::query_bq(
-    //     &client, 
-    //     &project_id,
-    //     bq_defs::CERTIFICATE_GROWTH_COLUMNS.to_vec(),
-    //     &shared_state.table_names._isin_ticker, 
-    //     vec![&where_condition1, &where_condition2]).await;
-    
-    // log::debug!("BigQuery rows: {:?}", rows);
-    // HttpResponse::Ok()
-    //     .content_type("application/json")
-    //     .json(rows)
-    // Parse to f64
-    // let ask_threshold: f64 = parvalue.parse().unwrap_or(0.0);
-    // let q1d_threshold: f64 = growth1d.parse().unwrap_or(-100.0);
 
     // Final rows
     let mut rows: Vec<String> = Vec::new();
@@ -197,11 +222,6 @@ pub async fn get_growth(
             Ok(r) => r,
             Err(_) => continue,
         };
-
-        // // Ensure enough columns
-        // if record.len() < 8 {
-        //     continue;
-        // }
 
         if !where_condition1.is_empty() {
             let growth1d_value: f64 = record[7].parse().unwrap_or(0.0);

@@ -1,6 +1,7 @@
 use std::{env};
 //use std::io::{self, BufReader, prelude::*};
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::process::Command;
 
 
@@ -21,6 +22,7 @@ mod svc_certificates;
 
 use definitions::args::Args;
 use definitions::bq_defs::*;
+use definitions::csv_query_engine::*;
 use bq_helpers::*;
 use svc_helpers::*;
 use svc_certificates::*;
@@ -274,10 +276,9 @@ async fn get_issuers_by_name_prefix(
         .json(rows)
 }
 
-#[get("/tickers/{name_prefix}")]
 /* returns list of tickers (ticker, stock name) matching the name prefix */
 // TO-DO: return unique stock names with their tickers
-async fn get_tickers_by_name_prefix(
+async fn get_tickers_by_name_prefix_sql(
     data: web::Data<SharedMap>,
     path: web::Path<String>,
 ) -> impl Responder {
@@ -305,6 +306,152 @@ async fn get_tickers_by_name_prefix(
         vec![&where_condition]).await;
     
     log::debug!("BigQuery rows: {:?}", rows);
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(rows)
+}
+
+#[get("/tickers/{name_prefix}")]
+pub async fn get_tickers_by_name_prefix(
+    path: web::Path<String>,
+) -> impl Responder {
+    let raw = sanitize_input(&path.into_inner());
+    let engine = CsvQueryEngine::new("tickers.csv");
+
+    let is_all = raw == "*";
+    let has_exchange = raw.contains(':');
+
+    let (exchange, symbol) = if has_exchange {
+        let parts: Vec<&str> = raw.splitn(2, ':').collect();
+        (Some(parts[0].to_lowercase()), Some(parts[1].to_lowercase()))
+    } else {
+        (None, if !is_all { Some(raw.to_lowercase()) } else { None })
+    };
+
+    let result = engine.run(
+        move |r| {
+            if is_all {
+                return true;
+            }
+
+            let stock_name = r.get(2).unwrap_or("").to_lowercase();
+            let ticker = r.get(3).unwrap_or("").to_lowercase();
+
+            if let (Some(ex), Some(sym)) = (&exchange, &symbol) {
+                return ticker.contains(&format!("{ex}:{sym}"));
+            }
+
+            if let Some(sym) = &symbol {
+                return stock_name.starts_with(sym);
+            }
+
+            false
+        },
+        |r| r.iter().collect::<Vec<_>>().join(";"),
+    );
+
+    match result {
+        Ok(rows) => {
+            println!("rows: {:?}", rows);
+        let mut seen: HashSet<(String, String)> = HashSet::new();
+
+        let filtered: Vec<String> = rows
+            .into_iter()
+            .filter(|r| {
+                // "certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector"
+                let parts: Vec<&str> = raw.splitn(6, ';').collect();
+                let k = (
+                    parts.get(2).unwrap_or(&"").to_string(),
+                    parts.get(3).unwrap_or(&"").to_string(),
+                );
+
+                println!("key:r {:?}=> parts {:?}=> k {:?}",r, parts, k);
+                seen.insert(k)
+                //seen.insert(r.clone())
+            })
+            .collect();
+
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(filtered)
+        }
+        Err(_) => HttpResponse::InternalServerError().json(vec!["error"]),
+    }
+}
+
+pub async fn get_tickers_by_name_prefix_file(
+    path: web::Path<String>,
+    _data: web::Data<SharedMap>,
+) -> impl Responder {
+    let raw = sanitize_input(&path.into_inner());
+
+    let mut rows: Vec<String> = Vec::new();
+
+    let mut rdr = match csv::ReaderBuilder::new()
+        .delimiter(b';')
+        .from_path("tickers.csv")
+    {
+        Ok(r) => r,
+        Err(e) => {
+            log::error!("Error reading CSV file: {}", e);
+            return HttpResponse::Ok()
+                .content_type("application/json")
+                .json(vec!["No Data Available".to_string()]);
+        }
+    };
+
+    // header
+    if let Ok(headers) = rdr.headers() {
+        rows.push(headers.iter().collect::<Vec<_>>().join(";"));
+    }
+
+    // detect mode
+    let is_all = raw == "*";
+    let has_exchange = raw.contains(':');
+
+    let (exchange, symbol) = if has_exchange {
+        let parts: Vec<&str> = raw.splitn(2, ':').collect();
+        (Some(parts[0].to_string()), Some(parts[1].to_string()))
+    } else if !is_all {
+        (None, Some(raw.clone()))
+    } else {
+        (None, None)
+    };
+
+    for result in rdr.records() {
+        let record = match result {
+            Ok(r) => r,
+            Err(_) => continue,
+        };
+
+        // /tickers/*
+        if is_all {
+            rows.push(record.iter().collect::<Vec<_>>().join(";"));
+            continue;
+        }
+
+        let stock_name = record[2].to_lowercase();
+        let ticker = record[3].to_string();
+
+        // /tickers/NYSE:IONQ → filter by stock_google_finance_ticker
+        if let (Some(ex), Some(sym)) = (&exchange, &symbol) {
+            let target = format!("{}:{}", ex, sym).to_lowercase();
+            if ticker.to_lowercase().contains(&target) {
+                rows.push(record.iter().collect::<Vec<_>>().join(";"));
+            }
+            continue;
+        }
+
+        // /tickers/ion → filter by stock_name prefix match
+        if let Some(sym) = &symbol {
+            if stock_name.starts_with(&sym.to_lowercase()) {
+                rows.push(record.iter().collect::<Vec<_>>().join(";"));
+            }
+        }
+    }
+
+    println!("RESULTS for tickers {}: {}", raw, rows.len());
+
     HttpResponse::Ok()
         .content_type("application/json")
         .json(rows)

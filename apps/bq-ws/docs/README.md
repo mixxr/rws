@@ -14,11 +14,23 @@
 
 ## GET /issuers/{name_prefix}
 To get all issuers: /issuers/*
-## response
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| name_prefix | string | Yes | Prefix used to filter issuer names (case-insensitive). |
+
+## Response
+The endpoint returns a JSON array of semicolon-separated rows.
+
+The first row contains column names.
+
+Example:
 ```csv
 [
     "issuer_name; specialization; geo_region; issuer_rating_description; issuer_rating_class",
-    "EFG International Finance (Guernsey) Ltd.; Financial Services; Guernsey; Guaranteed by EFG International AG, Zurich"
+    "EFG International Finance (Guernsey) Ltd.; Financial Services; Guernsey; Guaranteed by EFG International AG, Zurich; AA+"
 ]
 ```
 ### Examples
@@ -35,7 +47,14 @@ GET /issuers/leon
 ## GET /certificates?issuer={issuer}
 ## GET /certificates?tickers={ticker1},...,{tickerN}
 
-## response
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| issuer | string | Yes | Issuer name used to filter certificates. |
+| tickers | string | Yes | Comma-separated list of underlying tickers. |
+
+## Response
 ```json
 [
   "isin;issuer;name;certificate_type_tags;memory_effect;phase;currency;industry;callable;strike_date;issue_date;rembursement_date;autocallable_date;capital_barrier;airbag;risk_level;coupon_amount;coupon_recurrence;coupon_next_ex_date;coupon_type;coupon_barrier;leverage;exchange_risk",
@@ -60,15 +79,8 @@ Filters certificates based on their underlyings: returns certificates that have 
 ## response
 ```json
 [
-  {
-    "certificate_isin": string,
-    "certificate_name": string,
-    "stock_name": string,
-    "stock_google_finance_ticker": string,
-    "stock_isin": string,
-    "stock_industry": string,
-    "stock_sector": string
-  }
+"certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector",
+"DE000VG656A7;Basket Banks Italy;Banca MPS;BIT:BMPS;IT0005508921;Banks;Financial Services"
 ]
 ```
 
@@ -92,7 +104,7 @@ To get all tickers: /tickers/*
 ### response
 ```json
 [
-  (Ticker; Stock Name)
+  "ticker; Stock Name"
 ]
 ```
 ### Examples

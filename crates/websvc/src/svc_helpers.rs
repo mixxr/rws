@@ -92,3 +92,10 @@ where
 
     Ok(res.map_into_boxed_body())
 }
+
+pub fn extract_key<'a>(r: &'a csv::StringRecord) -> (&'a str, &'a str) {
+    (
+        r.get(3).unwrap_or(""),
+        r.get(2).unwrap_or(""),
+    )
+}
