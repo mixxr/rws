@@ -10,14 +10,14 @@
 - Authorization: Bearer MY_SECRET_KEY
 - bypassed if `IS_TEST_MODE` is `true`
 
-# ISSUERS (File)
+# ISSUERS
 
 ## GET /issuers/{name_prefix}
 To get all issuers: /issuers/*
 ## response
 ```csv
 [
-    {issuer_name; specialization; geo_region; issuer_rating_description; issuer_rating_class}
+    "issuer_name; specialization; geo_region; issuer_rating_description; issuer_rating_class"
 ]
 ```
 ### Examples
@@ -70,6 +70,7 @@ GET /issuers/leon
 GET /certificates/*
 GET /certificates?issuer=leon
 GET /certificates/CH1550424647
+GET /certificates?tickers=AMD,AAPL
 ```
 
 # UNDERLYINGS 
