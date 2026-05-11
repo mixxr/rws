@@ -27,7 +27,7 @@ impl CsvQueryEngine {
 
         // header
         if let Ok(headers) = rdr.headers() {
-            rows.push(headers.iter().collect::<Vec<_>>().join(";"));
+            rows.push(map_fn(&headers));
         }
 
         for result in rdr.records() {

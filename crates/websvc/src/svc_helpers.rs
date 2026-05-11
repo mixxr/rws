@@ -47,7 +47,7 @@ pub fn sanitize_input(input: &str) -> String {
     input
         .trim()
         .chars()
-        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | ':' | '.'))
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | ':' | '.' | '*'))
         .collect()
 }
 

@@ -104,8 +104,7 @@ async fn main() -> std::io::Result<()> {
             .service(root)
             .service(get_data)
             .service(get_issuers_by_name_prefix)
-            .service(get_certificates_by_issuer)
-            .service(get_certificate_by_isin)
+            .service(get_certificates)
             .service(get_certs_and_tickers)
             .service(get_tickers_by_name_prefix)
             .service(get_growth)
@@ -258,6 +257,35 @@ async fn get_issuers_by_name_prefix(
     //     .app_data::<actix_web::web::Data<ContentSystem>>()
     //     .expect("ContentSystem missing");
     let name_prefix = sanitize_input(&path.into_inner());
+    let is_all = name_prefix == "*";
+    // obtain shared state
+    let shared_state = data.lock().unwrap();
+
+     let engine = CsvQueryEngine::new("issuers.csv");
+     let result = engine.run(
+        move |r| {
+            if is_all {
+                return true;
+            }
+            let name = r.get(0).unwrap_or("");
+            name.to_lowercase().starts_with(&name_prefix.to_lowercase())
+        },
+        |r| r.iter().collect::<Vec<_>>().join(";"),
+    );
+
+    match result {
+        Ok(rows) => HttpResponse::Ok().json(rows),
+        Err(_) => HttpResponse::InternalServerError().json(vec!["error"]),
+    }
+}
+async fn get_issuers_by_name_prefix_sql(
+    data: web::Data<SharedMap>,
+    path: web::Path<String>,
+) -> impl Responder {
+    // let config = req
+    //     .app_data::<actix_web::web::Data<ContentSystem>>()
+    //     .expect("ContentSystem missing");
+    let name_prefix = sanitize_input(&path.into_inner());
     // obtain shared state
     let shared_state = data.lock().unwrap();
     // use BigQuery structure as below methods
@@ -312,6 +340,7 @@ async fn get_tickers_by_name_prefix_sql(
 }
 
 #[get("/tickers/{name_prefix}")]
+/* returns list of tickers (ticker, stock name) matching the name prefix */
 pub async fn get_tickers_by_name_prefix(
     path: web::Path<String>,
 ) -> impl Responder {
@@ -347,25 +376,27 @@ pub async fn get_tickers_by_name_prefix(
 
             false
         },
-        |r| r.iter().collect::<Vec<_>>().join(";"),
+        // return only 2 columns: stock_google_finance_ticker and stock_name
+        |r| {
+            let ticker = r.get(3).unwrap_or("").to_string();
+            let stock_name = r.get(2).unwrap_or("").to_string();
+            format!("{};{}", ticker, stock_name)
+        },
     );
 
     match result {
         Ok(rows) => {
-            println!("rows: {:?}", rows);
-        let mut seen: HashSet<(String, String)> = HashSet::new();
+        let mut seen: HashSet<String> = HashSet::new();
 
         let filtered: Vec<String> = rows
             .into_iter()
             .filter(|r| {
-                // "certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector"
-                let parts: Vec<&str> = raw.splitn(6, ';').collect();
-                let k = (
-                    parts.get(2).unwrap_or(&"").to_string(),
-                    parts.get(3).unwrap_or(&"").to_string(),
-                );
+                // r is in format "stock_google_finance_ticker;stock_name"
+                let raw = r.clone();
+                let parts: Vec<&str> = raw.splitn(2, ';').collect();
+                let k = parts.get(0).unwrap_or(&"").to_string();
 
-                println!("key:r {:?}=> parts {:?}=> k {:?}",r, parts, k);
+                //println!("key:r {:?}=> parts {:?}=> k {:?}",r, parts, k);
                 seen.insert(k)
                 //seen.insert(r.clone())
             })

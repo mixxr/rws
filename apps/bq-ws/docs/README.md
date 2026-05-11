@@ -64,10 +64,10 @@ GET /issuers/leon
 ### Examples
 
 ```examples
-GET /certificates/*
-GET /certificates?issuer=leon
 GET /certificates/CH1550424647
-GET /certificates?tickers=AMD,AAPL
+GET /certificates/*
+GET /certificates/*?issuer=leon
+GET /certificates/*?tickers=AMD,AAPL
 ```
 
 # UNDERLYINGS 
