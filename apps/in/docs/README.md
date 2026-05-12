@@ -16,7 +16,7 @@ It accepts the following ENV VARS:
 - TYPE_LIST=[quotes|details|tickers]+
 - ISSUER=[bnp|leonteq|marex|vontobel]
 - (optional) START_JOBS=[details|tickers]
-- (optional) SILENT_MODE=false
+- (optional) SILENT_MODE=false (if `true` then `setup.sh` does not wait for user confirm)
 
 ## Output
 It produces:

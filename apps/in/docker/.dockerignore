@@ -3,3 +3,6 @@ run.sh
 test.sh
 test*
 *copy.sh
+make*.sh
+extract*.sh
+*.txt

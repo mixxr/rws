@@ -1,39 +1,7 @@
 issuer_name;specialization;geo_region;issuer_rating_description;issuer_rating_class
-BNP Paribas Issuance B.V.;Banking;Netherlands;Guaranteed by BNP Paribas S.A.;A+
-Societe Generale Effekten GmbH;Structured Products;Germany;Guaranteed by Societe Generale S.A.;A
-UBS AG London Branch;Investment Banking;United Kingdom;Backed by UBS Group AG;AA-
-Goldman Sachs Finance Corp International Ltd.;Financial Services;Ireland;Guaranteed by Goldman Sachs Group Inc.;A+
-Morgan Stanley B.V.;Investment Banking;Netherlands;Guaranteed by Morgan Stanley;A
-JPMorgan Structured Products B.V.;Structured Products;Netherlands;Guaranteed by JPMorgan Chase & Co.;AA-
-Credit Suisse AG;Private Banking;Switzerland;Part of UBS Group AG;BBB+
-HSBC Continental Europe;Commercial Banking;France;Subsidiary of HSBC Holdings plc.;AA-
-Barclays Bank PLC;Retail and Investment Banking;United Kingdom;Backed by Barclays PLC;A
-Deutsche Bank AG;Universal Banking;Germany;Senior preferred rating stable;A-
-Intesa Sanpaolo S.p.A.;Retail Banking;Italy;Long-term issuer default rating stable;BBB+
-UniCredit S.p.A.;Commercial Banking;Italy;Backed by UniCredit Group;BBB
-Santander International Products PLC;Structured Products;Ireland;Guaranteed by Banco Santander S.A.;A
-Mediobanca International (Luxembourg) S.A.;Investment Banking;Luxembourg;Guaranteed by Mediobanca S.p.A.;BBB+
-Natixis Structured Issuance S.A.;Structured Finance;Luxembourg;Guaranteed by Natixis;A+
-Citigroup Global Markets Funding Luxembourg S.C.A.;Capital Markets;Luxembourg;Guaranteed by Citigroup Inc.;A+
-Raiffeisen Bank International AG;Commercial Banking;Austria;Long-term issuer rating stable;A-
-Vontobel Financial Products GmbH;Structured Products;Germany;Guaranteed by Bank Vontobel AG;A
-Leonteq Securities AG;Derivative Products;Switzerland;Issuer rating under review;BBB
-DZ BANK AG;Cooperative Banking;Germany;Member of German cooperative banking network;AA-
-Commerzbank AG;Corporate Banking;Germany;Long-term rating stable outlook;BBB+
-Nomura Bank International plc;Investment Banking;United Kingdom;Guaranteed by Nomura Holdings Inc.;A-
-Mizuho International plc;Financial Services;United Kingdom;Backed by Mizuho Financial Group;A
-ING Bank N.V.;Retail and Commercial Banking;Netherlands;Long-term senior debt rating;AA-
-ABN AMRO Bank N.V.;Retail Banking;Netherlands;State-supported Dutch banking group;A
-Rabobank Nederland;Agricultural Banking;Netherlands;Cooperative banking institution;AA-
-Crédit Agricole Corporate and Investment Bank;Corporate Banking;France;Part of Crédit Agricole Group;A+
-Banque Internationale à Luxembourg S.A.;Private Banking;Luxembourg;Stable issuer outlook;A-
-Royal Bank of Canada Europe Ltd.;Investment Banking;United Kingdom;Guaranteed by Royal Bank of Canada;AA
-Toronto Dominion Bank;Commercial Banking;Canada;Long-term issuer rating stable;AA-
-Bank of America Europe DAC;Investment Banking;Ireland;Guaranteed by Bank of America Corp.;A+
-Wells Fargo Securities International Ltd.;Financial Markets;Ireland;Guaranteed by Wells Fargo & Company;A+
-Jefferies International Ltd.;Brokerage Services;United Kingdom;Long-term issuer rating positive;BBB+
-Macquarie Bank Ltd.;Investment Banking;Australia;Stable outlook by rating agencies;A
-Standard Chartered Bank;International Banking;United Kingdom;Emerging markets banking leader;A+
-Nordea Bank Abp;Universal Banking;Finland;Nordic banking group with stable outlook;AA-
-Danske Bank A/S;Retail Banking;Denmark;Long-term senior preferred rating;A
-Skandinaviska Enskilda Banken AB;Corporate Banking;Sweden;Stable issuer default rating;AA-
+Vontobel;Structured Products and Wealth Management;Switzerland;Strong investment grade rating reflecting financial stability;A
+Leonteq Securities;Structured products;Switzerland;BBB from Fitch as of 23/10/2023;BBB
+Marex Financial;Financial Services and derivatives;United Kingdom;Regulated by the Financial Conduct Authority;BBB
+BNP Paribas S.A.;Banking and Financial Services;France;Investment Grade;High
+EFG International Finance (Guernsey) Ltd.;Financial Services;Guernsey;Guaranteed by EFG International AG, Zurich;Investment Grade
+Mediobanca;Investment Banking;Italy;Strong investment grade rating, typically rated BBB or equivalent by major rating agencies;Investment Grade
