@@ -44,8 +44,9 @@ GET /issuers/leon
 # CERTIFICATES
 
 ## GET /certificates/{isin}
-## GET /certificates?issuer={issuer}
-## GET /certificates?tickers={ticker1},...,{tickerN}
+## GET /certificates/*?issuer={issuer}
+## GET /certificates/*?tickers={ticker1},...,{tickerN}
+## GET /certificates/*?industries={industry1},...,{industryN}
 
 ### Query Parameters
 
@@ -68,6 +69,7 @@ GET /certificates/CH1550424647
 GET /certificates/*
 GET /certificates/*?issuer=leon
 GET /certificates/*?tickers=AMD,AAPL
+GET /certificates/*?industries=auto,bank
 ```
 
 # UNDERLYINGS 
@@ -89,6 +91,7 @@ Filters certificates based on their underlyings: returns certificates that have 
 ```examples
 GET /certificates-tickers/*
 GET /certificates-tickers/*?tickers=BIT:BMPS
+GET /certificates-tickers/*?industries=auto,bank
 GET /certificates-tickers/DE000VG656A7
 GET /certificates-tickers/DE000VG656A7?tickers=BIT:BMPS
 GET /certificates-tickers/DE000VG656A7,NLBNPIT30309?tickers=BIT:BMPS,VIE:RBI
