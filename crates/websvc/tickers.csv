@@ -96,10 +96,6 @@ NLBNPIT30341;Cash Collect Protection Booster (UNI, G, SREN, SCR);Scor;EPA:SCR;FR
 NLBNPIT30341;Cash Collect Protection Booster (UNI, G, SREN, SCR);Generali;BIT:G;IT0000062072;Multi-line Insurance;Financials
 NLBNPIT30341;Cash Collect Protection Booster (UNI, G, SREN, SCR);Unipol Gruppo Finanziario;BIT:UNI;IT0003189914;Multi-line Insurance;Financials
 NLBNPIT30341;Cash Collect Protection Booster (UNI, G, SREN, SCR);Swiss Re;SWX:SREN;CH0126881561;Reinsurance;Financials
-NLBNPIT30358;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);A2A;"";"";"";""
-NLBNPIT30358;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);Engie;"";"";"";""
-NLBNPIT30358;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);E.On;"";"";"";""
-NLBNPIT30358;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);Veolia Env.;"";"";"";""
 NLBNPIT30374;Cash Collect Protection Booster (The Boeing Co, Rheinmetall AG, Leonardo SpA, Thales SA);Thales;EPA:HO;"";"";""
 NLBNPIT30374;Cash Collect Protection Booster (The Boeing Co, Rheinmetall AG, Leonardo SpA, Thales SA);Boeing;NYSE:BA;"";"";""
 NLBNPIT30374;Cash Collect Protection Booster (The Boeing Co, Rheinmetall AG, Leonardo SpA, Thales SA);Leonardo;BIT:LDO;"";"";""
@@ -186,10 +182,10 @@ IT0006772062;48m Wof Memory Phoenix Autocall on Banco BPM SpA, Societe Generale 
 IT0006772062;48m Wof Memory Phoenix Autocall on Banco BPM SpA, Societe Generale SA, Banca Monte dei Paschi di Sien, Commerzbank AG in EUR;Societe Generale SA;GLE;FR0000130809;Banks;Financials
 IT0006772062;48m Wof Memory Phoenix Autocall on Banco BPM SpA, Societe Generale SA, Banca Monte dei Paschi di Sien, Commerzbank AG in EUR;Banca Monte dei Paschi di Siena;BMPS;IT0005272031;Banks;Financials
 IT0006772062;48m Wof Memory Phoenix Autocall on Banco BPM SpA, Societe Generale SA, Banca Monte dei Paschi di Sien, Commerzbank AG in EUR;Commerzbank AG;CBK;DE000CBK1001;Banks;Financials
-IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Tesla Inc;TSLA;N/A;N/A;N/A
-IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Intel Corp;INTC;N/A;N/A;N/A
-IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Micron Technology Inc;MU;N/A;N/A;N/A
-IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Oracle Corp;ORCL;N/A;N/A;N/A
+IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Tesla Inc;TSLA;N/A;Auto Manufacturers;Consumer Cyclical
+IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Intel Corp;INTC;N/A;Semiconductors;N/A
+IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Micron Technology Inc;MU;N/A;Semiconductors;N/A
+IT0006772583;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;Oracle Corp;ORCL;N/A;Software—Infrastructure;N/A
 NLBNPIT2EPT9;12 Premi Fissi Cash Collect Step Down 95% (KER, RCL, BRBY);Kering SA;KER;FR0000121485;Luxury Goods;Consumer Cyclical
 NLBNPIT2EPT9;12 Premi Fissi Cash Collect Step Down 95% (KER, RCL, BRBY);Royal Caribbean Cruises Ltd;RCL;LR0008862868;Travel & Leisure;Consumer Cyclical
 NLBNPIT2EPT9;12 Premi Fissi Cash Collect Step Down 95% (KER, RCL, BRBY);Burberry Group PLC;BRBY;GB0031743007;Luxury Goods;Consumer Cyclical
@@ -225,7 +221,8 @@ NLBNPIT30358;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);Veolia E
 NLBNPIT30358;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);E.ON SE;EOAN;DE000ENAG999;Electric Utilities;Utilities
 NLBNPIT303A3;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);NVIDIA Corp;NVDA;US67066G1040;Semiconductors;Technology
 NLBNPIT303A3;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);Intel Corp;INTC;US4581401001;Semiconductors;Technology
-NLBNPIT303A3;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);Tesla Inc;TSLA;US88150R1014;Automotive;Consumer Cyclical
+NLBNPIT303A3;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);Tesla Inc;TSLA;US88150R1014;Auto Manufacturers;Consumer Cyclical
 NLBNPIT303A3;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);Meta Platforms Inc;META;US30303M1027;Internet Content & Information;Communication Services
 XS3236768365;10Y 100% Protection Cash Collect on Solactive BTP 10Y Index (SOITA10Y Index);Solactive BTP 10 Annual Comp. Yield Index;SOITA10Y;N/A;Government Bonds;Financials
 CH1453354354;8.00% p.a. Reverse Convertible in EUR on 0.5% France Govt (05/25/2072) (FR0014001NN8);0.5% France Govt (05/25/2072);FR0014001NN8;FR0014001NN8;Sovereign Debt;Government
+BAD006771353;IT0006771353;Intel;"";"";"";""

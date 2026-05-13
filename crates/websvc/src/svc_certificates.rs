@@ -45,6 +45,7 @@ pub async fn get_certificates_by_issuer_sql(
 /* optional parameter:
 - issuer={issuer name prefix}
 - tickers={ticker1},...,{tickerN}
+- industries={industry1},...,{industryN}
 */
 pub async fn get_certificates(
     data: web::Data<SharedMap>,
@@ -58,34 +59,60 @@ pub async fn get_certificates(
     let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
     let is_ticker_list_provided = !tickers_csv_list.is_empty();
     // TODO: add a comma at the end of tickers_csv_list to simplify the filtering logic later
-    let tickers_csv_list = tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");
+    let tickers_csv_list = tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
+
+    let industries_csv_list = query.get("industries").unwrap_or(&"".into()).to_string();
+    let is_industry_list_provided = !industries_csv_list.is_empty();
+    // TODO: add a comma at the end of industries_csv_list to simplify the filtering logic later
+    let industries_csv_list = industries_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
     // obtain shared state
     let shared_state = data.lock().unwrap();
 
     // if tickers_csv_list is not empty, filter by stock_google_finance_ticker in tickers_csv_list
     let tickers_csv_list_filter = format!("{},", tickers_csv_list.clone());
-    let isin_filter_list = match tickers_csv_list_filter.as_str() {
-        "" => "".into(),
-        _ => {
-            println!("Filtering by tickers: {}", tickers_csv_list_filter);
-            let pre_engine = csv_query_engine::CsvQueryEngine::new("tickers.csv");
+    let industries_csv_list_filter = industries_csv_list.clone();
+    let isin_filter_list = match is_ticker_list_provided || is_industry_list_provided {
+        false => "".into(),
+        true => {
+            log::debug!("Filtering by tickers {} and industries: {}", tickers_csv_list_filter, industries_csv_list_filter);
+            let pre_engine = csv_query_engine::CsvQueryEngine::new("tickers.csv"); 
             // certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector
             pre_engine.run(
                 move |r| {
-                    let stock_google_finance_ticker = format!("{},", r.get(3).unwrap_or(""));
-
-                   tickers_csv_list_filter.contains(&stock_google_finance_ticker)
+                    // remove N/A data
+                    if r.get(0).unwrap_or("").is_empty() || r.get(0).unwrap_or("N/A").to_uppercase() == "N/A" {
+                        return false;
+                    }
+                    if is_ticker_list_provided {
+                        let stock_google_finance_ticker = format!("{},", r.get(3).unwrap_or("").to_lowercase());
+                        if stock_google_finance_ticker.trim() == "," {
+                            return false;
+                        }
+                        if !tickers_csv_list_filter.contains(&stock_google_finance_ticker) {
+                            return false;
+                        }
+                    } 
+                    if is_industry_list_provided {
+                        let industry_and_sector = format!("{},", r.get(5).unwrap_or("").to_lowercase() + "," + &r.get(6).unwrap_or("").to_lowercase());
+                        log::debug!("Filtering by industry: {}, stock industry and sector: {} => {}", industries_csv_list_filter, industry_and_sector, industries_csv_list_filter.split(",").any(|ind| industry_and_sector.contains(ind)));
+                        if industry_and_sector.trim() == "," {
+                            return false;
+                        }
+                        // test if the string "industry,sector" contains any of the industries in industries_csv_list, for example if industry is "technology,software" and industries_csv_list is "technology,finance", it should return true because "technology,software" contains "technology"
+                        return industries_csv_list_filter.split(",").any(|ind| industry_and_sector.contains(ind));
+                    } 
+                    true
                 },
-                |r| r.get(0).unwrap_or("").to_string(), // certificate_isin 
+                |r| r.get(0).unwrap_or("NOT PROVIDED").to_string(), // certificate_isin 
             ).unwrap_or(vec![]).join(",") // join by removing the first item because it is the header
         }
     };
  
-    println!("{} Tickers ISINs: {} => {}",is_all, tickers_csv_list, isin_filter_list);
+    log::debug!("{} ISINs: {}",is_all, isin_filter_list);
     // if isin_filter_list contains only one element, it means that the header is the only one present and no ISIN matches the provided tickers, so we can return an empty response
-    if isin_filter_list.split(",").count() == 1 {
-        println!("No ISIN matches the provided tickers, returning empty response");
-        return HttpResponse::Ok().json(bq_defs::DETAIL_COLUMNS.to_vec());
+    if isin_filter_list.split(",").count() <= 1 {
+        log::info!("No ISIN matches the provided tickers, returning empty response");
+        return HttpResponse::Ok().json(vec![bq_defs::DETAIL_COLUMNS.join(";")]);
     }
 
      let engine = csv_query_engine::CsvQueryEngine::new("details.csv");
@@ -98,8 +125,8 @@ pub async fn get_certificates(
             if !issuer.is_empty() && !issuer_col.to_uppercase().contains(&issuer.to_uppercase()) {
                 return false;
             }
-            // filter by isin from previous engine if tickers_csv_list is not empty
-            if is_ticker_list_provided {
+            // if pre-filtering by tickers or industries is provided, filter by isin using isin_filter_list
+            if is_ticker_list_provided || is_industry_list_provided {
                 let certificate_isin = r.get(0).unwrap_or("");
                 if !isin_filter_list.contains(certificate_isin) {
                     return false;
@@ -158,6 +185,7 @@ pub async fn get_certificate_by_isin_sql(
 /* returns certificates by ticker */
 /* optional parameter:
 - tickers={ticker1},...,{tickerN}
+- industries={industry1},...,{industryN}
 */
 pub async fn get_certs_and_tickers(
     data: web::Data<SharedMap>,
@@ -170,7 +198,10 @@ pub async fn get_certs_and_tickers(
     // retrieve tickers (array) as querystring parameters, for example: tickers=AAPL,MSFT,GOOGL
     let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
     // Note: adding a comma at the end of tickers_csv_list to simplify the filtering logic later
-    let tickers_csv_list = format!("{},", tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(","));
+    let tickers_csv_list = format!("{},", tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase());
+    // retrieve industries (array) as querystring parameters, for example: industries=Technology,Healthcare
+    let industries_csv_list = query.get("industries").unwrap_or(&"".into()).to_string();
+    let industries_csv_list = industries_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
 
     let shared_state = data.lock().unwrap();
     let engine = csv_query_engine::CsvQueryEngine::new("tickers.csv");
@@ -181,8 +212,9 @@ pub async fn get_certs_and_tickers(
         move |r| {
             // certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector
             let certificate_isin = r.get(0).unwrap_or("");
-            let stock_google_finance_ticker = format!("{},", r.get(3).unwrap_or(""));
-
+            let stock_google_finance_ticker = format!("{},", r.get(3).unwrap_or("").to_lowercase());
+            let stock_industry_sector = format!("{},{}", r.get(5).unwrap_or("").to_lowercase(), r.get(6).unwrap_or("").to_lowercase());
+            // println!("-- industries_csv_list: {}, tickers_csv_list: {}", industries_csv_list, tickers_csv_list);
             // if certs_csv_list is not empty, filter by certificate_isin AND if tickers_csv_list is not empty, filter by stock_google_finance_ticker
             let ok = match certs_csv_list.as_str() {
                 "*" => true,
@@ -190,8 +222,11 @@ pub async fn get_certs_and_tickers(
             } && match tickers_csv_list.as_str() {
                 "," => true,
                 _ => tickers_csv_list.contains(&stock_google_finance_ticker),
-            }; 
-
+            } && match industries_csv_list.as_str() {
+                "" => true,
+                _ => industries_csv_list.split(",").any(|ind| stock_industry_sector.contains(ind)),
+            };
+            // println!("Filtering certificate_isin: {}, stock_google_finance_ticker: {}, stock_industry_sector: {} => {}", certificate_isin, stock_google_finance_ticker, stock_industry_sector, ok);
             ok
         },
         |r| r.iter().collect::<Vec<_>>().join(";"),
@@ -258,7 +293,7 @@ pub async fn get_growth(
     let parvalue = sanitize_input(&query.get("parvalue").unwrap_or(&"".into()));
 
     if growth1d.is_empty() && parvalue.is_empty() {
-        return HttpResponse::Ok().json(bq_defs::CERTIFICATE_GROWTH_COLUMNS.to_vec());
+        return HttpResponse::Ok().json(vec![bq_defs::CERTIFICATE_GROWTH_COLUMNS.join(";")]);
     }
     let engine = csv_query_engine::CsvQueryEngine::new("certs_growth.csv");
     let where_growth = growth1d.clone();
@@ -374,7 +409,7 @@ pub async fn get_growth_file(
         );
     }
 
-    println!("RESULTS for {parvalue} and {growth1d}: {}", rows.len());
+    log::debug!("RESULTS for {parvalue} and {growth1d}: {}", rows.len());
 
     HttpResponse::Ok()
         .content_type("application/json")
