@@ -43,7 +43,7 @@ GET /issuers/leon
 
 # CERTIFICATES
 
-## GET /certificates/{isin}
+## GET /certificates/{isin1},{isin2},...
 ## GET /certificates/*?issuer={issuer}
 ## GET /certificates/*?tickers={ticker1},...,{tickerN}
 ## GET /certificates/*?industries={industry1},...,{industryN}
@@ -66,10 +66,12 @@ GET /issuers/leon
 
 ```examples
 GET /certificates/CH1550424647
+GET /certificates/CH1550424647,NLBNPIT2EPT9
 GET /certificates/*
 GET /certificates/*?issuer=leon
 GET /certificates/*?tickers=AMD,AAPL
 GET /certificates/*?industries=auto,bank
+GET /certificates/CH1550424647,NLBNPIT2EPT9?industries=bank
 ```
 
 # UNDERLYINGS 

@@ -52,8 +52,8 @@ pub async fn get_certificates(
     path: web::Path<String>,
      query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
-    let isin = sanitize_input(&path.into_inner());
-    let is_all = isin == "*";
+    let isins = sanitize_input(&path.into_inner());
+    let is_all = isins == "*";
     let issuer = query.get("issuer").unwrap_or(&"".into()).to_string();
     let issuer = sanitize_input(&issuer);
     let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
@@ -108,9 +108,9 @@ pub async fn get_certificates(
         }
     };
  
-    log::debug!("{} ISINs: {}",is_all, isin_filter_list);
+    log::debug!("ISINs: all={}, list={}",is_all, isin_filter_list);
     // if isin_filter_list contains only one element, it means that the header is the only one present and no ISIN matches the provided tickers, so we can return an empty response
-    if isin_filter_list.split(",").count() <= 1 {
+    if (is_industry_list_provided || is_ticker_list_provided) && isin_filter_list.split(",").count() <= 1 {
         log::info!("No ISIN matches the provided tickers, returning empty response");
         return HttpResponse::Ok().json(vec![bq_defs::DETAIL_COLUMNS.join(";")]);
     }
@@ -134,8 +134,8 @@ pub async fn get_certificates(
             }
             // if not is_all, filter by isin
             if !is_all {
-                let isin_col = r.get(0).unwrap_or("");
-                if isin_col.to_uppercase() != isin.to_uppercase() {
+                let isin_col = r.get(0).unwrap_or("").to_lowercase();
+                if  !isins.to_lowercase().contains(&isin_col) {
                     return false;
                 }
             }
