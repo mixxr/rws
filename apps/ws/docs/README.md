@@ -71,7 +71,7 @@ GET /certificates/*
 GET /certificates/*?issuer=leon
 GET /certificates/*?tickers=AMD,AAPL
 GET /certificates/*?industries=auto,bank
-GET /certificates/CH1550424647,NLBNPIT2EPT9?industries=bank
+GET /certificates/CH1550424647,DE000VJ6U7J7?industries=bank
 ```
 
 # UNDERLYINGS 
@@ -122,7 +122,7 @@ GET /tickers/NYSE:IONQ
 
 # CERTIFICATES GROWTH
 
-## GET /certificates-growth?growth1={[up|down]}&parvalue={[over|below]}
+## GET /certificates-growth/{isins}?growth1={[up|down]}&parvalue={[over|below]}
 Returns cumulative data
 - growth1d
 - parvalue: if it is over or below the par value
@@ -138,8 +138,8 @@ Returns cumulative data
 ### Examples
 
 ```examples
-GET /certificates-growth?growth1=up&parvalue=below
-GET /certificates-growth?parvalue=below
+GET /certificates-growth/*?growth1=up&parvalue=below
+GET /certificates-growth/*?parvalue=below
 ```
 
 

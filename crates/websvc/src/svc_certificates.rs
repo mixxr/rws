@@ -39,7 +39,7 @@ pub async fn get_certificates_by_issuer_sql(
         .json(rows)
 }
 
-#[get("/certificates/{isin}")]
+#[get("/certificates/{isins}")]
 /* returns a specific certificate by ISIN */
 // /* returns all certificates 
 /* optional parameter:
@@ -59,12 +59,14 @@ pub async fn get_certificates(
     let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
     let is_ticker_list_provided = !tickers_csv_list.is_empty();
     // TODO: add a comma at the end of tickers_csv_list to simplify the filtering logic later
-    let tickers_csv_list = tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
+    let tickers_csv_list = sanitize_input(&tickers_csv_list);
+    // tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
 
     let industries_csv_list = query.get("industries").unwrap_or(&"".into()).to_string();
     let is_industry_list_provided = !industries_csv_list.is_empty();
     // TODO: add a comma at the end of industries_csv_list to simplify the filtering logic later
-    let industries_csv_list = industries_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
+    let industries_csv_list = sanitize_input(&industries_csv_list);
+    // let industries_csv_list = industries_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
     // obtain shared state
     let shared_state = data.lock().unwrap();
 
@@ -135,7 +137,7 @@ pub async fn get_certificates(
             // if not is_all, filter by isin
             if !is_all {
                 let isin_col = r.get(0).unwrap_or("").to_lowercase();
-                if  !isins.to_lowercase().contains(&isin_col) {
+                if  !isins.contains(&isin_col) {
                     return false;
                 }
             }
@@ -181,7 +183,7 @@ pub async fn get_certificate_by_isin_sql(
         .json(rows)
 }
 
-#[get("/certificates-tickers/{certs_csv_list}")]
+#[get("/certificates-tickers/{isins}")]
 /* returns certificates by ticker */
 /* optional parameter:
 - tickers={ticker1},...,{tickerN}
@@ -192,42 +194,42 @@ pub async fn get_certs_and_tickers(
     path: web::Path<String>,
     query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
-    let certs_csv_list = path.into_inner();
-    // certs_csv_list is a comma separated list of certificates isins, for example: US0000000001,US0000000002,US0000000003 or * for all certificates
-    let certs_csv_list = certs_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",");    
-    // retrieve tickers (array) as querystring parameters, for example: tickers=AAPL,MSFT,GOOGL
-    let tickers_csv_list = query.get("tickers").unwrap_or(&"".into()).to_string();
-    // Note: adding a comma at the end of tickers_csv_list to simplify the filtering logic later
-    let tickers_csv_list = format!("{},", tickers_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase());
-    // retrieve industries (array) as querystring parameters, for example: industries=Technology,Healthcare
-    let industries_csv_list = query.get("industries").unwrap_or(&"".into()).to_string();
-    let industries_csv_list = industries_csv_list.split(",").map(sanitize_input).collect::<Vec<_>>().join(",").to_lowercase();
+    let isins = sanitize_input(&path.into_inner());
+    let is_all = isins == "*";
+    let tickers = sanitize_input(&query.get("tickers").unwrap_or(&"".into()));
+    let is_tickers_provided = !tickers.is_empty();
+    let industries = sanitize_input(&query.get("industries").unwrap_or(&"".into()));
+    let is_industries_provided = !industries.is_empty();
+
+    println!("Received request for certificates with ISINs: {}, tickers: {}, industries: {}", isins, tickers, industries);
 
     let shared_state = data.lock().unwrap();
     let engine = csv_query_engine::CsvQueryEngine::new("tickers.csv");
     // let where_growth = growth1d.clone();
     // let where_par = parvalue.clone();
-
+    let tickers_w_comma = format!("{},", tickers);
     let result = engine.run(
         move |r| {
+            if is_all && !is_tickers_provided && !is_industries_provided {
+                return true;
+            }
             // certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector
-            let certificate_isin = r.get(0).unwrap_or("");
-            let stock_google_finance_ticker = format!("{},", r.get(3).unwrap_or("").to_lowercase());
+            let certificate_isin = r.get(0).unwrap_or("").to_lowercase();
+            let stock_google_finance_ticker = format!("{},", r.get(3).unwrap_or("").trim().to_lowercase());
             let stock_industry_sector = format!("{},{}", r.get(5).unwrap_or("").to_lowercase(), r.get(6).unwrap_or("").to_lowercase());
+            //println!("Filtering certificate_isin: {}, stock_google_finance_ticker: {}, stock_industry_sector: {}", certificate_isin, stock_google_finance_ticker, stock_industry_sector);
             // println!("-- industries_csv_list: {}, tickers_csv_list: {}", industries_csv_list, tickers_csv_list);
             // if certs_csv_list is not empty, filter by certificate_isin AND if tickers_csv_list is not empty, filter by stock_google_finance_ticker
-            let ok = match certs_csv_list.as_str() {
+            (match isins.as_str() {
                 "*" => true,
-                _ => certs_csv_list.contains(certificate_isin),
-            } && match tickers_csv_list.as_str() {
-                "," => true,
-                _ => tickers_csv_list.contains(&stock_google_finance_ticker),
-            } && match industries_csv_list.as_str() {
+                _ => isins.contains(&certificate_isin),
+            } && match tickers.as_str() {
                 "" => true,
-                _ => industries_csv_list.split(",").any(|ind| stock_industry_sector.contains(ind)),
-            };
-            // println!("Filtering certificate_isin: {}, stock_google_finance_ticker: {}, stock_industry_sector: {} => {}", certificate_isin, stock_google_finance_ticker, stock_industry_sector, ok);
-            ok
+                _ => stock_google_finance_ticker.len() > 0 && tickers_w_comma.contains(&stock_google_finance_ticker),
+            } && match industries.as_str() {
+                "" => true,
+                _ => industries.split(",").any(|ind| stock_industry_sector.contains(ind)),
+            })
         },
         |r| r.iter().collect::<Vec<_>>().join(";"),
     );
@@ -278,7 +280,7 @@ pub async fn get_certs_and_tickers_sql(
         .json(rows)
 }
 
-#[get("/certificates-growth")]
+#[get("/certificates-growth/{isins}")]
 /*## GET /certificates-growth?{growth1=[up|down]]}&{parvalue=[over|below]}
 Returns cumulative data
 - growth1d
@@ -287,14 +289,17 @@ Returns cumulative data
 **Note**: One of the parameter is needed otherwise an empty response is provided.
 */
 pub async fn get_growth(
+     path: web::Path<String>,
     query: web::Query<HashMap<String, String>>,
 ) -> impl Responder {
+    let isins = sanitize_input(&path.into_inner());
+    let is_all = isins == "*";
     let growth1d = sanitize_input(&query.get("growth1d").unwrap_or(&"".into()));
     let parvalue = sanitize_input(&query.get("parvalue").unwrap_or(&"".into()));
 
-    if growth1d.is_empty() && parvalue.is_empty() {
-        return HttpResponse::Ok().json(vec![bq_defs::CERTIFICATE_GROWTH_COLUMNS.join(";")]);
-    }
+    // if growth1d.is_empty() && parvalue.is_empty() {
+    //     return HttpResponse::Ok().json(vec![bq_defs::CERTIFICATE_GROWTH_COLUMNS.join(";")]);
+    // }
     let engine = csv_query_engine::CsvQueryEngine::new("certs_growth.csv");
     let where_growth = growth1d.clone();
     let where_par = parvalue.clone();
@@ -304,21 +309,18 @@ pub async fn get_growth(
             let growth: f64 = r.get(7).unwrap_or("0").parse().unwrap_or(0.0);
             let ask: f64 = r.get(5).unwrap_or("0").parse().unwrap_or(0.0);
 
-            let mut ok = true;
-
-            match where_growth.as_str() {
-                "up" => ok &= growth > 0.0,
-                "down" => ok &= growth < 0.0,
-                _ => {}
-            }
-
-            match where_par.as_str() {
-                "over" => ok &= ask >= 100.0,
-                "below" => ok &= ask < 100.0,
-                _ => {}
-            }
-
-            ok
+            (match where_growth.as_str() {
+                "up" => growth > 0.0,
+                "down" => growth < 0.0,
+                _ => true,
+            }&& match where_par.as_str() {
+                "over" => ask >= 100.0,
+                "below" => ask < 100.0,
+                _ => true,
+            }&& match isins.as_str() {
+                "*" => true,
+                _ => isins.contains(&r.get(0).unwrap_or("").to_lowercase()),
+            })
         },
         |r| r.iter().collect::<Vec<_>>().join(";"),
     );

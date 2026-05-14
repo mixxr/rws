@@ -37,7 +37,7 @@ for METHOD in "${METHODS[@]}"; do
     BODY=$(echo "$RESPONSE" | sed '$d')
     STATUS=$(echo "$RESPONSE" | tail -n 1)
     
-    if [ "$STATUS" -eq 200 ] && [ "$BODY" != '["No data found"]' ]; then
+    if [ "$STATUS" -eq 200 ] && [[ "$BODY" == *,* ]]; then
         echo "SUCCESS: Status code 200 and data found"
     else
         echo -e "\033[1mFAILURE\033[0m: Status code $STATUS or response is '$BODY'"

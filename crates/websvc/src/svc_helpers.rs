@@ -46,8 +46,9 @@ pub type SharedMap = Arc<Mutex<ContentSystem>>;
 pub fn sanitize_input(input: &str) -> String {
     input
         .trim()
+        .to_lowercase()
         .chars()
-        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | ':' | '.' | '*'))
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | ':' | '.' | '*' | ',' | ' ')) // allow comma for tickers and industries, allow asterisk for wildcard, allow colon and dot for table names
         .collect()
 }
 
