@@ -1,3 +1,15 @@
+-- ISIN;Issuer;Name;Coupon;Ex-Date;Ask;Bid;Growth_1D;Growth_3Ds;Growth_1W;Growth_2W;Growth_4W;Growth_1D_Pct;Growth_3Ds_Pct;Growth_1W_Pct;Growth_2W_Pct;Growth_4W_Pct
+EXPORT DATA OPTIONS (
+  uri='gs://rws-data/bq_export/growth_*.csv',
+  format='CSV',
+  overwrite=true,
+  header=true,
+  field_delimiter=';'
+)
+AS
+select d.isin as isin, d.issuer as issuer, d.name as name, "TBD" as coupon, "TBD" as ex_date, qc.ask as ask, qc.bid as bid, qc.Growth_1D as Growth_1D, qc.Growth_3Ds as Growth_3Ds, qc.Growth_1W as Growth_1W, qc.Growth_2W as Growth_2W, qc.Growth_4W as Growth_4W, qc.Growth_1D_Pct as Growth_1D_Pct, qc.Growth_3Ds_Pct as Growth_3Ds_Pct, qc.Growth_1W_Pct as Growth_1W_Pct, qc.Growth_2W_Pct as Growth_2W_Pct, qc.Growth_4W_Pct as Growth_4W_Pct
+from `ISINs.v_quotes_consolidated` qc inner join `ISINs.staging_details` d on qc.isin=d.isin;
+
 -- certificate_isin;certificate_name;stock_name;stock_google_finance_ticker;stock_isin;stock_industry;stock_sector
 EXPORT DATA OPTIONS (
   uri='gs://rws-data/bq_export/staging_tickers_*.csv',
