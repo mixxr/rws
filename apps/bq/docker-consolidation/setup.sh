@@ -4,14 +4,15 @@ echo "BQ Setup Consolidation Script - Version $VERSION"
 
 set -e
 
-echo "Extracting Quotes"
-./growth-wf.sh
+echo "Extracting Certs Growth"
+./item-wf.sh certs_growth
 
-echo "Extract Details"
-./details-wf.sh
+echo "Extracting Details"
+./item-wf.sh details
 
-echo "Extract Tickers"
+echo "Extracting Tickers"
+./item-wf.sh tickers
 
-echo "Extract Issuers"
+echo "Extracting Issuers"
 
 echo "==== Execution completed ===="

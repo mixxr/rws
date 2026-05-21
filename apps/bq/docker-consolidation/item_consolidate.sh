@@ -1,13 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/bash
+if [ -z "$1" ]; then
+  echo "usage: $0 [details|tickers|issuers]"
+  exit 1
+fi
+ITEM=$1
 
-OUTPUT_FILE=${1:-details-temp1.csv}
+OUTPUT_FILE=$ITEM-consolidated.csv
 
 # remove old output if exists
 rm -f "$OUTPUT_FILE"
 
 FIRST_FILE=true
 
-for file in details/*.csv; do
+for file in $ITEM/*.csv; do
 
     echo "Processing $file"
 
@@ -23,5 +28,5 @@ for file in details/*.csv; do
 done
 
 echo "Merged CSV created: $OUTPUT_FILE"
-echo "Removing downloaded data..."
-rm -rf ./details/*.csv
+echo "Removing downloaded data ./$ITEM/*.csv..."
+rm -rf ./$ITEM

@@ -1,5 +1,5 @@
 EXPORT DATA OPTIONS (
-    uri="gs://rws-data/bq_export/growth_*.csv",
+    uri="gs://rws-data/bq_export/staging_certs_growth_*.csv",
     format="CSV",
     overwrite=true,
     header=true,
