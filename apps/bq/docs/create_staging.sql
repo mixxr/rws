@@ -1,3 +1,11 @@
+CREATE OR REPLACE TABLE `invcerts.ISINs.staging_ex_dates` (
+  certificate_isin STRING NOT NULL,
+  certificate_name STRING,
+  coupon_ex_date STRING NOT NULL,
+
+  PRIMARY KEY (certificate_isin, coupon_ex_date) NOT ENFORCED
+);
+
 DROP TABLE `invcerts.ISINs.staging_tickers`;
 CREATE TABLE `invcerts.ISINs.staging_tickers` (
   certificate_isin STRING NOT NULL,
