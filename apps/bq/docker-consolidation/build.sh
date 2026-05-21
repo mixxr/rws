@@ -8,7 +8,7 @@ MOUNT_DIR="/data"
 MOUNT_BUCKET="gs://rws-data"
 
 # print all vars pretty multiline as header Configuration
-echo "BQ Quotes Consolidation Setup Script - Version 0.2"
+echo "BQ Consolidation Setup Script - Version 0.2"
 echo "==== Setup running... ===="
 echo "APP NAME: $APPNAME"   
 echo "STATUS: $STATUS"

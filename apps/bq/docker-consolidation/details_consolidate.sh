@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-OUTPUT_FILE=${1:-certs_growth-temp1.csv}
+OUTPUT_FILE=${1:-details-temp1.csv}
 
 # remove old output if exists
 rm -f "$OUTPUT_FILE"
 
 FIRST_FILE=true
 
-for file in growths/*.csv; do
+for file in details/*.csv; do
 
     echo "Processing $file"
 
@@ -24,4 +24,4 @@ done
 
 echo "Merged CSV created: $OUTPUT_FILE"
 echo "Removing downloaded data..."
-rm -rf ./growths/*.csv
+rm -rf ./details/*.csv
