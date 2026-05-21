@@ -300,14 +300,14 @@ pub async fn get_growth(
     // if growth1d.is_empty() && parvalue.is_empty() {
     //     return HttpResponse::Ok().json(vec![bq_defs::CERTIFICATE_GROWTH_COLUMNS.join(";")]);
     // }
-    let engine = csv_query_engine::CsvQueryEngine::new("certs_growth.csv");
+    let engine = csv_query_engine::CsvQueryEngine::new(csv_query_engine::CERTS_GROWTH_PATH);
     let where_growth = growth1d.clone();
     let where_par = parvalue.clone();
 
     let result = engine.run(
         move |r| {
-            let growth: f64 = r.get(7).unwrap_or("0").parse().unwrap_or(0.0);
-            let ask: f64 = r.get(5).unwrap_or("0").parse().unwrap_or(0.0);
+            let growth: f64 = r.get(csv_query_engine::CERTS_GROWTH_G1D).unwrap_or("0").parse().unwrap_or(0.0);
+            let ask: f64 = r.get(csv_query_engine::CERTS_GROWTH_ASK).unwrap_or("0").parse().unwrap_or(0.0);
 
             (match where_growth.as_str() {
                 "up" => growth > 0.0,
@@ -319,7 +319,7 @@ pub async fn get_growth(
                 _ => true,
             }&& match isins.as_str() {
                 "*" => true,
-                _ => isins.contains(&r.get(0).unwrap_or("").to_lowercase()),
+                _ => isins.contains(&r.get(csv_query_engine::CERTS_GROWTH_ISI).unwrap_or("").to_lowercase()),
             })
         },
         |r| r.iter().collect::<Vec<_>>().join(";"),

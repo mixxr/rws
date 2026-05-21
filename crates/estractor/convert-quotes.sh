@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
+
+if [ -z "$1" ]; then
+    echo "usage: $0 <input dir>/<issuer> <outputdir>[default: json]"
+    exit 1
+fi
 set -euo pipefail
-
-INPUT_DIR="${1:-./csv}"
+INPUT_DIR="$1"
 OUTPUT_DIR="${2:-./json}"
 
 mkdir -p "$OUTPUT_DIR"
@@ -60,7 +64,7 @@ find "$INPUT_DIR" -type f -name "*.csv" | while read -r csv_file; do
 
         # synthetic bid = ask + 1.00
         if [[ -n "$ask" && "$ask" != "0.00" ]]; then
-            synthetic_bid=$(awk "BEGIN { printf \"%.2f\", $ask + 1.00 }")
+            synthetic_bid=$(awk "BEGIN { printf \"%.2f\", $ask - 10.00 }")
         else
             synthetic_bid=""
         fi

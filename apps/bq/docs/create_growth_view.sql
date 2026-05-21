@@ -2,7 +2,7 @@ CREATE OR REPLACE VIEW `invcerts.ISINs.v_quotes_consolidated` AS
 
 WITH quotes_clean AS (
   SELECT
-    isin,
+    UPPER(isin) as isin,
     issuer,
 
     SAFE_CAST(REPLACE(bid, ',', '.') AS FLOAT64) AS bid,
@@ -10,10 +10,15 @@ WITH quotes_clean AS (
 
     PARSE_DATETIME('%Y-%m-%dT%H-%M-%S', dt) AS dt
 
-  FROM `invcerts.ISINs.quotes`
+  FROM `invcerts.ISINs.staging_quotes`
+
+  WHERE SAFE_CAST(REPLACE(bid, ',', '.') AS FLOAT64) IS NOT NULL
+    AND SAFE_CAST(REPLACE(ask, ',', '.') AS FLOAT64) IS NOT NULL
+    AND dt IS NOT NULL
 ),
 
 daily_quotes AS (
+  -- keep latest quote per trading day
   SELECT *
   FROM (
     SELECT
@@ -34,69 +39,28 @@ daily_quotes AS (
   WHERE rn = 1
 ),
 
-latest_quotes AS (
-  SELECT *
-  FROM (
-    SELECT
-      isin,
-      issuer,
-      bid,
-      ask,
-      dt,
-
-      ROW_NUMBER() OVER (
-        PARTITION BY isin
-        ORDER BY dt DESC
-      ) AS rn
-
-    FROM daily_quotes
-  )
-  WHERE rn = 1
-),
-
-historical AS (
+quotes_with_history AS (
   SELECT
-    l.isin,
-    l.issuer,
+    isin,
+    issuer,
+    ask,
+    bid,
+    dt,
+    d,
 
-    l.ask,
-    l.bid,
+    -- previous trading days
+    LAG(bid, 1)  OVER (PARTITION BY isin ORDER BY d) AS bid_1d,
+    LAG(bid, 3)  OVER (PARTITION BY isin ORDER BY d) AS bid_3d,
+    LAG(bid, 5)  OVER (PARTITION BY isin ORDER BY d) AS bid_1w,
+    LAG(bid, 10) OVER (PARTITION BY isin ORDER BY d) AS bid_2w,
+    LAG(bid, 20) OVER (PARTITION BY isin ORDER BY d) AS bid_4w,
 
-    -- absolute growth
-    l.bid - d1.bid AS Growth_1D,
-    l.bid - d3.bid AS Growth_3Ds,
-    l.bid - w1.bid AS Growth_1W,
-    l.bid - w2.bid AS Growth_2W,
-    l.bid - w4.bid AS Growth_4W,
+    ROW_NUMBER() OVER (
+      PARTITION BY isin
+      ORDER BY dt DESC
+    ) AS latest_rn
 
-    -- percentage growth
-    SAFE_DIVIDE(l.bid - d1.bid, d1.bid) * 100 AS Growth_1D_Pct,
-    SAFE_DIVIDE(l.bid - d3.bid, d3.bid) * 100 AS Growth_3Ds_Pct,
-    SAFE_DIVIDE(l.bid - w1.bid, w1.bid) * 100 AS Growth_1W_Pct,
-    SAFE_DIVIDE(l.bid - w2.bid, w2.bid) * 100 AS Growth_2W_Pct,
-    SAFE_DIVIDE(l.bid - w4.bid, w4.bid) * 100 AS Growth_4W_Pct
-
-  FROM latest_quotes l
-
-  LEFT JOIN daily_quotes d1
-    ON l.isin = d1.isin
-   AND d1.d = DATE_SUB(DATE(l.dt), INTERVAL 1 DAY)
-
-  LEFT JOIN daily_quotes d3
-    ON l.isin = d3.isin
-   AND d3.d = DATE_SUB(DATE(l.dt), INTERVAL 3 DAY)
-
-  LEFT JOIN daily_quotes w1
-    ON l.isin = w1.isin
-   AND w1.d = DATE_SUB(DATE(l.dt), INTERVAL 7 DAY)
-
-  LEFT JOIN daily_quotes w2
-    ON l.isin = w2.isin
-   AND w2.d = DATE_SUB(DATE(l.dt), INTERVAL 14 DAY)
-
-  LEFT JOIN daily_quotes w4
-    ON l.isin = w4.isin
-   AND w4.d = DATE_SUB(DATE(l.dt), INTERVAL 28 DAY)
+  FROM daily_quotes
 )
 
 SELECT
@@ -106,16 +70,21 @@ SELECT
   ROUND(ask, 2) AS Ask,
   ROUND(bid, 2) AS Bid,
 
-  ROUND(Growth_1D, 2)  AS Growth_1D,
-  ROUND(Growth_3Ds, 2) AS Growth_3Ds,
-  ROUND(Growth_1W, 2)  AS Growth_1W,
-  ROUND(Growth_2W, 2)  AS Growth_2W,
-  ROUND(Growth_4W, 2)  AS Growth_4W,
+  -- absolute growth
+  ROUND(bid - bid_1d, 2)  AS Growth_1D,
+  ROUND(bid - bid_3d, 2)  AS Growth_3Ds,
+  ROUND(bid - bid_1w, 2)  AS Growth_1W,
+  ROUND(bid - bid_2w, 2)  AS Growth_2W,
+  ROUND(bid - bid_4w, 2)  AS Growth_4W,
 
-  ROUND(Growth_1D_Pct, 2)  AS Growth_1D_Pct,
-  ROUND(Growth_3Ds_Pct, 2) AS Growth_3Ds_Pct,
-  ROUND(Growth_1W_Pct, 2)  AS Growth_1W_Pct,
-  ROUND(Growth_2W_Pct, 2)  AS Growth_2W_Pct,
-  ROUND(Growth_4W_Pct, 2)  AS Growth_4W_Pct
+  -- percentage growth
+  ROUND(SAFE_DIVIDE(bid - bid_1d, bid_1d) * 100, 2)  AS Growth_1D_Pct,
+  ROUND(SAFE_DIVIDE(bid - bid_3d, bid_3d) * 100, 2)  AS Growth_3Ds_Pct,
+  ROUND(SAFE_DIVIDE(bid - bid_1w, bid_1w) * 100, 2)  AS Growth_1W_Pct,
+  ROUND(SAFE_DIVIDE(bid - bid_2w, bid_2w) * 100, 2)  AS Growth_2W_Pct,
+  ROUND(SAFE_DIVIDE(bid - bid_4w, bid_4w) * 100, 2)  AS Growth_4W_Pct,
 
-FROM historical;
+  dt AS Last_Update_DT
+
+FROM quotes_with_history
+WHERE latest_rn = 1;

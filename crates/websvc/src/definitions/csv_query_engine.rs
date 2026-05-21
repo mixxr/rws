@@ -1,6 +1,12 @@
 use csv::StringRecord;
 use std::error::Error;
 
+pub static CERTS_GROWTH_PATH: &str = "certs_growth.csv";
+pub static CERTS_GROWTH_ISI:usize = 0;
+pub static CERTS_GROWTH_ASK:usize = 3;
+pub static CERTS_GROWTH_G1D:usize = 5;
+
+
 pub struct CsvQueryEngine {
     pub path: String,
     pub delimiter: u8,
