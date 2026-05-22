@@ -1,8 +1,8 @@
 #!/bin/bash
 source ../../vars_init.sh
 # TYPES is an array to be passed as argument. 
-TYPES="details|quotes|issuer|tickers"
-FOLDERS="bq_staging|quotes|bq_staging|bq_staging"
+TYPES="details|quotes|issuer|tickers|ex_dates"
+FOLDERS="bq_staging|quotes|bq_staging|bq_staging|bq_staging"
 STATUS=3
 CMD_NAME="gs_load"
 APPNAME=$(basename $(dirname $(pwd)))
