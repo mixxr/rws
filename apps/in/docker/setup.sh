@@ -32,6 +32,7 @@ declare -A FORMAT_MAP=(
   [bnp]="md"
   [marex]="md"
   [vontobel]="md"
+  [mediobanca]="md"
 )
 
 FORMAT="${FORMAT_MAP[$ISSUER]:-md}"
@@ -107,6 +108,11 @@ build_url() {
         leonteq) echo "https://certificati.leonteq.com/api/product-model/details/isin/${isin}" ;;
         marex) echo "https://certificati.marex.com/it/products/${isin}" ;;
         vontobel) echo "https://markets.vontobel.com/it-it/prodotti/investment/multi-cash-collect-certificate-con-barriera/${isin}" ;;
+        # bnp) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
+        # leonteq) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
+        # marex) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;; 
+        # vontobel) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-SEDX" ;;
+        mediobanca) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
       esac
       ;;
     details)
@@ -115,6 +121,7 @@ build_url() {
         leonteq) echo "https://structuredproducts-ch.leonteq.com/isin/${isin}/kid/it" ;;
         marex) echo "https://certificati.marex.com/it/products/${isin}" ;;
         vontobel) echo "https://derinet.vontobel.ch/api/kid?isin=${isin}&language=it" ;;
+        mediobanca) echo "https://certificates.mediobanca.com/it/certificati/${isin}" ;;
       esac
       ;;
     issuer)
@@ -130,6 +137,9 @@ validate_isin() {
 
   case "$ISSUER" in
     marex)
+      [[ "$isin" == IT* ]] || return 1
+      ;;
+    mediobanca)
       [[ "$isin" == IT* ]] || return 1
       ;;
     bnp)
@@ -152,10 +162,12 @@ declare -A RANGE_MAP=(
   ["marex_details"]="5,490"
   ["vontobel_details"]="5,490"
   ["leonteq_details"]="5,500"
+  ["mediobanca_details"]="5,500"
   ["marex_issuer"]="5,35"
   ["bnp_issuer"]="5,35"
   ["vontobel_issuer"]="5,35"
   ["leonteq_issuer"]="5,500"
+  ["mediobanca_issuer"]="5,500"
 )
 
 # ------------------------

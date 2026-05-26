@@ -1,72 +1,72 @@
 isin;issuer;name;coupon;ex_date;ask;bid;Growth_1D;Growth_3Ds;Growth_1W;Growth_2W;Growth_4W;Growth_1D_Pct;Growth_3Ds_Pct;Growth_1W_Pct;Growth_2W_Pct;Growth_4W_Pct
-CH1550424985;Leonteq Securities AG;Certificato Express in EUR su Banca Monte dei Paschi Siena e STMicroelectronics;TBD;TBD;990.47;980.47;-0.04;1.93;-3.08;-3.26;N/A;-0;0.2;-0.31;-0.33;N/A
-NLBNPIT30333;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (Enel, Leonardo, Snam, Moncler);TBD;TBD;93.75;92.75;0.39;1.97;2.03;-1.71;-2.1;0.42;2.17;2.24;-1.81;-2.21
-NLBNPIT303F2;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (UniCredit, Banca Monte dei Paschi di Siena, FinecoBank, Azimut Holding);TBD;TBD;100.33;99.33;0.13;-0.66;-0.49;0.67;2.24;0.13;-0.66;-0.49;0.68;2.31
-NLBNPIT302Y5;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (UniCredit SpA, Banca Monte dei Paschi di Siena SpA, BPER Banca SPA, Banco BPM SpA);TBD;TBD;110.17;109.17;-0.02;-0.04;-0.51;0.2;2.54;-0.02;-0.04;-0.46;0.18;2.38
-NLBNPIT303D7;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (BPER, ISP);TBD;TBD;99.5;98.5;0.24;0.6;-0.88;-1.16;0.78;0.24;0.61;-0.89;-1.16;0.8
-NLBNPIT303P1;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (A2A, Engie, Veolia, Enel);TBD;TBD;101.64;100.64;0.27;1.19;-0.19;1.15;0.78;0.27;1.2;-0.19;1.16;0.78
-NLBNPIT304P9;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (ENEL, ENR, ELE);TBD;TBD;101.18;100.18;0.47;1.18;N/A;N/A;N/A;0.47;1.19;N/A;N/A;N/A
-CH1525091620;Leonteq Securities AG;Express Certificate in EUR on iShares Silver Trust (SLV) and SPDR Gold Trust (GLD);TBD;TBD;1023.4;1013.4;0.99;7.25;-0.1;-1.85;N/A;0.1;0.72;-0.01;-0.18;N/A
-NLBNPIT302V1;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (UniCredit SpA, Intesa Sanpaolo SpA, BPER Banca SPA);TBD;TBD;106.53;105.53;-0.15;0.12;-0.63;-0.5;1.41;-0.14;0.11;-0.59;-0.47;1.35
-CH1550421346;Leonteq Securities AG;Certificato Express in EUR su Intesa Sanpaolo (ISP), Micron Technology (MU), UniCredit (UCG) Phoenix Autocallable;TBD;TBD;998.72;988.72;-0.36;1.29;-22.47;-54.94;N/A;-0.04;0.13;-2.22;-5.26;N/A
-NLBNPIT300T9;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Tesla Inc;TBD;TBD;99.69;98.69;1.17;0.91;-0.64;0.81;3.41;1.2;0.93;-0.64;0.83;3.58
-NLBNPIT302W9;BNP Paribas Issuance B.V.;Prodotto Cash Collect Protection Booster (UniCredit SpA, Intesa Sanpaolo SpA);TBD;TBD;106.11;105.11;-0.08;0.04;-0.09;0.07;2.01;-0.08;0.04;-0.09;0.07;1.95
-NLBNPIT303C9;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (UniCredit SpA, Banco BPM SpA, Intesa Sanpaolo SpA);TBD;TBD;100.81;99.81;0.13;0.1;-0.29;0.14;3.03;0.13;0.1;-0.29;0.14;3.13
-NLBNPIT304M6;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down-RHM, BA, FCT;TBD;TBD;100.64;99.64;0.22;0.64;N/A;N/A;N/A;0.22;0.65;N/A;N/A;N/A
-CH1525083577;Leonteq Securities AG;Certificato Express in EUR su Banca Monte dei Paschi Siena, Banco BPM, UniCredit (BMPS, BAMI, UCG);TBD;TBD;716.92;706.92;1.01;-7.2;-10.42;2.08;N/A;0.14;-1.01;-1.45;0.3;N/A
-DE000VG656A7;Vontobel;Memory Express Certificate on Delivery Hero (DHER.DE), Zalando (ZAL.DE), and HelloFresh (HFG.DE);TBD;TBD;1026;996;-8;-14;-1;-4;N/A;-0.8;-1.39;-0.1;-0.4;N/A
-NLBNPIT21TB7;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (UiPath Inc, KLA Corp, C3.ai Inc);TBD;TBD;53.44;52.44;1.42;3.73;1.15;-3.9;-2.17;2.78;7.66;2.24;-6.92;-3.97
-DE000VK6PMC6;Vontobel;Vontobel Memory Express Zertifikat auf Allianz, AXA, Zurich Insurance;TBD;TBD;836;835;9;-10;8;-63;-12;1.09;-1.18;0.97;-7.02;-1.42
-NLBNPIT30325;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (Poste Italiane SpA, UniCredit SpA, Generali, Eni SpA);TBD;TBD;106.22;105.22;-0.03;0.03;0.87;3.87;4.05;-0.03;0.03;0.83;3.82;4
-NLBNPIT2SP93;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down 95% (META, GOOGL, AMD, AMZN);TBD;TBD;98.67;97.67;0.19;-0.02;-0.41;N/A;N/A;0.19;-0.02;-0.42;N/A;N/A
-CH1550425057;Leonteq Securities AG;Phoenix Autocallable on Banca Monte dei Paschi Siena, Barclays, Commerzbank, Société Générale;TBD;TBD;1007.54;997.54;-3.87;-9.57;N/A;N/A;N/A;-0.39;-0.95;N/A;N/A;N/A
-NLBNPIT2XBR3;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down;TBD;TBD;96.69;95.69;0.8;1.9;0.89;N/A;N/A;0.84;2.03;0.94;N/A;N/A
-DE000VH68M19;Vontobel;Memory Express Certificate on Stellantis, STLA, ENI, ENI, Enel, ENEL;TBD;TBD;62.6;61.6;-3.2;N/A;N/A;N/A;N/A;-4.94;N/A;N/A;N/A;N/A
-NLBNPIT303E5;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (BMPS, SAN);TBD;TBD;100.49;99.49;0.49;0.09;0.27;0.52;2.37;0.49;0.09;0.27;0.53;2.44
-NLBNPIT303I6;BNP Paribas Issuance B.V.;3Y Premium Plus Cash Collect (ISP, UCG, G, ALV);TBD;TBD;100.69;99.69;0.11;0.15;-0.06;0.04;2.4;0.11;0.15;-0.06;0.04;2.47
-NLBNPIT30341;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (UNI, G, SREN, SCR);TBD;TBD;105.57;104.57;-1.14;-0.9;1.17;0.25;0.81;-1.08;-0.85;1.13;0.24;0.78
-NLBNPIT304D5;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down on BMPS, ISP, BAMI;TBD;TBD;100.35;99.35;0.18;0.35;N/A;N/A;N/A;0.18;0.35;N/A;N/A;N/A
-NLBNPIT2TQK4;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (Rheinmetall AG, Leonardo SpA, The Boeing Co, Dassault Systemes SE);TBD;TBD;73.3;72.3;-0.68;1.75;2.4;-5.4;-6.56;-0.93;2.48;3.43;-6.95;-8.32
-CH1550420314;Leonteq Securities AG;Phoenix Autocallable on Aegon, Allianz, Generali, Swiss Re;TBD;TBD;1005.42;995.42;0.7;0.76;7.62;6.06;N/A;0.07;0.08;0.77;0.61;N/A
-NLBNPIT300C5;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Banca Monte dei Paschi di Siena SpA;TBD;TBD;96.7;95.7;0.09;N/A;N/A;N/A;N/A;0.09;N/A;N/A;N/A;N/A
-CH1550421528;Leonteq Securities AG;Express Certificate in EUR on Intel and Micron Technology (INTC, MU);TBD;TBD;1055.26;1045.26;1.96;7.22;3.59;-4.56;N/A;0.19;0.7;0.34;-0.43;N/A
-CH1550422195;Leonteq Securities AG;Phoenix Autocallable Express on A2A, Eni, Ferrari, Intesa Sanpaolo;TBD;TBD;1006.01;996.01;1.67;3.03;10.39;-2.79;N/A;0.17;0.31;1.05;-0.28;N/A
-CH1550424670;Leonteq Securities AG;Target One Autocallable (Anglogold Ashanti ADR, Colgate-Palmolive, Moderna);TBD;TBD;1020.33;1010.33;-2.12;-5.72;-3.99;2.37;N/A;-0.21;-0.56;-0.39;0.24;N/A
-IT0006771148;Marex Financial;IT0006771148;TBD;TBD;1018.1;1008.1;0.01;0.3;1.49;3.2;4.3;0;0.03;0.15;0.32;0.43
-NLBNPIT304G8;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (BGN, UCG, BMPS, BPE);TBD;TBD;100.02;99.02;0.04;0.02;N/A;N/A;N/A;0.04;0.02;N/A;N/A;N/A
-IT0006767823;Marex Financial;N/A;TBD;TBD;1007.75;1003.1;0.02;-4.26;-3.39;21.88;22.57;0;-0.42;-0.34;2.23;2.3
-IT0006772583;Marex Financial;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;TBD;TBD;1012.99;1002.99;9.94;1.96;-3.77;-9.84;24.67;1;0.2;-0.37;-0.97;2.52
-CH1316652309;EFG International Finance (Guernsey) Ltd.;Certificato Express in EUR su Bayer e Pfizer (BAYN GY, PFE UN);TBD;TBD;1019.12;1008.98;-0.32;4.74;5.51;9.42;N/A;-0.03;0.47;0.55;0.94;N/A
-DE000VH30021;Vontobel;Memory Express Zertifikat auf Allianz, AXA, Zurich Insurance (ALV, CS, ZURN);TBD;TBD;1015;1005;-34;0;39;83;48;-3.27;0;4.04;9;5.02
-NLBNPIT300H4;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Stellantis NV;TBD;TBD;78.85;77.85;-2.43;-2.64;-5.41;-2.79;-10.65;-3.03;-3.28;-6.5;-3.46;-12.03
-NLBNPIT2QDD3;BNP Paribas Issuance B.V.;Low Barrier Cash Collect on Oracle Corp, Dell Technologies Inc, Fortinet Inc, Amazon.com Inc;TBD;TBD;90.01;89.01;2.3;1.45;-0.83;-0.63;3.52;2.65;1.66;-0.92;-0.7;4.12
-NLBNPIT303N6;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (Leonardo SpA, Rheinmetall AG, Coherent Corp);TBD;TBD;99.56;98.56;0.53;1.74;0.41;-1.11;-0.36;0.54;1.8;0.42;-1.11;-0.36
-NLBNPIT303M8;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (Unipol Assicurazioni SpA, Generali G IM, AXA SA CS FP, Zurich Insurance Group AG);TBD;TBD;101.01;100.01;0.27;0.32;0.65;1.33;2.06;0.27;0.32;0.65;1.35;2.1
-NLBNPIT30309;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (BMPS, GLE, CABK, BBVA);TBD;TBD;109.03;108.03;0.39;0.62;0.71;0.73;2.49;0.36;0.58;0.66;0.68;2.36
-NLBNPIT2EPV5;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down 95% (NVIDIA, MSFT, AMZN, META);TBD;TBD;97.08;96.08;0.23;-0.93;-1.27;N/A;N/A;0.24;-0.96;-1.3;N/A;N/A
-NLBNPIT303A3;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);TBD;TBD;112.41;111.41;0.59;0.95;0.55;1.41;4.25;0.53;0.86;0.5;1.28;3.97
-DE000VJ6U7J7;Vontobel;Memory Express Zertifikat auf Allianz, AXA, Zurich Insurance;TBD;TBD;101.6;100.6;1;2.1;2.1;4.3;N/A;1;2.13;2.13;4.47;N/A
-IT0006775347;Marex Financial;110m Credit Linked on UniCredit SpA in EUR;TBD;TBD;10059.94;9959.93;101.85;100.99;53.51;-8.03;N/A;1.03;1.02;0.54;-0.08;N/A
-NLBNPIT30374;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (The Boeing Co, Rheinmetall AG, Leonardo SpA, Thales SA);TBD;TBD;91.25;90.25;-0.27;2.18;2.29;-6.26;-6.42;-0.3;2.48;2.6;-6.49;-6.64
-NLBNPIT304Q7;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (GOOGL, MSFT, AI);TBD;TBD;100.7;99.7;0.79;0.7;N/A;N/A;N/A;0.8;0.71;N/A;N/A;N/A
-IT0006771353;Marex Financial;IT0006771353;TBD;TBD;1026.8;1016.8;-5.28;-4.77;1.8;47.94;37.22;-0.52;-0.47;0.18;4.95;3.8
-NLBNPIT2T027;BNP Paribas Issuance B.V.;Cash Collect Booster (Palantir, Tesla, NVIDIA);TBD;TBD;97.26;96.26;0.7;1.31;0.06;-1.25;-1.6;0.73;1.38;0.06;-1.28;-1.63
-IT0006775404;Marex Financial;60m Wof Memory Phoenix Autocall on EURO STOXX 50 Price EUR, S&P 500 INDEX, Nikkei 225, iShares China Large-Cap ETF in EUR;TBD;TBD;1006.94;996.93;5.58;5.37;-4.56;6.93;N/A;0.56;0.54;-0.46;0.7;N/A
-NLBNPIT302Z2;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (ISP, SAN, GS, MS);TBD;TBD;106.19;105.19;0.29;0.72;0.5;-0.09;0.47;0.28;0.69;0.48;-0.09;0.45
-NLBNPIT304S3;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (Bayer AG, Eli Lilly and Co, Merck and Co Inc);TBD;TBD;100.53;99.53;0.11;0.53;N/A;N/A;N/A;0.11;0.54;N/A;N/A;N/A
-NLBNPIT300U7;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Palantir Technologies Inc;TBD;TBD;94.56;93.56;0.54;1.57;2.47;1.22;N/A;0.58;1.71;2.71;1.32;N/A
-NLBNPIT30150;BNP Paribas Issuance B.V.;6 Premi Fissi Cash Collect Callable (COHR UN, HO FP, LDO IM);TBD;TBD;100.55;99.55;-0.94;0.35;-1.03;-2.54;-1.78;-0.94;0.35;-1.02;-2.49;-1.76
-NLBNPIT30382;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (BP, TTE, EQNR, REP);TBD;TBD;96.03;95.03;-0.68;-0.02;2.56;4.76;2.61;-0.71;-0.02;2.77;5.27;2.82
-IT0006770512;Marex Financial;60m Wof Memory Phoenix Autocall on BNP Paribas SA, UniCredit SpA, Banco BPM SpA in EUR;TBD;TBD;999;989;1.53;2.96;-12.02;0.44;30.15;0.15;0.3;-1.2;0.04;3.14
-IT0006772062;Marex Financial;48m Wof Memory Phoenix Autocall on Banco BPM SpA, Societe Generale SA, Banca Monte dei Paschi di Sien, Commerzbank AG in EUR;TBD;TBD;992.53;982.53;2.53;-1.41;-4.47;12.32;60.31;0.26;-0.14;-0.45;1.27;6.54
-NLBNPIT30358;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);TBD;TBD;103.46;102.46;0.1;1.33;0.84;1.8;0.16;0.1;1.32;0.83;1.79;0.16
-NLBNPIT303O4;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (Siemens Energy AG, Stellantis NV, STMicroelectronics NV, Banca Monte dei Paschi di Siena SpA);TBD;TBD;101.3;100.3;-0.26;-0.15;-1.64;0.14;0.46;-0.26;-0.15;-1.61;0.14;0.46
-CH1550424647;Leonteq Securities AG;Twin-Win Certificate in EUR on Ferrari, Hermès, Kering (RACE, RMS, KER);TBD;TBD;982.83;972.83;3.72;16.79;9.97;-0.3;N/A;0.38;1.76;1.04;-0.03;N/A
-NLBNPIT303S5;BNP Paribas Issuance B.V.;Premium Plus Cash Collect on Meta Platforms Inc, Advanced Micro Devices Inc, Dell Technologies Inc;TBD;TBD;104.55;103.55;-0.01;0.15;-0.16;-0.08;N/A;-0.01;0.15;-0.15;-0.08;N/A
-NLBNPIT304E3;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down-Intesa Sanpaolo SpA, Banco BPM SpA;TBD;TBD;100.55;99.55;0.09;0.55;N/A;N/A;N/A;0.09;0.56;N/A;N/A;N/A
-NLBNPIT21T57;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (Mercedes-Benz Group AG, Ford Motor Co, Tesla Inc);TBD;TBD;95.56;94.56;0.5;-0.04;-0.75;N/A;N/A;0.53;-0.04;-0.79;N/A;N/A
-NLBNPIT304J2;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (Leonardo, Poste Italiane, Enel);TBD;TBD;100.38;99.38;-0.03;0.38;N/A;N/A;N/A;-0.03;0.38;N/A;N/A;N/A
-NLBNPIT304N4;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (ASML, STLAM, CBK, ENR);TBD;TBD;100.6;99.6;-0.22;0.6;N/A;N/A;N/A;-0.22;0.61;N/A;N/A;N/A
-CH1550424928;Leonteq Securities AG;Certificato Express in EUR su Banco BPM, Davide Campari-Milano, Enel, Leonardo (BAMI, CPR, ENEL, LDO);TBD;TBD;977.36;967.36;3.05;10.62;10.46;-19.45;N/A;0.32;1.11;1.09;-1.97;N/A
-NLBNPIT2HHH4;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down 95% (Leonardo SpA, ERG SpA, Ferrari NV, Moncler SpA);TBD;TBD;93.57;92.57;1.47;1.68;0.54;-1.45;-1.19;1.61;1.85;0.59;-1.54;-1.27
-NLBNPIT303G0;BNP Paribas Issuance B.V.;3Y Premium Plus Cash Collect (UniCredit SpA, Banca Monte dei Paschi di Siena SpA, Banco BPM SpA, BPER Banca SPA);TBD;TBD;100.22;99.22;-0.1;-0.48;-1.37;-0.23;2.61;-0.1;-0.48;-1.36;-0.23;2.7
+CH1525091620;Leonteq Securities AG;Express Certificate in EUR on iShares Silver Trust (SLV) and SPDR Gold Trust (GLD);EUR 10.00 Monthly;N/A;1016.45;1006.45;-8.63;-5.96;0.3;-6.16;N/A;-0.85;-0.59;0.03;-0.61;N/A
+NLBNPIT302V1;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (UniCredit SpA, Intesa Sanpaolo SpA, BPER Banca SPA);Variable conditioned See attached document;N/A;106.93;105.93;-0.09;0.25;0.52;0.1;0.99;-0.08;0.24;0.49;0.09;0.94
+CH1550421346;Leonteq Securities AG;Certificato Express in EUR su Intesa Sanpaolo (ISP), Micron Technology (MU), UniCredit (UCG) Phoenix Autocallable;EUR 12.50 Monthly;N/A;997.47;987.47;1.75;-1.61;0.04;-57.76;N/A;0.18;-0.16;0;-5.53;N/A
+CH1550424985;Leonteq Securities AG;Certificato Express in EUR su Banca Monte dei Paschi Siena e STMicroelectronics;EUR 10.00 Monthly;N/A;1010.28;1000.28;4.68;19.77;21.74;21.87;N/A;0.47;2.02;2.22;2.24;N/A
+NLBNPIT30333;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (Enel, Leonardo, Snam, Moncler);Conditional (see documentation) Periodic;N/A;93.83;92.83;-0.42;0.47;2.05;0.81;-3.29;-0.45;0.51;2.26;0.88;-3.42
+NLBNPIT21TB7;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (UiPath Inc, KLA Corp, C3.ai Inc);Not specified Not specified;N/A;55.54;54.54;-0.16;3.52;5.83;-1.8;-0.89;-0.29;6.9;11.97;-3.19;-1.61
+NLBNPIT303C9;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (UniCredit SpA, Banco BPM SpA, Intesa Sanpaolo SpA);Not specified Refer to attachment;N/A;102.53;101.53;0.98;1.85;1.82;2.01;3.18;0.97;1.86;1.83;2.02;3.23
+NLBNPIT304M6;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down-RHM, BA, FCT;1.25% of Notional Monthly;N/A;100.06;99.06;0.07;-0.36;0.06;N/A;N/A;0.07;-0.36;0.06;N/A;N/A
+NLBNPIT300T9;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Tesla Inc;Not specified Not specified;N/A;99.09;98.09;-0.03;0.57;0.31;-1.11;1.82;-0.03;0.58;0.32;-1.12;1.89
+NLBNPIT302W9;BNP Paribas Issuance B.V.;Prodotto Cash Collect Protection Booster (UniCredit SpA, Intesa Sanpaolo SpA);Variable Variable;N/A;106.44;105.44;-0.16;0.25;0.37;0.47;1.24;-0.15;0.24;0.35;0.45;1.19
+DE000VK6PMC6;Vontobel;Vontobel Memory Express Zertifikat auf Allianz, AXA, Zurich Insurance;8.50% p.a. Annual;N/A;892;882;46;56;37;-46;43;5.5;6.78;4.38;-4.96;5.13
+CH1525083577;Leonteq Securities AG;Certificato Express in EUR su Banca Monte dei Paschi Siena, Banco BPM, UniCredit (BMPS, BAMI, UCG);35.00% Annual;N/A;737.43;727.43;10.73;21.52;13.31;23.13;N/A;1.5;3.05;1.86;3.28;N/A
+NLBNPIT30325;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (Poste Italiane SpA, UniCredit SpA, Generali, Eni SpA);Not specified Not specified;N/A;105.39;104.39;-0.58;-0.86;-0.8;0.33;3.59;-0.55;-0.82;-0.76;0.32;3.56
+DE000VG656A7;Vontobel;Memory Express Certificate on Delivery Hero (DHER.DE), Zalando (ZAL.DE), and HelloFresh (HFG.DE);8.50% p.a. Quarterly;N/A;1026;996;-8;-14;-1;-4;N/A;-0.8;-1.39;-0.1;-0.4;N/A
+NLBNPIT2SP93;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down 95% (META, GOOGL, AMD, AMZN);0.95% of Notional Amount Monthly;N/A;99.42;98.42;0.05;0.94;0.73;N/A;N/A;0.05;0.96;0.75;N/A;N/A
+DE000VH68M19;Vontobel;Memory Express Certificate on Stellantis, STLA, ENI, ENI, Enel, ENEL;8.50% p.a. Quarterly;N/A;62.6;61.6;-3.2;N/A;N/A;N/A;N/A;-4.94;N/A;N/A;N/A;N/A
+NLBNPIT303E5;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (BMPS, SAN);Not specified Not specified;N/A;102.31;101.31;0.9;2.31;1.91;2.6;2.92;0.9;2.33;1.92;2.63;2.97
+NLBNPIT303I6;BNP Paribas Issuance B.V.;3Y Premium Plus Cash Collect (ISP, UCG, G, ALV);Not specified Not specified;N/A;102.45;101.45;1.06;1.87;1.91;1.88;2.63;1.06;1.88;1.92;1.89;2.66
+NLBNPIT30341;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (UNI, G, SREN, SCR);Conditional and Certain coupons Refer to attachment;N/A;105.25;104.25;0.04;-1.46;-1.22;-0.65;-0.62;0.04;-1.38;-1.16;-0.62;-0.59
+NLBNPIT304D5;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down on BMPS, ISP, BAMI;1.10% of Notional Amount Monthly;N/A;100.91;99.91;0.24;0.74;0.91;N/A;N/A;0.24;0.75;0.92;N/A;N/A
+NLBNPIT2TQK4;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (Rheinmetall AG, Leonardo SpA, The Boeing Co, Dassault Systemes SE);Not specified Not specified;N/A;74.5;73.5;0.08;0.52;2.95;1.86;-4.13;0.11;0.71;4.18;2.6;-5.32
+NLBNPIT303F2;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (UniCredit, Banca Monte dei Paschi di Siena, FinecoBank, Azimut Holding);Variable See Annex;N/A;102.36;101.36;1.07;2.16;1.37;2.52;2.95;1.07;2.18;1.37;2.55;3
+CH1550424670;Leonteq Securities AG;Target One Autocallable (Anglogold Ashanti ADR, Colgate-Palmolive, Moderna);EUR 10.00 Monthly;N/A;1021.77;1011.77;1.3;-0.68;-4.28;-11.21;N/A;0.13;-0.07;-0.42;-1.1;N/A
+CH1550420314;Leonteq Securities AG;Phoenix Autocallable on Aegon, Allianz, Generali, Swiss Re;EUR 10.00 Monthly;N/A;1000.02;990.02;-3.53;-4.7;-4.64;-3.76;N/A;-0.36;-0.47;-0.47;-0.38;N/A
+NLBNPIT300C5;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Banca Monte dei Paschi di Siena SpA;Not specified Not specified;N/A;96.7;95.7;0.09;N/A;N/A;N/A;N/A;0.09;N/A;N/A;N/A;N/A
+NLBNPIT304G8;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (BGN, UCG, BMPS, BPE);1.27% of Notional Monthly;N/A;100.68;99.68;0.1;0.7;0.68;N/A;N/A;0.1;0.71;0.69;N/A;N/A
+IT0006767823;Marex Financial;N/A;Not specified in provided text Not specified in provided text;N/A;1007.75;1003.1;0.02;-4.26;-3.39;21.88;22.57;0;-0.42;-0.34;2.23;2.3
+IT0006772583;Marex Financial;12m Wof Memory Phoenix Autocall on Tesla Inc (TSLA), Intel Corp (INTC), Micron Technology Inc (MU), Oracle Corp (ORCL) in EUR;28.01 EUR Mensile;N/A;1023.9;1015.94;1.96;22.89;14.91;12.13;30.94;0.19;2.31;1.49;1.21;3.14
+NLBNPIT300H4;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Stellantis NV;Not specified Not specified;N/A;83.55;82.55;0.94;2.27;2.06;1.99;-6.34;1.15;2.83;2.56;2.47;-7.13
+IT0006771148;Marex Financial;IT0006771148;Not Available Not Available;N/A;1018.1;1008.1;0.01;0.3;1.49;3.2;4.3;0;0.03;0.15;0.32;0.43
+NLBNPIT2QDD3;BNP Paribas Issuance B.V.;Low Barrier Cash Collect on Oracle Corp, Dell Technologies Inc, Fortinet Inc, Amazon.com Inc;Not specified Not specified;N/A;90.56;89.56;0.02;2.85;2;0.78;3.93;0.02;3.29;2.28;0.88;4.59
+NLBNPIT303N6;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (Leonardo SpA, Rheinmetall AG, Coherent Corp);not specified not specified;N/A;101.07;100.07;-0.12;2.04;3.25;-0.62;1.36;-0.12;2.08;3.36;-0.62;1.38
+CH1316652309;EFG International Finance (Guernsey) Ltd.;Certificato Express in EUR su Bayer e Pfizer (BAYN GY, PFE UN);EUR 10.00 Monthly;N/A;1011.86;1001.79;1.23;-7.51;-2.45;1.41;N/A;0.12;-0.74;-0.24;0.14;N/A
+DE000VH30021;Vontobel;Memory Express Zertifikat auf Allianz, AXA, Zurich Insurance (ALV, CS, ZURN);8.5% p.a. Quarterly;N/A;1015;1005;-34;0;39;83;48;-3.27;0;4.04;9;5.02
+IT0006771353;Marex Financial;IT0006771353;Not specified Not specified;N/A;1026.8;1016.8;-5.28;-4.77;1.8;47.94;37.22;-0.52;-0.47;0.18;4.95;3.8
+NLBNPIT303M8;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (Unipol Assicurazioni SpA, Generali G IM, AXA SA CS FP, Zurich Insurance Group AG);Not specified See Annex;N/A;101.28;100.28;0.02;0.54;0.59;1.2;0.95;0.02;0.54;0.59;1.21;0.96
+NLBNPIT2EPV5;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down 95% (NVIDIA, MSFT, AMZN, META);0.94% of Notional Monthly;N/A;97.67;96.67;0.03;0.82;-0.34;N/A;N/A;0.03;0.86;-0.35;N/A;N/A
+NLBNPIT303A3;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (NVIDIA, Intel, Tesla, Meta);Variable Monthly/Periodic;N/A;112.88;111.88;-0.03;1.06;1.42;1.23;4.22;-0.03;0.96;1.29;1.11;3.92
+DE000VJ6U7J7;Vontobel;Memory Express Zertifikat auf Allianz, AXA, Zurich Insurance;8.50% p.a. Quarterly;N/A;101.6;100.6;1;2.1;2.1;4.3;N/A;1;2.13;2.13;4.47;N/A
+IT0006775347;Marex Financial;110m Credit Linked on UniCredit SpA in EUR;5.65% p.a. Annual;N/A;10123.24;10023.23;45.39;165.15;164.29;56.53;N/A;0.45;1.68;1.67;0.57;N/A
+NLBNPIT30374;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (The Boeing Co, Rheinmetall AG, Leonardo SpA, Thales SA);Variable Not specified;N/A;92.03;91.03;0.13;0.51;2.96;1.26;-6.7;0.14;0.56;3.36;1.4;-6.86
+NLBNPIT304Q7;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (GOOGL, MSFT, AI);1.60% of Notional Amount Monthly;N/A;100.39;99.39;-0.08;0.48;0.39;N/A;N/A;-0.08;0.49;0.39;N/A;N/A
+NLBNPIT2T027;BNP Paribas Issuance B.V.;Cash Collect Booster (Palantir, Tesla, NVIDIA);Not specified Not specified;N/A;97.15;96.15;0.14;0.59;1.2;-0.62;-1.32;0.15;0.62;1.26;-0.64;-1.35
+IT0006770512;Marex Financial;60m Wof Memory Phoenix Autocall on BNP Paribas SA, UniCredit SpA, Banco BPM SpA in EUR;10.20% per annum (8.50 EUR monthly) Monthly;N/A;1010;1006.89;9.22;19.42;20.85;10.89;42.89;0.92;1.97;2.11;1.09;4.45
+NLBNPIT30358;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (A2A, Engie, Veolia, E.ON);Variable Periodic;N/A;103.86;102.86;0;0.5;1.73;1.56;1.42;0;0.49;1.71;1.54;1.4
+NLBNPIT303O4;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (Siemens Energy AG, Stellantis NV, STMicroelectronics NV, Banca Monte dei Paschi di Siena SpA);Refer to attachment Refer to attachment;N/A;104.88;103.88;0.97;3.32;3.43;3.46;5.18;0.94;3.3;3.41;3.45;5.25
+IT0006775404;Marex Financial;60m Wof Memory Phoenix Autocall on EURO STOXX 50 Price EUR, S&P 500 INDEX, Nikkei 225, iShares China Large-Cap ETF in EUR;6.50 EUR Monthly;N/A;1013.1;1003.09;4.25;11.74;11.53;-1.91;N/A;0.43;1.18;1.16;-0.19;N/A
+NLBNPIT304E3;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down-Intesa Sanpaolo SpA, Banco BPM SpA;0.90% per month Monthly;N/A;101.07;100.07;0.86;0.61;1.07;N/A;N/A;0.87;0.61;1.08;N/A;N/A
+NLBNPIT302Z2;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (ISP, SAN, GS, MS);Variable Conditional;N/A;106.57;105.57;0.03;0.67;1.1;0.71;0.08;0.03;0.64;1.05;0.68;0.08
+NLBNPIT304S3;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (Bayer AG, Eli Lilly and Co, Merck and Co Inc);1.15% of Notional Amount per month Monthly;N/A;100.45;99.45;0.07;0.03;0.45;N/A;N/A;0.07;0.03;0.45;N/A;N/A
+NLBNPIT300U7;BNP Paribas Issuance B.V.;Step Down Memory Cash Collect on Palantir Technologies Inc;Not specified Not specified;N/A;93.4;92.4;0.16;-0.62;0.41;0.27;N/A;0.17;-0.67;0.45;0.29;N/A
+NLBNPIT30150;BNP Paribas Issuance B.V.;6 Premi Fissi Cash Collect Callable (COHR UN, HO FP, LDO IM);Not specified Not specified;N/A;100.99;99.99;-0.09;-0.5;0.79;-2.7;-1.48;-0.09;-0.5;0.8;-2.63;-1.46
+NLBNPIT30382;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (BP, TTE, EQNR, REP);Variable Variable;N/A;94.24;93.24;0;-2.47;-1.81;1.1;2.74;0;-2.58;-1.9;1.19;3.03
+NLBNPIT21T57;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (Mercedes-Benz Group AG, Ford Motor Co, Tesla Inc);Not specified Not specified;N/A;96.13;95.13;-0.1;1.07;0.53;-0.32;N/A;-0.11;1.14;0.56;-0.34;N/A
+NLBNPIT304J2;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (Leonardo, Poste Italiane, Enel);0.98% per period Monthly;N/A;100.83;99.83;0.55;0.42;0.83;N/A;N/A;0.55;0.42;0.84;N/A;N/A
+NLBNPIT304N4;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (ASML, STLAM, CBK, ENR);1.65% of Nominal Amount Monthly;N/A;101.81;100.81;0.3;0.99;1.81;N/A;N/A;0.3;0.99;1.83;N/A;N/A
+IT0006772062;Marex Financial;48m Wof Memory Phoenix Autocall on Banco BPM SpA, Societe Generale SA, Banca Monte dei Paschi di Sien, Commerzbank AG in EUR;10.20% p.a. Monthly;N/A;1004.8;1004.13;10.13;24.13;20.19;43.89;71.13;1.02;2.46;2.05;4.57;7.62
+NLBNPIT302Y5;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (UniCredit SpA, Banca Monte dei Paschi di Siena SpA, BPER Banca SPA, Banco BPM SpA);Variable Refer to documentation;N/A;110.38;109.38;-0.41;0.19;0.17;0.3;1.66;-0.37;0.17;0.16;0.28;1.54
+NLBNPIT303D7;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (BPER, ISP);Not specified Refer to attachment;N/A;101.1;100.1;1.09;1.84;2.2;0.86;1.69;1.1;1.87;2.25;0.87;1.72
+CH1550425057;Leonteq Securities AG;Phoenix Autocallable on Banca Monte dei Paschi Siena, Barclays, Commerzbank, Société Générale;EUR 12.50 Monthly;N/A;1007.54;997.54;-3.87;-9.57;N/A;N/A;N/A;-0.39;-0.95;N/A;N/A;N/A
+NLBNPIT2XBR3;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down;1.27% of Notional Amount Monthly;N/A;98.56;97.56;1.08;2.67;3.77;N/A;N/A;1.12;2.81;4.02;N/A;N/A
+CH1550424647;Leonteq Securities AG;Twin-Win Certificate in EUR on Ferrari, Hermès, Kering (RACE, RMS, KER);EUR 7.50 Monthly;N/A;998.88;988.88;10.99;19.77;32.84;36.63;N/A;1.12;2.04;3.44;3.85;N/A
+NLBNPIT303S5;BNP Paribas Issuance B.V.;Premium Plus Cash Collect on Meta Platforms Inc, Advanced Micro Devices Inc, Dell Technologies Inc;Variable Variable;N/A;106.61;105.61;0.03;2.05;2.21;2.25;N/A;0.03;1.98;2.14;2.18;N/A
+CH1550421528;Leonteq Securities AG;Express Certificate in EUR on Intel and Micron Technology (INTC, MU);EUR 20.00 Monthly;N/A;1057.82;1047.82;-1.02;4.52;9.78;4.93;N/A;-0.1;0.43;0.94;0.47;N/A
+CH1550422195;Leonteq Securities AG;Phoenix Autocallable Express on A2A, Eni, Ferrari, Intesa Sanpaolo;EUR 10.00 Monthly;N/A;1008.99;998.99;5.3;4.65;6.01;4.05;N/A;0.53;0.47;0.61;0.41;N/A
+CH1550424928;Leonteq Securities AG;Certificato Express in EUR su Banco BPM, Davide Campari-Milano, Enel, Leonardo (BAMI, CPR, ENEL, LDO);EUR 10.00 Monthly;N/A;988.01;978.01;4.96;13.7;21.27;7.8;N/A;0.51;1.42;2.22;0.8;N/A
+NLBNPIT2HHH4;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down 95% (Leonardo SpA, ERG SpA, Ferrari NV, Moncler SpA);Not specified Not specified;N/A;95.42;94.42;0.91;3.32;3.53;2.63;-0.88;0.97;3.64;3.88;2.87;-0.92
+NLBNPIT303G0;BNP Paribas Issuance B.V.;3Y Premium Plus Cash Collect (UniCredit SpA, Banca Monte dei Paschi di Siena SpA, Banco BPM SpA, BPER Banca SPA);Conditional Not specified;N/A;102.51;101.51;1.13;2.19;1.81;2.24;3.77;1.13;2.2;1.82;2.26;3.86
+NLBNPIT303P1;BNP Paribas Issuance B.V.;Premium Plus Cash Collect (A2A, Engie, Veolia, Enel);Variable Variable;N/A;102.73;101.73;0.8;1.36;2.28;1.64;2.36;0.79;1.35;2.29;1.64;2.37
+NLBNPIT304P9;BNP Paribas Issuance B.V.;12 Premi Fissi Cash Collect Step Down (ENEL, ENR, ELE);1.10% of Notional Monthly;N/A;100.7;99.7;-0.37;-0.01;0.7;N/A;N/A;-0.37;-0.01;0.71;N/A;N/A
+NLBNPIT30309;BNP Paribas Issuance B.V.;Cash Collect Protection Booster (BMPS, GLE, CABK, BBVA);Conditional and Certain coupons Variable;N/A;109.43;108.43;-0.23;0.79;1.02;1.39;1.55;-0.21;0.73;0.95;1.3;1.45

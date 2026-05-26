@@ -25,7 +25,6 @@ pub static DETAIL_COLUMNS: &'static [&str] = &[
     "risk_level",
     "coupon_amount",
     "coupon_recurrence",
-    "coupon_next_ex_date",
     "coupon_type",
     "coupon_barrier",
     "leverage",
@@ -34,12 +33,15 @@ pub static DETAIL_COLUMNS: &'static [&str] = &[
 
 // static vector of cols for issuers
 // vec!["issuer_name", "specialization", "geo_region", "issuer_rating_description"]
+/*
+ * NOT USED
 pub static ISSUER_COLUMNS: &'static [&str] = &[
     "issuer_name",
     "specialization",
     "geo_region",
     "issuer_rating_description"
 ];
+*/
 
 // static vector of cols for isin_ticker
 // vec!["certificate_isin", "certificate_name", "stock_google_finance_ticker", "stock_name"]
@@ -55,6 +57,8 @@ pub static ISIN_TICKER_COLUMNS: &'static [&str] = &[
 
 // static vector of cols for certificate_growth
 // (ISIN, Issuer, Name, Coupon, Ex-Date, Ask, Bid, Growth_1D ,Growth_3Ds, Growth_1W, Growth_2W, Growth_4W)
+/*
+ * NOT USED
 pub static CERTIFICATE_GROWTH_COLUMNS: &'static [&str] = &[
     "isin",
     "issuer",
@@ -70,6 +74,7 @@ pub static CERTIFICATE_GROWTH_COLUMNS: &'static [&str] = &[
     "growth_2w",
     "growth_4w"
 ];
+*/
 
 
 // pub static TABLES: Tables = Tables {

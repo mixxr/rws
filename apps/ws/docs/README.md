@@ -58,8 +58,8 @@ GET /issuers/leon
 ## Response
 ```json
 [
-  "isin;issuer;name;certificate_type_tags;memory_effect;phase;currency;industry;callable;strike_date;issue_date;rembursement_date;autocallable_date;capital_barrier;airbag;risk_level;coupon_amount;coupon_recurrence;coupon_next_ex_date;coupon_type;coupon_barrier;leverage;exchange_risk",
-  "NLBNPIT21TB7;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (PATH, KLAC, AI);step-down,cash-collect;Yes;Open;EUR;Technology;Yes;2024-04-08;2024-04-12;2027-04-19;2025-04-19;40% of underlying strike;No;High;7%;Quarterly;2026-07-15;Conditional;40%;None;Yes"
+  "isin;issuer;name;certificate_type_tags;memory_effect;phase;currency;industry;callable;strike_date;issue_date;rembursement_date;autocallable_date;capital_barrier;airbag;risk_level;coupon_amount;coupon_recurrence;coupon_type;coupon_barrier;leverage;exchange_risk",
+  "NLBNPIT21TB7;BNP Paribas Issuance B.V.;Cash Collect Step Down 95% (PATH, KLAC, AI);step-down,cash-collect;Yes;Open;EUR;Technology;Yes;2024-04-08;2024-04-12;2027-04-19;2025-04-19;40% of underlying strike;No;High;7%;Quarterly;Conditional;40%;None;Yes"
 ]
 ```
 ### Examples

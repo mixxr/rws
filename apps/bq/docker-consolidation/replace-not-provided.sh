@@ -25,6 +25,7 @@ function trim(s) {
             upper == "UNKNOWN" ||
             upper == "NOT PROVIDED" ||
             upper == "NOT PROVID" ||
+            upper == "NOT APPLICABLE" || 
             upper  ~  /DOES NOT CONTAIN/) {
 
             $i = "N/A"

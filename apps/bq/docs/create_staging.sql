@@ -52,7 +52,6 @@ CREATE TABLE `invcerts.ISINs.staging_details` (
   coupon_amount STRING,
   coupon_recurrence STRING,
   coupon_type STRING,
-  coupon_next_ex_date STRING,
   coupon_barrier STRING,       -- stored as percentage
   
   leverage STRING,
@@ -83,6 +82,7 @@ CREATE TABLE `invcerts.ISINs.staging_issuer` (
   geo_region STRING,
   issuer_rating_description STRING,
   issuer_rating_class STRING NOT NULL,
+  website STRING,
 
   -- optional metadata (recommended)
   ingestion_ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP()

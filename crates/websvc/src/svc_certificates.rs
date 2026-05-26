@@ -119,7 +119,7 @@ pub async fn get_certificates(
 
      let engine = csv_query_engine::CsvQueryEngine::new("details.csv");
       
-     // isin;issuer;name;certificate_type_tags;memory_effect;phase;currency;industry;callable;strike_date;issue_date;rembursement_date;autocallable_date;capital_barrier;airbag;risk_level;coupon_amount;coupon_recurrence;coupon_next_ex_date;coupon_type;coupon_barrier;leverage;exchange_risk
+     // isin;issuer;name;certificate_type_tags;memory_effect;phase;currency;industry;callable;strike_date;issue_date;rembursement_date;autocallable_date;capital_barrier;airbag;risk_level;coupon_amount;coupon_recurrence;coupon_type;coupon_barrier;leverage;exchange_risk
      let result = engine.run(
         move |r| {
             // filter by issuer

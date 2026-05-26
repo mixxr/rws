@@ -278,6 +278,8 @@ async fn get_issuers_by_name_prefix(
         Err(_) => HttpResponse::InternalServerError().json(vec!["error"]),
     }
 }
+/*
+ * NOT USED
 async fn get_issuers_by_name_prefix_sql(
     data: web::Data<SharedMap>,
     path: web::Path<String>,
@@ -303,6 +305,7 @@ async fn get_issuers_by_name_prefix_sql(
         .content_type("application/json")
         .json(rows)
 }
+*/
 
 /* returns list of tickers (ticker, stock name) matching the name prefix */
 // TO-DO: return unique stock names with their tickers

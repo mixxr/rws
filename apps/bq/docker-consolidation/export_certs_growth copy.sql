@@ -10,8 +10,8 @@ EXPORT DATA OPTIONS (
       d.isin as isin,
       d.issuer as issuer,
       d.name as name,
-      d.coupon as coupon,
-      d.next_ex_date as next_ex_date,
+      "TBD" as coupon,
+      "TBD" as ex_date,
       qc.ask as ask,
       qc.bid as bid,
       qc.Growth_1D as Growth_1D,
@@ -25,5 +25,5 @@ EXPORT DATA OPTIONS (
       qc.Growth_2W_Pct as Growth_2W_Pct,
       qc.Growth_4W_Pct as Growth_4W_Pct
   from `ISINs.v_quotes_consolidated` qc
-  inner join `ISINs.v_next_ex_date` d
+  inner join `ISINs.staging_details` d
       on qc.isin = d.isin

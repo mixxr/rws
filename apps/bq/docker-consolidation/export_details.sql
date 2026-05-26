@@ -6,5 +6,30 @@ EXPORT DATA OPTIONS (
   field_delimiter=';'
 )
 AS
-SELECT isin,issuer,name,certificate_type_tags,memory_effect,phase,currency,industry,callable,strike_date,issue_date,rembursement_date,autocallable_date,capital_barrier,airbag,risk_level,coupon_amount,coupon_recurrence,coupon_next_ex_date,coupon_type,coupon_barrier,leverage,exchange_risk
-from `ISINs.staging_details`
+SELECT
+    d.isin,
+    d.issuer,
+    d.name,
+    d.certificate_type_tags,
+    d.memory_effect,
+    d.phase,
+    d.currency,
+    d.industry,
+    d.callable,
+    d.strike_date,
+    d.issue_date,
+    d.rembursement_date,
+    d.autocallable_date,
+    d.capital_barrier,
+    d.airbag,
+    d.risk_level,
+    d.coupon_amount,
+    d.coupon_recurrence,
+    v.next_ex_date AS coupon_next_ex_date,
+    d.coupon_type,
+    d.coupon_barrier,
+    d.leverage,
+    d.exchange_risk
+FROM `ISINs.staging_details` d
+INNER JOIN `ISINs.v_next_ex_date` v
+    ON d.isin = v.isin;
