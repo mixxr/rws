@@ -8,7 +8,7 @@ FROM europe-west1-docker.pkg.dev/invcerts/ghcr/mixxr/gemini-cert:latest
 WORKDIR .
 ENV MOUNT_DIR="/data"
 ENV MOUNT_BUCKET="gs://rws-data"
-ENV RUST_LOG="info"
+ENV RUST_LOG="warning"
 COPY ./setup.sh ./
 RUN chmod +x ./setup.sh
 CMD ["./setup.sh"]

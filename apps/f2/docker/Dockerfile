@@ -8,7 +8,7 @@ FROM europe-west1-docker.pkg.dev/invcerts/ghcr/mixxr/format2:latest
 WORKDIR .
 ENV MOUNT_DIR="/data"
 ENV MOUNT_BUCKET="gs://rws-data"
-ENV RUST_LOG="info"
+ENV RUST_LOG="warning"
 COPY ./*.sh ./
 RUN chmod +x ./*.sh
 CMD ["./setup.sh"]

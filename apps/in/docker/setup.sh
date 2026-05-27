@@ -158,7 +158,7 @@ validate_isin() {
 }
 
 declare -A RANGE_MAP=(
-  ["bnp_details"]="9,320"
+  ["bnp_details"]="9,420"
   ["marex_details"]="5,490"
   ["vontobel_details"]="5,490"
   ["leonteq_details"]="5,500"

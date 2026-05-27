@@ -2,7 +2,7 @@ FROM europe-west1-docker.pkg.dev/invcerts/ghcr/0xmassi/webclaw:latest
 WORKDIR .
 ENV MOUNT_DIR="/data"
 ENV MOUNT_BUCKET="gs://rws-data"
-ENV RUST_LOG="info"
+ENV RUST_LOG="warning"
 # Avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
