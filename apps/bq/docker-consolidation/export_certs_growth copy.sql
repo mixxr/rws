@@ -7,7 +7,7 @@ EXPORT DATA OPTIONS (
   )
   AS
   select
-      d.isin as isin,
+      upper(d.isin) as isin,
       d.issuer as issuer,
       d.name as name,
       "TBD" as coupon,
@@ -26,4 +26,4 @@ EXPORT DATA OPTIONS (
       qc.Growth_4W_Pct as Growth_4W_Pct
   from `ISINs.v_quotes_consolidated` qc
   inner join `ISINs.staging_details` d
-      on qc.isin = d.isin
+      on upper(qc.isin) = upper(d.isin)

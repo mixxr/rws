@@ -7,7 +7,7 @@ EXPORT DATA OPTIONS (
 )
 AS
 SELECT
-    d.isin,
+    upper(d.isin) as isin,
     d.issuer,
     d.name,
     d.certificate_type_tags,
@@ -32,4 +32,4 @@ SELECT
     d.exchange_risk
 FROM `ISINs.staging_details` d
 INNER JOIN `ISINs.v_next_ex_date` v
-    ON d.isin = v.isin;
+    ON upper(d.isin) = upper(v.isin);

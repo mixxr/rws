@@ -64,7 +64,7 @@ quotes_with_history AS (
 )
 
 SELECT
-  isin AS ISIN,
+  upper(isin) AS ISIN,
   issuer AS Issuer,
 
   ROUND(ask, 2) AS Ask,
