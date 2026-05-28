@@ -22,7 +22,7 @@ TYPES_PROCESSED=0
 IFS='|' read -r -a TYPES_ARRAY <<< "$TYPES"
 #FOLDERS is a comma separated string, we need to split it into an array
 IFS='|' read -r -a FOLDERS_ARRAY <<< "$FOLDERS"
-datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
+datetime=$(TZ="Europe/Rome" date +"%Y-%m-%dT%H-%M-%S")
 #loop through the array and create a manifest file containing lines like gs://rws-data/certificates/output/DE000VG656A7-tickers.json
 i=0
 for TYPE in "${TYPES_ARRAY[@]}"; do

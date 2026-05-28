@@ -22,7 +22,7 @@ CMD_NAME=${CMD_NAME:-webclaw}
 STATUS=${STATUS:-1}
 STATUS_TO=$((STATUS+1))
 mntdir=${MOUNT_DIR:-.}/${TYPE}
-datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
+datetime=$(TZ="Europe/Rome" date +"%Y-%m-%dT%H-%M-%S")
 echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS"
 $CMD_NAME --version
 mkdir -p $mntdir/input/

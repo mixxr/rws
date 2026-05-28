@@ -9,7 +9,7 @@ STATUS=${STATUS:-2}
 STATUS_TO=$((STATUS+1))
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 bucket=${MOUNT_BUCKET}/${TYPE}
-datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
+datetime=$(TZ="Europe/Rome" date +"%Y-%m-%dT%H-%M-%S")
 MANIFEST="$mntdir/jobs/$STATUS_TO/$datetime.txt"
 echo "[INFO] Mount Dir: $mntdir, TYPE: $TYPE, CMD_NAME: $CMD_NAME, STATUS: $STATUS, MOUNT_BUCKET: $MOUNT_BUCKET"
 echo "Manifest file to produce: $MANIFEST"
