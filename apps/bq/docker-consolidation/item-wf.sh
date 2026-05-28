@@ -13,6 +13,21 @@ fi
 if [[ "$ITEM" == "tickers" ]]; then
 ./tickers-wf-00.sh tickers-tmp0.csv tickers-tmp2.csv
 ./tickers-wf-10.sh tickers-tmp2.csv tickers-tmp1.csv
+./normalize-cols.sh \
+    tickers-tmp1.csv \
+    alt_names.csv \
+    tickers-tmp2.csv \
+    stock_exchange \
+    correct_name \
+    alt_name
+./extract_alt_symbols.sh tickers-tmp1.csv tickers-tmp_tickers_alt_symbols.csv stock_google_finance_ticker
+./normalize-cols.sh \
+    tickers-tmp2.csv \
+    tickers-tmp_tickers_alt_symbols.csv \
+    tickers-tmp1.csv \
+    stock_google_finance_ticker \
+    stock_symbol \
+    stock_alt_symbol
 fi
 ./replace-strs.sh $ITEM-tmp1.csv " - " "-" $ITEM-tmp2.csv
 ./replace-strs.sh $ITEM-tmp2.csv " & " " and " $ITEM-final.csv
