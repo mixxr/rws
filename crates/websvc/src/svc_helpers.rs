@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use actix_web::{
     body::{BoxBody, MessageBody},
     dev::{ServiceRequest, ServiceResponse},
@@ -9,7 +10,7 @@ use std::sync::{Arc, Mutex};
 use crate::definitions;
 
 pub struct AppConfig {
-    pub secret: String,
+    pub secrets: HashSet<String>,
     pub is_test_mode: bool,
 }
 
@@ -52,6 +53,17 @@ pub fn sanitize_input(input: &str) -> String {
         .collect()
 }
 
+pub fn load_keys() -> HashSet<String> {
+    let raw = std::env::var("SECRET_KEYS").unwrap_or_else(|_| {
+        eprintln!("SECRET_KEYS env var missing. Please provide a comma-separated list of valid keys.");
+        std::process::exit(1);
+    });
+
+    raw.split(',')
+        .map(|s| s.trim().to_string())
+        .collect()
+}
+
 pub async fn auth_middleware<B>(
     req: ServiceRequest,
     next: Next<B>,
@@ -59,7 +71,7 @@ pub async fn auth_middleware<B>(
 where
     B: MessageBody + 'static,
 {
-    println!("method {:?} {:?}", req.method(), req.headers().get("Authorization"));
+    //println!("method {:?} {:?}", req.method(), req.headers().get("Authorization"));
     if req.method() == Method::OPTIONS {
         let res = next.call(req).await?;
         return Ok(res.map_into_boxed_body());
@@ -78,11 +90,11 @@ where
         .headers()
         .get("Authorization")
         .and_then(|h| h.to_str().ok())
-        .map(|h| h == format!("Bearer {}", config.secret))
+        .map(|h| config.secrets.contains(&h[7..].to_string())) // remove "Bearer " prefix
         .unwrap_or(false);
 
     if !authorized {
-        log::warn!("Unauthorized {:?}", req.headers().get("Authorization"));
+        log::warn!("Unauthorized method {:?}, bearer {:?}, full headers {:?}", req.method(), req.headers().get("Authorization"), req.headers());
         return Ok(
             req.into_response(HttpResponse::Unauthorized().finish())
                 .map_into_boxed_body(),

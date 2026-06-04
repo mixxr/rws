@@ -35,14 +35,8 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init();
     // args → fallback to env var → fallback to default
-    let secret_key = match env::var("SECRET_KEY") {
-        Ok(v) => v,
-        Err(_) => {
-            eprintln!("Error: SECRET_KEY environment variable is not set");
-            std::process::exit(1);
-        }
-    };
-    log::debug!("SECRET_KEY: {secret_key}");
+    let secret_keys = load_keys();
+    log::debug!("SECRET_KEYS: {secret_keys:?}");
 
     let listen_addr = "0.0.0.0";
 
@@ -88,7 +82,7 @@ async fn main() -> std::io::Result<()> {
         // let cors = Cors::default().allow_any_origin();
         App::new()
             .app_data(web::Data::new(svc_helpers::AppConfig {
-                    secret: secret_key.clone(),
+                    secrets: secret_keys.clone(),
                     is_test_mode: is_test_mode,
                 }))
             .wrap(Logger::default())
