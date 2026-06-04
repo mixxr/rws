@@ -13,7 +13,7 @@ WITH quotes_clean AS (
   FROM `invcerts.ISINs.staging_quotes`
 
   WHERE SAFE_CAST(REPLACE(bid, ',', '.') AS FLOAT64) IS NOT NULL
-    AND SAFE_CAST(REPLACE(ask, ',', '.') AS FLOAT64) IS NOT NULL
+    -- AND SAFE_CAST(REPLACE(ask, ',', '.') AS FLOAT64) IS NOT NULL
     AND dt IS NOT NULL
 ),
 
