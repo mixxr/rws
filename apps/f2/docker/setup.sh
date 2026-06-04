@@ -5,13 +5,22 @@ STATUS=2
 STATUS_TO=3
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 bucket=${MOUNT_BUCKET}/${TYPE}
+issuer_filter=${ISSUER:-*}
 
 if [ -n "$DATETIME_ONREQUEST" ]; then
   files=("$mntdir/jobs/$STATUS/$DATETIME_ONREQUEST.f2")
 else
   files=("$mntdir"/jobs/$STATUS/*.f2)
 fi
-echo "Datetime on request: $DATETIME_ONREQUEST, Mount Dir: $mntdir, Bucket: $bucket"
+
+echo "[Configuration] 
+DatetimeOnRequest: $DATETIME_ONREQUEST,
+Mount Dir: $MOUNT_DIR, 
+TYPE: $TYPE, 
+ISSUER: $issuer_filter, 
+STATUS: $STATUS, 
+MOUNT_BUCKET: $MOUNT_BUCKET"
+
 # rm -f $mntdir/jobs/$datetime.bq.partial
 
 for semaphore_file in "${files[@]}"; do
@@ -22,8 +31,8 @@ for semaphore_file in "${files[@]}"; do
 
   echo "#!/bin/bash" > ./run.sh
 
-  // TODO: farlo parametrico in modo che parte anche solo con determinati issuers (utile per fix)
-  for filepath in "$mntdir"/config/*.rx.txt; do
+  # TODO: farlo parametrico in modo che parte anche solo con determinati issuers (utile per fix)
+  for filepath in "$mntdir"/config/"$issuer_filter".rx.txt; do
     if [ -f "$filepath" ]; then
       file="$(basename "$filepath")"
       issuer="${file%%.*}"

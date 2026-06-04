@@ -308,14 +308,15 @@ pub async fn get_growth(
         move |r| {
             let growth: f64 = r.get(csv_query_engine::CERTS_GROWTH_G1D).unwrap_or("0").parse().unwrap_or(0.0);
             let ask: f64 = r.get(csv_query_engine::CERTS_GROWTH_ASK).unwrap_or("0").parse().unwrap_or(0.0);
+            let par_value: f64 = r.get(csv_query_engine::CERTS_GROWTH_PAR_VALUE).unwrap_or("0").parse().unwrap_or(0.0);
 
             (match where_growth.as_str() {
                 "up" => growth > 0.0,
                 "down" => growth < 0.0,
                 _ => true,
             }&& match where_par.as_str() {
-                "over" => ask >= 100.0,
-                "below" => ask < 100.0,
+                "over" => ask >= par_value,
+                "below" => ask < par_value,
                 _ => true,
             }&& match isins.as_str() {
                 "*" => true,

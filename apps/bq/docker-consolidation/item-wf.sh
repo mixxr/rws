@@ -5,6 +5,9 @@ if [ -z "$1" ]; then
 fi
 ITEM=$1
 ./item_export.sh $ITEM
+if [ $? -ne 0 ]; then
+    echo "[ERROR] stopped"
+fi
 ./item_consolidate.sh $ITEM
 ./replace-not-provided.sh $ITEM-consolidated.csv $ITEM-tmp0.csv
 if [[ "$ITEM" == "details" || "$ITEM" == "certs_growth" ]]; then

@@ -84,7 +84,14 @@ SELECT
   ROUND(SAFE_DIVIDE(bid - bid_2w, bid_2w) * 100, 2)  AS Growth_2W_Pct,
   ROUND(SAFE_DIVIDE(bid - bid_4w, bid_4w) * 100, 2)  AS Growth_4W_Pct,
 
-  dt AS Last_Update_DT
+  dt AS Last_Update_DT,
+  CASE
+    WHEN bid < 20 THEN 10
+    WHEN bid < 200 THEN 100
+    WHEN bid < 2000 THEN 1000
+    WHEN bid < 20000 THEN 10000
+    ELSE 0
+  END AS Par_Value
 
 FROM quotes_with_history
 WHERE latest_rn = 1;

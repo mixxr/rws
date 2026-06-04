@@ -5,6 +5,8 @@ pub static CERTS_GROWTH_PATH: &str = "certs_growth.csv";
 pub static CERTS_GROWTH_ISI:usize = 0;
 pub static CERTS_GROWTH_ASK:usize = 5;
 pub static CERTS_GROWTH_G1D:usize = 7;
+pub static CERTS_GROWTH_PAR_VALUE:usize = 18;
+
 
 
 pub struct CsvQueryEngine {

@@ -16,6 +16,7 @@ FOLDERS: $FOLDERS,
 CMD_NAME: $CMD_NAME, 
 STATUS: $STATUS, 
 MOUNT_BUCKET: $MOUNT_BUCKET"
+
 ERROR_COUNT=0
 TYPES_PROCESSED=0
 #TYPES is a comma separated string, we need to split it into an array
