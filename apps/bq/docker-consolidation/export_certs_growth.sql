@@ -23,7 +23,8 @@ EXPORT DATA OPTIONS (
       qc.Growth_3Ds_Pct as Growth_3Ds_Pct,
       qc.Growth_1W_Pct as Growth_1W_Pct,
       qc.Growth_2W_Pct as Growth_2W_Pct,
-      qc.Growth_4W_Pct as Growth_4W_Pct
+      qc.Growth_4W_Pct as Growth_4W_Pct,
+      qc.Last_Update_DT as Last_Update_DT
   from `ISINs.v_quotes_consolidated` qc
   inner join `ISINs.v_next_ex_date` d
       on upper(qc.isin) = upper(d.isin)
