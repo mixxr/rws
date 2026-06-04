@@ -22,6 +22,7 @@ for semaphore_file in "${files[@]}"; do
 
   echo "#!/bin/bash" > ./run.sh
 
+  // TODO: farlo parametrico in modo che parte anche solo con determinati issuers (utile per fix)
   for filepath in "$mntdir"/config/*.rx.txt; do
     if [ -f "$filepath" ]; then
       file="$(basename "$filepath")"
