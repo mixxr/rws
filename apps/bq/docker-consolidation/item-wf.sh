@@ -31,6 +31,10 @@ if [[ "$ITEM" == "tickers" ]]; then
 fi
 ./replace-strs.sh $ITEM-tmp1.csv " - " "-" $ITEM-tmp2.csv
 ./replace-strs.sh $ITEM-tmp2.csv " & " " and " $ITEM-final.csv
-./gcloud-cp.sh $ITEM-final.csv gs://rws-data/ws/$ITEM.csv
+if [ $(stat -c%s "$ITEM-final.csv") -gt "100" ]; then
+    ./gcloud-cp.sh $ITEM-final.csv gs://rws-data/ws/$ITEM.csv
+else
+    echo "[WARN] $ITEM-final.csv is empty!"
+fi
 rm $ITEM-tmp*.csv $ITEM-consolidated.csv
 echo "$ITEM: Completed."
