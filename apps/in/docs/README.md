@@ -14,7 +14,7 @@ It accepts the following ENV VARS:
 - BUCKET
 - ISIN_LIST=isin1|isin2|...
 - TYPE_LIST=[quotes|details|tickers]+
-- ISSUER=[bnp|leonteq|marex|vontobel]
+- ISSUER=[bnp|leonteq|marex|vontobel|mediobanca]
 - (optional) START_JOBS=[details|tickers]
 - (optional) SILENT_MODE=false (if `true` then `setup.sh` does not wait for user confirm)
 
