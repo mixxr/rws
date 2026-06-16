@@ -1,0 +1,134 @@
+stock_name;stock_google_finance_ticker;stock_exchange
+Micron Technology;NASDAQ:MU;NASDAQ
+Palantir;NYSE:PLTR;NYSE
+Unicredit;BIT:UCG;BIT
+Ferrari;BIT:RACE;BIT
+BPER Banca;BIT:BPE;BIT
+Banca MPS;BIT:BMPS;BIT
+Eni;BIT:ENI;BIT
+Nvidia;NVDA;NASDAQ
+Thales;EPA:HO;EPA
+Intesa Sanpaolo;BIT:ISP;BIT
+Fineco;BIT:FBK;BIT
+C3.AI;NYSE:AI;NYSE
+Goldman Sachs;NYSE:GS;NYSE
+Morgan Stanley;NYSE:MS;NYSE
+Poste Italiane S.p.A.;BIT:PST;BIT
+Rheinmetall;ETR:RHM;ETR
+IonQ;NYSE:IONQ;NYSE
+Commerzbank;ETR:CBK;XETRA
+Enel;BIT:ENEL;BIT
+Raiffeisen Bank;VIE:RBI;Vienna Stock Exchange
+D-Wave Quantum;NYSE:QBTS;NYSE
+NEXI;BIT:NEXI;BIT
+UiPath;NYSE:PATH;NYSE
+Banco Santander;BME:SAN;BME
+Stellantis;BIT:STLAM;BIT
+STMicroelectronics (PA);EPA:STMPA;EPA
+STMicroelectronics;STM;EPA
+Tesla;NASDAQ:TSLA;NASDAQ
+Leonardo;BIT:LDO;BIT
+Intel;NASDAQ:INTC;NASDAQ
+Microsoft;MSFT:NASDAQ;NASDAQ
+Moncler;BIT:MONC;BIT
+Dell;NYSE:DELL;NYSE
+Scor;EPA:SCR;EPA
+British Petroleum;BP;LSE
+Occidental Petroleum;OXY;NYSE
+Advanced Micro Devices;NASDAQ:AMD;NASDAQ
+Rigetti Computing;NASDAQ:RGTI;NASDAQ
+Chevron;CVX;NYSE
+Societe Generale;EPA:GLE;EPA
+Fortinet;NASDAQ:FTNT;NASDAQ
+CaixaBank S.A.;BME:CABK;BME
+Palantir;PLTR:NYSE;NYSE
+Banco Bilbao Vizcaya Argentaria S.A.;BME:BBVA;BME
+Snam;BIT:SRG;BIT
+Banco BPM;BIT:BAMI;BIT
+Unipol Gruppo Finanziario;BIT:UNI;BIT
+Nvidia;NVDA:NASDAQ;NASDAQ
+TotalEnergies;TTE;EPA
+Amazon;NASDAQ:AMZN;NASDAQ
+Amazon;AMZN:NASDAQ;NASDAQ
+Coherent;NYSE:COHR;NYSE
+TotalEnergies;TTE.PA;EPA
+Erg;BIT:ERG;BIT
+Boeing;NYSE:BA;NYSE
+Broadcom;AVGO;NASDAQ
+Swiss Re;SWX:SREN;SIX Swiss Exchange
+Generali;BIT:G;BIT
+Equinor;EQNR;OSE
+BNP Paribas;EPA:BNP;EPA
+Oracle;NYSE:ORCL;NYSE
+Meta Platforms Inc.;META;NASDAQ
+KLA;NASDAQ:KLAC;NASDAQ
+Repsol;REP;BME
+Banca MPS;BMPS:MIL;BIT
+Zalando SE;ZAL.DE;XETRA
+HelloFresh SE;HFG.DE;XETRA
+Delivery Hero SE;DHER.DE;XETRA
+Stellantis NV;STLA;BIT
+iShares Silver Trust;NYSEARCA:SLV;NYSE Arca
+BTPS 0.95 06/01/32;MOT;MOT
+Zurich Insurance Group;SWX:ZURN;SIX Swiss Exchange
+Allianz SE;ALV;XETRA
+AXA SA;EPA:CS;EPA
+ASML Holding N.V.;ASML;NASDAQ
+SPDR Gold Shares;NYSEARCA:GLD;NYSE Arca
+Solactive BTP 10 Annual Comp. Yield Index;SOITA10Y;N/A
+Solactive Constant Maturity BUND 10Y Yield Index;SOLDE10E;N/A
+Endesa SA;ELE;BME
+STMicroelectronics NV;BIT:STMMI;BIT
+Kering SA;KER;EPA
+Siemens Energy AG;ENR;Xetra
+Fincantieri SpA;BIT:FCT;BIT
+Alphabet Inc;GOOGL;NASDAQ
+Microsoft Corp;MSFT;NASDAQ
+Dassault Systemes SE;EPA:DSY;EPA
+Banque de France TEC 10 CNO Constant 10 Year Maturity Treasury Benchmark;Euronext;Euronext
+2.15% BTPS Italia (03/01/72);IT0005441883;BIT
+Solactive Constant Maturity EU NXG 10Y;SOLEU10E;N/A
+0.5% France Govt (05/25/2072);FR0014001NN8;Euronext
+Mercedes-Benz Group AG;MBG;XETRA
+BAYER AG-REG;BAYN;Xetra
+PFIZER INC-REG;PFE;NYSE
+HERMES INTERNATIONAL;RMS;EPA
+BARCLAYS PLC;LON:BARC;LSE
+DEUTSCHE BANK AKTIENGESELLSCHAFT;ETR:DBK;Xetra
+Infineon Technologies AG;ETR:IFX;XETRA
+Azimut Holding SpA;BIT:AZM;BIT
+Engie SA;EPA:ENGI;EPA
+Sandisk Corp;NASDAQ:SNDK;NASDAQ
+Super Micro Computer Inc;NASDAQ:SMCI;NASDAQ
+AEGON LTD;AGN;Amsterdam
+EURO STOXX 50 Price EUR;SX5E;Not Specified
+iShares China Large-Cap ETF;FXI;Not Specified
+Nikkei 225;NKY;Not Specified
+S&P 500 INDEX;INDEXSP:SPX;Not Specified
+Royal Caribbean Cruises Ltd;RCL;NYSE
+Burberry Group PLC;BRBY;LSE
+E.ON SE;EOAN;XETRA
+Veolia Environnement SA;VIE;EPA
+A2A SpA;A2A;BIT
+DAVIDE CAMPARI-MILANO NV;CPR;BIT
+Eli Lilly and Co;LLY;NYSE
+Banca Generali SpA;BGN;BIT
+Merck and Co Inc;MRK;NYSE
+ASML Holding NV;ASML NA;Not specified
+STMicroelectronics NV;STMPA FP;Not specified
+Intel Corp;INTC UW;Not specified
+HP INC.;HPQ;Not specified
+Moderna Inc;MRNA;NASDAQ
+Anglogold Ashanti ADR;AU;NYSE
+Colgate-Palmolive;CL;NYSE
+Prysmian SpA;BIT:PRY;BIT
+EURO STOXX Banks Index;STOXX;STOXX
+EURO STOXX Utilities;SX6E;STOXX
+EURO STOXX Banks Index;SX7E;STOXX
+ESTX Technology (EUR) Pr;SX8E;STOXX
+ESTX Insurance (EUR) Pr;SXIE;STOXX
+FTSE MIB INDEX;FTSEMIB;BIT
+S&P 500® Index;INDEXSP:.INX;CBOE
+KOSPI 200 INDEX;KOSPI2;Korea Exchange
+iShares MSCI South Korea ETF;NYSEARCA:EWY;NYSE Arca
+iShares MSCI China ETF;NASDAQ:MCHI;NASDAQ

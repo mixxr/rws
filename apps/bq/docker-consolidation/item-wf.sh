@@ -19,14 +19,22 @@ if [[ "$ITEM" == "tickers" ]]; then
 ./normalize-cols.sh \
     tickers-tmp1.csv \
     alt_names.csv \
-    tickers-tmp2.csv \
+    tickers-tmp21.csv \
     stock_exchange \
     correct_name \
     alt_name
-./extract_alt_symbols.sh tickers-tmp1.csv tickers-tmp_tickers_alt_symbols.csv stock_google_finance_ticker
+./normalize-cols.sh \
+    tickers-tmp21.csv \
+    alt_names.csv \
+    tickers-tmp2.csv \
+    stock_google_finance_ticker \
+    correct_name \
+    alt_name
+echo "==> Creating ticker alternative symbols..."
+./extract_alt_symbols.sh tickers-tmp1.csv tickers-tmp_alt_symbols_generated.csv stock_google_finance_ticker
 ./normalize-cols.sh \
     tickers-tmp2.csv \
-    tickers-tmp_tickers_alt_symbols.csv \
+    tickers-tmp_alt_symbols_generated.csv \
     tickers-tmp1.csv \
     stock_google_finance_ticker \
     stock_symbol \
@@ -34,8 +42,13 @@ if [[ "$ITEM" == "tickers" ]]; then
 fi
 ./replace-strs.sh $ITEM-tmp1.csv " - " "-" $ITEM-tmp2.csv
 ./replace-strs.sh $ITEM-tmp2.csv " & " " and " $ITEM-final.csv
+if [[ "$ITEM" == "tickers" ]]; then
+echo "==> Creating ticker index..."
+./create-tickers-index.sh tickers-final.csv
+fi
 if [ $(stat -c%s "$ITEM-final.csv") -gt "100" ]; then
     ./gcloud-cp.sh $ITEM-final.csv gs://rws-data/ws/$ITEM.csv
+    ./gcloud-cp.sh $ITEM-index.csv gs://rws-data/ws/$ITEM-index.csv
 else
     echo "[WARN] $ITEM-final.csv is empty!"
 fi
