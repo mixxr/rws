@@ -23,6 +23,92 @@ const DRIVE_FOLDER_ID = '1Wr0s...jojiIF'; // the ID of the Google Drive folder y
 const STORAGE_BUCKET = '<your-bucket-name>'; // the name of your Cloud Storage bucket, e.g. "my-bucket"
 const FILE_PATH = '<your-folder-in-bucket>'; // literally the path in the bucket, e.g. "myfolder" or "myfolder/subfolder"
 
+const toNdjson = (array) => {
+  return array.map(obj => JSON.stringify(obj)).join("\n");
+}
+
+const uploadBlobToGCS =(filename, blob) => {
+  const API = `https://www.googleapis.com/upload/storage/v1/b`;
+  const location = encodeURIComponent(`${FILE_PATH}/${filename}`);
+  const url = `${API}/${STORAGE_BUCKET}/o?uploadType=media&name=${location}`;
+
+  const service = getStorageService();
+  const accessToken = service.getAccessToken();
+
+  const response = UrlFetchApp.fetch(url, {
+    method: 'POST',
+    contentType: blob.getContentType(),
+    payload: blob.getBytes(),
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  const result = JSON.parse(response.getContentText());
+  Logger.log(JSON.stringify(result, null, 2));
+  return result.timeCreated !== null;
+}
+const splitAndUploadFileToCloudStorage = (gdrive_fid) => {
+  const file = DriveApp.getFileById(gdrive_fid);
+  const filename = file.getName();
+  const blob = file.getBlob();
+
+  // 1. Read JSON
+  const jsonText = blob.getDataAsString("utf-8");
+  let json;
+  try {
+    json = JSON.parse(jsonText);
+  } catch (e) {
+    console.error("Invalid JSON:", filename, e);
+    return false;
+  }
+
+  // 2. Upload original JSON file as-is
+  const ok1 = uploadBlobToGCS(filename, blob);
+
+  // 3. Extract "details" → <filename>-details.json
+  if (json.details) {
+    const djson = JSON.stringify(json.details, null, 2);
+    const detailsBlob = Utilities.newBlob(
+      djson,
+      "application/json",
+      filename.replace(/\.json$/i, "") + "-details.json"
+    );
+    var ok2 = uploadBlobToGCS(detailsBlob.getName(), detailsBlob);
+  } else {
+    console.warn("No 'details' section in", filename);
+    var ok2 = true; // do not block processing
+  }
+
+  // 4. Extract underlyings[] → NDJSON → <filename>-tickers.json
+  if (Array.isArray(json.underlyings)) {
+    const ndjson = toNdjson(json.underlyings);
+    const tickersBlob = Utilities.newBlob(
+      ndjson,
+      "application/x-ndjson",
+      filename.replace(/\.json$/i, "") + "-tickers.json"
+    );
+    var ok3 = uploadBlobToGCS(tickersBlob.getName(), tickersBlob);
+  } else {
+    console.warn("No 'underlyings' array in", filename);
+    var ok3 = true;
+  }
+
+  // 5. Extract ex_dates[] → NDJSON → <filename>-ex_dates.json
+  if (Array.isArray(json.ex_dates)) {
+    const ndjson = toNdjson(json.ex_dates);
+    const eBlob = Utilities.newBlob(
+      ndjson,
+      "application/x-ndjson",
+      filename.replace(/\.json$/i, "") + "-ex_dates.json"
+    );
+    var ok4 = uploadBlobToGCS(eBlob.getName(), eBlob);
+  } else {
+    console.warn("No 'underlyings' array in", filename);
+    var ok4 = true;
+  }
+
+  return ok1 && ok2 && ok3 && ok4;
+};
+
 const uploadFileToCloudStorage = (gdrive_fid) => {
   const file = DriveApp.getFileById(gdrive_fid);
   console.log("Reading", gdrive_fid, file.getId());
@@ -89,6 +175,7 @@ function moveFileToDone(fileId, parentFolderId) {
 
 
 function checkNewFiles(gdrive_folderId) {
+  console.log("=====================> Processing folder:", gdrive_folderId);
   const folder = DriveApp.getFolderById(gdrive_folderId);
   const files = folder.getFiles();
   // the cache usage is commented out for simplicity, but you can uncomment it to avoid processing the same file multiple times
@@ -101,10 +188,12 @@ function checkNewFiles(gdrive_folderId) {
 
   while (files.hasNext()) {
     const f = files.next();
-    if (uploadFileToCloudStorage(f.getId())) {
+    console.log("=======================> Processing file:", f.getId(), f.getName());
+    //if (uploadFileToCloudStorage(f.getId())) {
+    if (splitAndUploadFileToCloudStorage(f.getId())) {
       moveFileToDone(f.getId(), gdrive_folderId);
     }else{
-      console.log("Error when moving file:", f.getId(), f.getName());
+      console.error("[ERROR] when moving file:", f.getId(), f.getName());
     }
     //if (!known.includes(f.getId())) {
       //newOnes.push(f.getId());
@@ -118,7 +207,6 @@ function checkNewFiles(gdrive_folderId) {
 
   //cache.put("known", JSON.stringify(known.concat(newOnes)), 21600);
 }
-
 
 const main = () => {
   checkNewFiles(DRIVE_FOLDER_ID);
