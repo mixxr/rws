@@ -18,10 +18,6 @@ CREATE TABLE `invcerts.ISINs.staging_tickers` (
   stock_industry STRING,
   stock_tags STRING,
   stock_specializations STRING,
-  stock_capitalization STRING,
-  stock_pe STRING,
-  stock_beta STRING,
-  stock_volatility STRING,
   -- Compound Primary Key definition
   PRIMARY KEY (certificate_isin, stock_isin) NOT ENFORCED,
   -- optional metadata (recommended)
@@ -56,6 +52,7 @@ CREATE TABLE `invcerts.ISINs.staging_details` (
   
   leverage STRING,
   exchange_risk STRING,
+  kid_url STRING,
 
   PRIMARY KEY (isin) NOT ENFORCED,
   -- optional metadata (recommended)
