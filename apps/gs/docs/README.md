@@ -1,11 +1,18 @@
 
-## Change Organization
+# Google Apps Script
+
+## Scripts
+- GDrive to Gmail
+- GDrive to GCS Bucket
+
+## Enable Google Cloud Services
+### Change Organization
 **Pay attention**: this setting has to be done a organization level, not at project level
 
 ```
 gcloud organizations add-iam-policy-binding organizations/1983...227 --member="user:<account>@gmail.com" --role="roles/orgpolicy.policyAdmin"
 ```
-## Change Policy
+### Change Policy
 ```
 gcloud org-policies set-policy <file>.yaml
 ```
@@ -27,7 +34,7 @@ spec:
   - enforce: false
 ```  
 
-## Service Key
+### Service Key
 Once the organization and policy are done, you can create a new service-account and the related JSON Service Key and use it into the GApps Script:
 ```
 const service_account = {
