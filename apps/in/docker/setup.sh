@@ -8,7 +8,8 @@ set -u
 # ------------------------
 # INPUT
 # ------------------------
-IFS='|' read -ra ISINS <<< "${ISIN_LIST}"
+ISIN_LIST_PAR="${ISIN_LIST:-$(./make_isin_list_var_str.sh)}"
+IFS='|' read -ra ISINS <<< "${ISIN_LIST_PAR}"
 IFS='|' read -ra TYPES <<< "${TYPE_LIST}"
 IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
 ISSUER="${ISSUER}"
@@ -47,7 +48,7 @@ echo "----------------------------------------"
 echo "Configuration:"
 echo "ISSUER=$ISSUER"
 echo "BUCKET=$BUCKET"
-echo "ISIN_LIST    = ${ISIN_LIST}"
+echo "ISIN_LIST    = ${ISIN_LIST_PAR}"
 echo "TYPE_LIST    = ${TYPE_LIST}"
 echo "START_JOBS   = ${START_JOBS:-<empty>}"
 echo "SILENT_MODE  = ${SILENT_MODE}"
