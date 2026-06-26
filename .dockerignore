@@ -26,3 +26,5 @@ CLAUDE.md
 benchmarks/
 .claude/
 notes/
+.*secret*
+*secret*

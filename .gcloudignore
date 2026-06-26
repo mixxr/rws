@@ -4,3 +4,5 @@ gcloud*
 *.yml
 .git
 .dev*
+.*secret*
+*secret*
