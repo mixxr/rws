@@ -41,7 +41,6 @@ jobs:
           gcloud auth list
           gcloud config list
           bq version
-          ls -la
 
       - name: Execute item workflows
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
