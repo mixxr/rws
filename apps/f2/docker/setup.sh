@@ -14,11 +14,11 @@ else
 fi
 
 echo "[Configuration] 
-DatetimeOnRequest: $DATETIME_ONREQUEST,
-Mount Dir: $MOUNT_DIR, 
-TYPE: $TYPE, 
-ISSUER: $issuer_filter, 
-STATUS: $STATUS, 
+DatetimeOnRequest: $DATETIME_ONREQUEST
+Mount Dir: $MOUNT_DIR
+TYPE: $TYPE
+ISSUER: $issuer_filter
+STATUS: $STATUS
 MOUNT_BUCKET: $MOUNT_BUCKET"
 
 # rm -f $mntdir/jobs/$datetime.bq.partial
@@ -31,8 +31,9 @@ for semaphore_file in "${files[@]}"; do
 
   echo "#!/bin/bash" > ./run.sh
 
-  # TODO: farlo parametrico in modo che parte anche solo con determinati issuers (utile per fix)
-  for filepath in "$mntdir"/config/"$issuer_filter".rx.txt; do
+  filedir="$mntdir"/config/"$issuer_filter".rx.txt
+  echo "Reading folder $filedir..."
+  for filepath in $filedir; do
     if [ -f "$filepath" ]; then
       file="$(basename "$filepath")"
       issuer="${file%%.*}"

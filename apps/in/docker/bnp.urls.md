@@ -67,3 +67,16 @@ https://investimenti.bnpparibas.it/product-details/NLBNPIT304W5,NLBNPIT304W5.md
 https://investimenti.bnpparibas.it/product-details/NLBNPIT304Y1,NLBNPIT304Y1.md
 https://investimenti.bnpparibas.it/product-details/NLBNPIT30507,NLBNPIT30507.md
 https://investimenti.bnpparibas.it/product-details/NLBNPIT304X3,NLBNPIT304X3.md
+https://investimenti.bnpparibas.it/product-details/XS3396514187,XS3396514187.md
+https://investimenti.bnpparibas.it/product-details/XS3396513379,XS3396513379.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305E0,NLBNPIT305E0.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305H3,NLBNPIT305H3.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305L5,NLBNPIT305L5.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305I1,NLBNPIT305I1.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305R2,NLBNPIT305R2.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305N1,NLBNPIT305N1.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305S0,NLBNPIT305S0.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305V4,NLBNPIT305V4.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT30549,NLBNPIT30549.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305C4,NLBNPIT305C4.md
+https://investimenti.bnpparibas.it/product-details/NLBNPIT305D2,NLBNPIT305D2.md
