@@ -45,16 +45,12 @@ fi
 if [[ "$ITEM" == "tickers" ]]; then
 echo "==> Creating ticker index..."
 ./create-tickers-index.sh tickers-final.csv
+./gcloud-cp.sh tickers-index.csv gs://rws-data/ws/tickers-index.csv
 fi
 if [ $(stat -c%s "$ITEM-final.csv") -gt "100" ]; then
     ./gcloud-cp.sh $ITEM-final.csv gs://rws-data/ws/$ITEM.csv
 else
     echo "[WARN] $ITEM-final.csv is empty!"
-fi
-if [ $(stat -c%s "$ITEM-index.csv") -gt "100" ]; then
-    ./gcloud-cp.sh $ITEM-index.csv gs://rws-data/ws/$ITEM-index.csv
-else
-    echo "[WARN] $ITEM-index.csv is empty!"
 fi
 rm $ITEM-tmp*.csv $ITEM-consolidated.csv
 echo "$ITEM: Completed."
