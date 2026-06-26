@@ -1,5 +1,11 @@
 name: BigQuery Export
 
+env:
+  PROJECT_ID: my-project
+  DATASET: analytics
+  BUCKET_NAME: my-export-bucket
+  CMD_SCRIPT_FOLDER: ./apps/bq/wf-consolidation
+
 on:
   schedule:
     # Ogni giorno alle 10:00 UTC
@@ -37,7 +43,7 @@ jobs:
 
       - name: Execute item workflows
         run: |
-          chmod +x ./apps/bq/docker-consolidation/scripts/*.sh
-          chmod +x ./apps/bq/docker-consolidation/export_all.sh
-          ./apps/bq/docker-consolidation/export_all.sh 
+          chmod +x "$CMD_FOLDER/scripts/*.sh"
+          chmod +x "$CMD_FOLDER/export_all.sh"
+          "$CMD_FOLDER/export_all.sh" 
 
