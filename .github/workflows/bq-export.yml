@@ -8,8 +8,9 @@ env:
 
 on:
   schedule:
-    # Ogni giorno alle 10:00 UTC
-    - cron: '0 10 * * *'
+    - cron: '30 8 * * *'   # 09:30 CET / 10:30 CEST
+    - cron: '30 11 * * *'  # 12:30 CET / 13:30 CEST
+    - cron: '0 16 * * *'   # 17:00 CET / 18:00 CEST
 
   # Consente l'avvio manuale
   workflow_dispatch:
