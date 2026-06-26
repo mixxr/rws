@@ -43,7 +43,7 @@ jobs:
 
       - name: Execute item workflows
         run: |
-          chmod +x "$CMD_FOLDER/scripts/*.sh"
-          chmod +x "$CMD_FOLDER/export_all.sh"
-          "$CMD_FOLDER/export_all.sh" 
+          chmod +x "$CMD_SCRIPT_FOLDER/scripts/*.sh"
+          chmod +x "$CMD_SCRIPT_FOLDER/export_all.sh"
+          "$CMD_SCRIPT_FOLDER/export_all.sh" 
 
