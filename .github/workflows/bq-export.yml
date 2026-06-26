@@ -43,8 +43,9 @@ jobs:
           ls -la
 
       - name: Execute item workflows
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
         run: |
-          chmod +x "$CMD_SCRIPT_FOLDER/scripts/*.sh"
-          chmod +x "$CMD_SCRIPT_FOLDER/export_all.sh"
-          "$CMD_SCRIPT_FOLDER/export_all.sh" 
+          chmod +x ./scripts/*.sh
+          chmod +x ./export_all.sh
+          ./export_all.sh 
 
