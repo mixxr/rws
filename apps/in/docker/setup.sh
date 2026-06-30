@@ -8,11 +8,27 @@ set -u
 # ------------------------
 # INPUT
 # ------------------------
-ISIN_LIST_PAR="${ISIN_LIST:-$(./make_isin_list_var_str.sh)}"
+ISIN_LIST_PAR="${ISIN_LIST:-$(./make_isin_list_var_str.sh)}" || {
+    echo "ERROR: make_isin_list_var_str.sh failed and ISIN_LIST not set" >&2
+    exit 1
+}
 IFS='|' read -ra ISINS <<< "${ISIN_LIST_PAR}"
+
+TYPE_LIST_PAR="${TYPE_LIST:-$(cat ./type_list.txt)}" || {
+    echo "ERROR: type_list.txt missing and TYPE_LIST not set" >&2
+    exit 1
+}
+TYPE_LIST="${TYPE_LIST_PAR}"
 IFS='|' read -ra TYPES <<< "${TYPE_LIST}"
+
+#ISSUER_PAR="${ISSUER:-$(cat ./issuer.txt)}"
+ISSUER_PAR="${ISSUER:-$(cat issuer.txt)}" || {
+    echo "ERROR: issuer.txt missing and ISSUER not set" >&2
+    exit 1
+}
+ISSUER="${ISSUER_PAR}"
+
 IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
-ISSUER="${ISSUER}"
 
 # check if START_JOBS is set and not empty, if it is set then check if it is details or issuer, if not then exit with error
 for t in "${START_TYPES[@]}"; do

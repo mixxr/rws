@@ -1,0 +1,50 @@
+name: App IN Runner
+
+env:
+  PROJECT_ID: my-project
+  DATASET: analytics
+  BUCKET_NAME: my-export-bucket
+  CMD_SCRIPT_FOLDER: ./apps/in/docker
+
+on:
+  push:
+    branches:
+      - in-run
+
+  # Consente l'avvio manuale
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/600125851897/locations/global/workloadIdentityPools/github-pool/providers/github
+          service_account: github-actions@invcerts.iam.gserviceaccount.com
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Verify authentication
+        run: |
+          gcloud auth list
+          gcloud config list
+          bq version
+
+      - name: Execute item workflows
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
+        run: |
+          chmod +x ./scripts/*.sh
+          chmod +x ./export_all.sh
+          SILENT_MODE=true ./setup.sh
+
