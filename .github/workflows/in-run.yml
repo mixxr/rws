@@ -54,12 +54,12 @@ jobs:
           # Extract TYPE_LIST (handles quoted or unquoted)
           RAW_TYPE_LIST=$(echo "$COMMIT_MSG" | sed -n "s/.*TYPE_LIST=\([^;]*\).*/\1/p")
           TYPE_LIST=$(echo "$RAW_TYPE_LIST" | sed "s/^['\"]//; s/['\"]$//")
-          echo "TYPE_LIST=\"$TYPE_LIST\"" >> $GITHUB_ENV
+          echo "TYPE_LIST=$TYPE_LIST" >> $GITHUB_ENV
 
           # Extract ISIN_LIST (handles quoted or unquoted)
           RAW_ISIN_LIST=$(echo "$COMMIT_MSG" | sed -n "s/.*ISIN_LIST=\([^;]*\).*/\1/p")
-          ISIN_LIST=$(echo "$RAW_ISIN_LIST" | sed "s/^['\"]//; s/['\"]$//")
-          echo "ISIN_LIST=\"$ISIN_LIST\"" >> $GITHUB_ENV
+          # ISIN_LIST=$(echo "$RAW_ISIN_LIST" | sed "s/^['\"]//; s/['\"]$//")
+          echo "ISIN_LIST=\"$RAW_ISIN_LIST\"" >> $GITHUB_ENV
 
           echo "Parsed ISSUER=$ISSUER"
           echo "Parsed TYPE_LIST=\"$TYPE_LIST\""
