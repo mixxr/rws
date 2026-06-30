@@ -44,7 +44,6 @@ jobs:
       - name: Execute item workflows
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
         run: |
-          chmod +x ./scripts/*.sh
-          chmod +x ./export_all.sh
+          chmod +x ./*.sh
           SILENT_MODE=true ./setup.sh
 

@@ -14,10 +14,10 @@ gcloud iam workload-identity-pools providers create-oidc github \
     --project=invcerts \
     --location=global \
     --workload-identity-pool=github-pool \
-    --display-name="GitHub Provider" \
+    --display-name="GitHub Provider 2 Branches" \
     --issuer-uri="https://token.actions.githubusercontent.com" \
     --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository,attribute.ref=assertion.ref" \
-    --attribute-condition="assertion.repository=='mixxr/rws' && assertion.ref=='refs/heads/main'" 
+    --attribute-condition="assertion.repository=='mixxr/rws' && (assertion.ref=='refs/heads/main' || assertion.ref=='refs/heads/in-run')"
 ```
 
 ##3. Recupera il nome del Provider
