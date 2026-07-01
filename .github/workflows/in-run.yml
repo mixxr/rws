@@ -46,7 +46,7 @@ jobs:
       - name: Parse commit message into env vars
         id: parsevars
         run: |
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          COMMIT_MSG="${{ github.event.issue.body }}"
           echo "Commit message: $COMMIT_MSG"
 
           # Extract ISSUER
