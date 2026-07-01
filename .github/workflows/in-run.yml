@@ -7,9 +7,8 @@ env:
   CMD_SCRIPT_FOLDER: ./apps/in/docker
 
 on:
-  push:
-    branches:
-      - in-run
+  issues:
+    types: [labeled]
 
   # Consente l'avvio manuale
   workflow_dispatch:
@@ -20,6 +19,9 @@ permissions:
 
 jobs:
   export:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.label.name == 'enhancement'
     runs-on: ubuntu-latest
 
     steps:
