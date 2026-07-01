@@ -72,7 +72,7 @@ jobs:
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
         run: |
           chmod +x ./*.sh
-          OUTPUT=$(SILENT_MODE=true ./rm_isin.sh 2>&1)
+          OUTPUT=$(./rm_isin.sh 2>&1)
           echo "$OUTPUT"
           echo "result<<EOF" >> $GITHUB_OUTPUT
           echo "$OUTPUT" >> $GITHUB_OUTPUT
