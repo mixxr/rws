@@ -69,6 +69,7 @@ jobs:
           echo "Parsed ISIN_LIST=$ISIN_LIST"
 
       - name: Execute item workflows
+        id: exec
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
         run: |
           chmod +x ./*.sh
