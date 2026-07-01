@@ -22,7 +22,11 @@ jobs:
   process_ISIN:
     if: >
       github.event_name == 'workflow_dispatch' ||
-      github.event.label.name == 'enhancement'
+      (
+        github.event_name == 'issues' &&
+        github.event.label.name == 'enhancement' &&
+        (github.event.issue.user.email == 'digital.posture.info@gmail.com' || github.event.issue.user.email == 'ms.co.it@gmail.com' )
+      )
     runs-on: ubuntu-latest
 
     steps:
