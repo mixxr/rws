@@ -1,10 +1,10 @@
-name: App IN Runner
+name: App IN Runner - RM ISIN
 
 env:
   PROJECT_ID: my-project
   DATASET: analytics
   BUCKET_NAME: my-export-bucket
-  CMD_SCRIPT_FOLDER: ./apps/in/docker
+  CMD_SCRIPT_FOLDER: ./apps/in/docker/helpers
 
 on:
   issues:
@@ -19,10 +19,10 @@ permissions:
   issues: write
 
 jobs:
-  process_ISIN:
+  remove_ISIN:
     if: >
       github.event_name == 'workflow_dispatch' ||
-      github.event.label.name == 'enhancement'
+      github.event.label.name == 'invalid'
     runs-on: ubuntu-latest
 
     steps:
@@ -67,12 +67,12 @@ jobs:
           echo "Parsed TYPE_LIST=$TYPE_LIST"
           echo "Parsed ISIN_LIST=$ISIN_LIST"
 
-      - name: Execute item workflows
+      - name: Execute remove ISIN workflows
         id: exec
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
         run: |
           chmod +x ./*.sh
-          OUTPUT=$(SILENT_MODE=true ./setup.sh 2>&1)
+          OUTPUT=$(SILENT_MODE=true ./rm_isin.sh 2>&1)
           echo "$OUTPUT"
           echo "result<<EOF" >> $GITHUB_OUTPUT
           echo "$OUTPUT" >> $GITHUB_OUTPUT

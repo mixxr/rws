@@ -60,6 +60,7 @@ echo "copying $DEST..."
 if [[ "$VERSUS" != "up" ]]; then
   gcloud storage cp "$DEST" .
 else
-  gcloud storage cp "$DEST" "$LDEST.bak"
+  dt=$(date +%F)
+  gcloud storage cp "$DEST" "$LDEST.$dt.bak"
   gcloud storage cp "$LDEST" "$DEST" 
 fi
