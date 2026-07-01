@@ -6,6 +6,29 @@ set -u
 # ISSUER=leonteq TYPE_LIST="details|quotes|issuer" ISIN_LIST="CH1525083577|CH1550421528" START_JOBS="details|issuer" BUCKET="gs://rws-data" ./setup.sh
 
 # ------------------------
+# ISSUER normalizer
+# ------------------------
+# name=$(normalize_name "BNP Paribas")
+# echo "$name"   # bnp
+
+normalize_name() {
+    local input="$1"
+
+    # lowercase
+    input="${input,,}"
+
+    # remove non‑alphanumeric except spaces
+    input="$(printf "%s" "$input" | tr -cd 'a-z0-9 ')"
+
+    # trim leading/trailing spaces
+    input="$(printf "%s" "$input" | sed 's/^ *//; s/ *$//')"
+
+    # extract first token
+    set -- $input
+    printf "%s\n" "$1"
+}
+
+# ------------------------
 # INPUT
 # ------------------------
 ISIN_LIST_PAR="${ISIN_LIST:-$(./make_isin_list_var_str.sh)}" || {
@@ -26,7 +49,7 @@ ISSUER_PAR="${ISSUER:-$(cat issuer.txt)}" || {
     echo "ERROR: issuer.txt missing and ISSUER not set" >&2
     exit 1
 }
-ISSUER="${ISSUER_PAR}"
+ISSUER=$(normalize_name "$ISSUER_PAR")
 
 IFS='|' read -ra START_TYPES <<< "${START_JOBS:-}"
 
