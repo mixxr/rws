@@ -27,7 +27,11 @@ normalize_name() {
     set -- $input
     printf "%s\n" "$1"
 }
-
+echo "----------------------------------------"
+echo "Configuration:"
+echo "ISSUER    =$ISSUER"
+echo "ISIN_LIST =${ISIN_LIST}"
+echo "TYPE_LIST =${TYPE_LIST}"
 # ------------------------
 # INPUT
 # ------------------------
@@ -65,16 +69,10 @@ declare -A FORMAT_MAP=(
 FORMAT="${FORMAT_MAP[$ISSUER]:-md}"
 
 # -----------------------
-# CONFIRMATION 
+# CONFIG 
 # -----------------------
-
-echo "----------------------------------------"
-echo "Configuration:"
-echo "ISSUER    =$ISSUER"
-echo "BUCKET    =$BUCKET"
-echo "ISIN_LIST =${ISIN_LIST_PAR}"
-echo "TYPE_LIST =${TYPE_LIST}"
 echo "- Calculated:
+ISSUER=$ISSUER
 FORMAT=$FORMAT"
 echo "ISINS=${ISINS[*]}"
 echo "TYPES=${TYPES[*]}"
