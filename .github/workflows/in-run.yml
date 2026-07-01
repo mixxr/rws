@@ -61,7 +61,7 @@ jobs:
           # Extract ISIN_LIST (handles quoted or unquoted)
           ISIN_LIST=$(echo "$COMMIT_MSG" | sed -n "s/.*ISIN_LIST=\([^;]*\).*/\1/p")
           # ISIN_LIST=$(echo "$RAW_ISIN_LIST" | sed "s/^['\"]//; s/['\"]$//")
-          echo "ISIN_LIST=\"$ISIN_LIST\"" >> $GITHUB_ENV
+          echo "ISIN_LIST=$ISIN_LIST" >> $GITHUB_ENV
 
           echo "Parsed ISSUER=$ISSUER"
           echo "Parsed TYPE_LIST=$TYPE_LIST"
