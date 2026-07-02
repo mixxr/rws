@@ -8,3 +8,4 @@ test_*
 *.local
 .*secret*
 *secret*
+nohup.out

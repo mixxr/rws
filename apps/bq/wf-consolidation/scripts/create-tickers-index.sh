@@ -4,10 +4,10 @@ if [ -z "$1" ]; then
   exit 1
 fi
 INPUT=$1
-OUTPUT="tickers-index.csv"
+OUTPUT="tickers_index.csv"
 
 # Write header
-echo "stock_name;stock_google_finance_ticker;stock_exchange;stock_isin;stock_industry;stock_sector" > "$OUTPUT"
+echo "stock_google_finance_ticker;stock_name;stock_exchange;stock_isin;stock_industry;stock_sector" > "$OUTPUT"
 
 # Extract columns:
 #  stock_name (3)
@@ -17,8 +17,8 @@ echo "stock_name;stock_google_finance_ticker;stock_exchange;stock_isin;stock_ind
 # Then dedupe by column 2 (ticker)
 awk -F';' '
 NR>1 {
-    name=$3
     ticker=$4
+    name=$3
     exch=$5
     isin=$6
     ind=$7
@@ -32,7 +32,7 @@ NR>1 {
 
     key=ticker
     if (!seen[key]++) {
-        print name";"ticker";"exch";"isin";"ind";"sec
+        print ticker";"name";"exch";"isin";"ind";"sec
     }
 }
 ' "$INPUT" >> "$OUTPUT"
