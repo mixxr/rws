@@ -65,7 +65,7 @@ fn read_sources_from_file(source_path: &str) -> Vec<Source> {
             // if line.contains("-- END") {
             //     start = false;
             // } else {
-        let cols = line.split(",");
+        let cols = line.split(";");
         let collection = cols.collect::<Vec<&str>>();
         if collection.len() == 4 {
             println!("SOURCE: {:?}", collection);
@@ -134,7 +134,7 @@ fn read_isins_from_file(isin_path: &str) -> Result<Vec<ISIN>, std::io::Error> {
         //     if line.contains("-- END") {
         //         start = false;
         //     } else {
-        let line = line.split(",").collect::<Vec<&str>>();
+        let line = line.split(";").collect::<Vec<&str>>();
         if line.len() < 2 {
             println!("[ISIN] discarding line: {:?}", line);
             continue;
@@ -231,15 +231,27 @@ async fn extract_quotes_from_source(
 }
 
 fn write_quotes_to_csv(quotes: &Vec<Quote>, output_filepath: &str, dt: &str) -> Result<(), Box<dyn Error>> {
-    let mut wtr = csv::Writer::from_path(output_filepath)?;
-    // TODO: remove dt from rows and return a field in the web svc payload> Benefit: 1 data vs N rows with data replicated
-    wtr.write_record(&[&"isin", &"name", &"ask", &"bid", &"currency", &"dt"])?;
+    let mut wtr = csv::WriterBuilder::new()
+        .delimiter(b';')
+        .from_path(output_filepath)?;
+
+    wtr.write_record(&["isin", "name", "ask", "bid", "currency", "dt"])?;
+
     for quote in quotes {
-        wtr.write_record(&[&quote.isin, &quote.name, &quote.ask, &quote.bid, &quote.currency, dt])?;
+        wtr.write_record(&[
+            &quote.isin,
+            &quote.name,
+            &quote.ask,
+            &quote.bid,
+            &quote.currency,
+            dt,
+        ])?;
     }
+
     wtr.flush()?;
     Ok(())
 }
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
