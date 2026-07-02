@@ -1,1 +1,0 @@
-SECRET_KEY="" RUST_LOG="websvc=debug, info" cargo watch -x "run -- -t true" 
