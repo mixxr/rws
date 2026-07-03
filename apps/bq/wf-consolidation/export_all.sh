@@ -2,6 +2,13 @@
 VERSION=${APPVERSION:-0.1}
 echo "BQ Setup Consolidation Script - Version $VERSION"
 
+# --- gcloud authentication check ---
+if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" | grep -q "@"; then
+  echo "ERROR: gcloud is not authenticated. Run 'gcloud auth login' or activate a service account."
+  exit 1
+fi
+# -----------------------------------
+
 set -e
 cd scripts
 echo "Extracting Certs Growth"
