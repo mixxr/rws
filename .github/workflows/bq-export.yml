@@ -38,8 +38,8 @@ jobs:
 
       - name: Install Node.js 22 (required for Wrangler)
         run: |
-          curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-          apt-get install -y nodejs
+          curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
+          sudo apt-get install -y nodejs
           node -v
           npm -v
           npx -v
