@@ -9,3 +9,5 @@ test_*
 .*secret*
 *secret*
 nohup.out
+node_modules/
+.wrangler/

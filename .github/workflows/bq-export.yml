@@ -36,11 +36,20 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
 
+      - name: Install Node.js 22 (required for Wrangler)
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+          apt-get install -y nodejs
+          node -v
+          npm -v
+          npx -v
+
       - name: Verify authentication
         run: |
           gcloud auth list
           gcloud config list
           bq version
+          npx wrangler -v
 
       - name: Execute item workflows
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
