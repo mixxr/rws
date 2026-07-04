@@ -5,6 +5,7 @@ env:
   DATASET: analytics
   BUCKET_NAME: my-export-bucket
   CMD_SCRIPT_FOLDER: ./apps/bq/wf-consolidation
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
 on:
   schedule:
@@ -53,8 +54,6 @@ jobs:
 
       - name: Execute item workflows
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
         run: |
           chmod +x ./scripts/*.sh
           chmod +x ./export_all.sh
