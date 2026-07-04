@@ -53,6 +53,8 @@ jobs:
 
       - name: Execute item workflows
         working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
         run: |
           chmod +x ./scripts/*.sh
           chmod +x ./export_all.sh
