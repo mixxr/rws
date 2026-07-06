@@ -45,11 +45,11 @@ fi
 if [[ "$ITEM" == "tickers" ]]; then
 echo "==> Creating ticker index..."
 ./create-tickers-index.sh tickers-final.csv
-./gcloud-cp.sh tickers_index.csv gs://rws-data/ws/tickers_index.csv
+#./gcloud-cp.sh tickers_index.csv gs://rws-data/ws/tickers_index.csv
 npx wrangler r2 object put rws/ws/tickers_index.csv --file ./tickers_index.csv --remote
 fi
 if [ $(stat -c%s "$ITEM-final.csv") -gt "100" ]; then
-    ./gcloud-cp.sh $ITEM-final.csv gs://rws-data/ws/$ITEM.csv
+    #./gcloud-cp.sh $ITEM-final.csv gs://rws-data/ws/$ITEM.csv
     npx wrangler r2 object put rws/ws/$ITEM.csv --file ./$ITEM-final.csv --remote
 else
     echo "[WARN] $ITEM-final.csv is empty!"
