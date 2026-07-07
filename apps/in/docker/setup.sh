@@ -152,7 +152,7 @@ build_url() {
         # leonteq) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
         # marex) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;; 
         # vontobel) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-SEDX" ;;
-        mediobanca) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
+        *) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
       esac
       ;;
     details)
@@ -173,28 +173,35 @@ build_url() {
 }
 
 validate_isin() {
-  local isin=$1
+  local isin="$1"
 
-  case "$ISSUER" in
-    marex)
-      [[ "$isin" == IT* ]] || return 1
-      ;;
-    mediobanca)
-      [[ "$isin" == IT* ]] || return 1
-      ;;
-    bnp)
-      [[ "$isin" == NL* || "$isin" == XS* ]] || return 1
-      ;;
-    leonteq)
-      [[ "$isin" == CH* ]] || return 1
-      ;;
-    vontobel)
-      [[ "$isin" == DE* ]] || return 1
-      ;;
-    *)
-      return 0  # allow unknown issuers
-      ;;
-  esac
+  # Must be exactly 12 chars: 2 letters + 9 alphanumerics + 1 digit
+  [[ "$isin" =~ ^[A-Z]{2}[A-Z0-9]{9}[0-9]$ ]] || return 1
+
+  # Expand letters to numbers (A=10 … Z=35)
+  local expanded=""
+  for ((i=0; i<${#isin}; i++)); do
+    c="${isin:$i:1}"
+    if [[ "$c" =~ [A-Z] ]]; then
+      expanded+=$((10 + $(printf "%d" "'$c") - 65))
+    else
+      expanded+="$c"
+    fi
+  done
+
+  # Apply Luhn mod‑10
+  local sum=0
+  local rev=$(echo "$expanded" | rev)
+  for ((i=0; i<${#rev}; i++)); do
+    d="${rev:$i:1}"
+    if (( i % 2 == 1 )); then
+      d=$((d * 2))
+      (( d > 9 )) && d=$((d - 9))
+    fi
+    sum=$((sum + d))
+  done
+
+  (( sum % 10 == 0 ))
 }
 
 declare -A RANGE_MAP=(
