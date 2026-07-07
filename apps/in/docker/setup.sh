@@ -151,7 +151,7 @@ build_url() {
         # bnp) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
         # leonteq) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
         # marex) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;; 
-        # vontobel) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-SEDX" ;;
+        unicredit) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-SEDX" ;;
         *) echo "https://live.euronext.com/it/ajax/getOrderBook/${isin}-ETLX" ;;
       esac
       ;;
