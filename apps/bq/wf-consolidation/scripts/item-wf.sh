@@ -40,6 +40,9 @@ echo "==> Creating ticker alternative symbols..."
     stock_symbol \
     stock_alt_symbol
 fi
+if [[ "$ITEM" == "issuers" ]]; then
+cp $ITEM-tmp0.csv $ITEM-tmp1.csv
+fi
 ./replace-strs.sh $ITEM-tmp1.csv " - " "-" $ITEM-tmp2.csv
 ./replace-strs.sh $ITEM-tmp2.csv " & " " and " $ITEM-final.csv
 if [[ "$ITEM" == "tickers" ]]; then

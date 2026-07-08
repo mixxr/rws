@@ -20,6 +20,7 @@ echo "Extracting Details"
 echo "Extracting Tickers"
 ./item-wf.sh tickers
 
-#echo "Extracting Issuers"
+echo "Extracting Issuers"
+./item-wf.sh issuers
 
 echo "==== Execution completed ===="
