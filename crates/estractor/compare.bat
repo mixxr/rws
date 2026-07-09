@@ -1,1 +1,1 @@
-"node compare.js data\output\bnp\2026-07-01-10-51-20.csv data\output\bnp\2026-07-02-11-47-59.csv > diff2.csv" 
+node compare.js data\output\bnp\2026-07-02-11-47-59.csv data\output\bnp\bnp-coupon-date.txt > diff2.csv
