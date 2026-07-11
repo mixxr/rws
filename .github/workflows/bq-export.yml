@@ -44,12 +44,17 @@ jobs:
           node -v
           npm -v
           npx -v
-
+          
+      - name: Install webclaw CLI
+        run: |
+          cargo install webclaw-cli
+    
       - name: Verify authentication
         run: |
           gcloud auth list
           gcloud config list
           bq version
+          webclaw --version
           npx wrangler -v
 
       - name: Execute item workflows
