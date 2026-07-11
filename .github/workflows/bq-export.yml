@@ -47,7 +47,7 @@ jobs:
           
       - name: Install webclaw CLI
         run: |
-          cargo install webclaw
+          cargo install --git https://github.com/0xMassi/webclaw.git webclaw-cli
     
       - name: Verify authentication
         run: |
