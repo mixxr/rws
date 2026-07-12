@@ -27,26 +27,27 @@ jobs:
         uses: actions/cache@v5.1.0
         with:
           path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            ~/webclaw/target
+            webclaw/.cargo/registry
+            webclaw/.cargo/git
+            webclaw/target
           # An explicit key for restoring and saving the cache
-          key: ${{ runner.os }}-webclaw-${{ hashFiles('~/webclaw/Cargo.toml') }}
+          key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
     
       # ---------------------------------------------------------
       # Verify ls
       # ---------------------------------------------------------
       - name: Verify ls
         run: |
+          echo 'pwd:$PWD'
           ls -la
-          echo '---'
+          echo '--- webclaw:'
           ls -la webclaw
           echo 'lock:'
-          ls ~/webclaw/Cargo.lock
-          echo '---'
+          ls -la webclaw/Cargo.lock
+          echo '--- pwd'
           ls -la /
-          echo '---'
-          ls -la /.cargo
+          echo '--- wc/.cargo'
+          ls -la webclaw/.cargo
 
       # ---------------------------------------------------------
       # Install Rust toolchain
@@ -59,13 +60,16 @@ jobs:
       # ---------------------------------------------------------
       - name: Verify ls 2
         run: |
+          echo 'pwd:$PWD'
           ls -la
-          echo '---'
+          echo '--- webclaw:'
           ls -la webclaw
-          echo '---'
+          echo 'lock:'
+          ls -la webclaw/Cargo.lock
+          echo '--- pwd'
           ls -la /
-          echo '---'
-          ls -la /.cargo
+          echo '--- wc/.cargo'
+          ls -la webclaw/.cargo
 
       # ---------------------------------------------------------
       # Build webclaw CLI (now fast thanks to cache)
@@ -81,10 +85,13 @@ jobs:
       # ---------------------------------------------------------
       - name: Verify ls 3
         run: |
+          echo 'pwd:$PWD'
           ls -la
-          echo '---'
+          echo '--- webclaw:'
           ls -la webclaw
-          echo '---'
+          echo 'lock:'
+          ls -la webclaw/Cargo.lock
+          echo '--- pwd'
           ls -la /
-          echo '---'
-          ls -la /.cargo
+          echo '--- wc/.cargo'
+          ls -la webclaw/.cargo
