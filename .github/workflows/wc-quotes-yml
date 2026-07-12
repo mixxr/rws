@@ -1,0 +1,74 @@
+name: Webclaw Quotes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---------------------------------------------------------
+      # Checkout main repository
+      # ---------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ---------------------------------------------------------
+      # Checkout webclaw repo
+      # ---------------------------------------------------------
+      - name: Checkout webclaw
+        uses: actions/checkout@v4
+        with:
+          repository: 0xMassi/webclaw
+          path: webclaw
+
+      # ---------------------------------------------------------
+      # Cache cargo + git + webclaw target (working cache)
+      # ---------------------------------------------------------
+      - name: Cache cargo registry + git + webclaw target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            webclaw/target
+          key: ${{ runner.os }}-webclaw-cache
+          restore-keys: |
+            ${{ runner.os }}-webclaw-
+
+      # ---------------------------------------------------------
+      # Verify ls
+      # ---------------------------------------------------------
+      - name: Verify ls
+        run: |
+          ls -la
+
+      # ---------------------------------------------------------
+      # Install Rust toolchain
+      # ---------------------------------------------------------
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      # ---------------------------------------------------------
+      # Verify ls
+      # ---------------------------------------------------------
+      - name: Verify ls 2
+        run: |
+          ls -la
+
+      # ---------------------------------------------------------
+      # Build webclaw CLI (now fast thanks to cache)
+      # ---------------------------------------------------------
+      - name: Build webclaw CLI
+        run: |
+          cd webclaw
+          cargo build --release
+          echo "$PWD/target/release" >> $GITHUB_PATH
+
+      # ---------------------------------------------------------
+      # Verify tools BEFORE touching GCP credentials
+      # ---------------------------------------------------------
+      - name: Verify ls 3
+        run: |
+          ls -la
