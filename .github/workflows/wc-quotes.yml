@@ -23,25 +23,30 @@ jobs:
           repository: 0xMassi/webclaw
           path: webclaw
 
-      # ---------------------------------------------------------
-      # Cache cargo + git + webclaw target (working cache)
-      # ---------------------------------------------------------
-      - name: Cache cargo registry + git + webclaw target
-        uses: actions/cache@v4
+      - name: Cache
+        uses: actions/cache@v5.1.0
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            webclaw/target
-          key: ${{ runner.os }}-webclaw-cache
-          restore-keys: |
-            ${{ runner.os }}-webclaw-
-
+            ~/webclaw/target
+          # An explicit key for restoring and saving the cache
+          key: ${{ runner.os }}-webclaw-${{ hashFiles('~/webclaw/Cargo.toml') }}
+    
       # ---------------------------------------------------------
       # Verify ls
       # ---------------------------------------------------------
       - name: Verify ls
-        run: ls -la
+        run: |
+          ls -la
+          echo '---'
+          ls -la webclaw
+          echo 'lock:'
+          ls ~/webclaw/Cargo.lock
+          echo '---'
+          ls -la /
+          echo '---'
+          ls -la /.cargo
 
       # ---------------------------------------------------------
       # Install Rust toolchain
@@ -53,7 +58,14 @@ jobs:
       # Verify ls
       # ---------------------------------------------------------
       - name: Verify ls 2
-        run: ls -la
+        run: |
+          ls -la
+          echo '---'
+          ls -la webclaw
+          echo '---'
+          ls -la /
+          echo '---'
+          ls -la /.cargo
 
       # ---------------------------------------------------------
       # Build webclaw CLI (now fast thanks to cache)
@@ -68,4 +80,11 @@ jobs:
       # Verify tools BEFORE touching GCP credentials
       # ---------------------------------------------------------
       - name: Verify ls 3
-        run: ls -la
+        run: |
+          ls -la
+          echo '---'
+          ls -la webclaw
+          echo '---'
+          ls -la /
+          echo '---'
+          ls -la /.cargo
