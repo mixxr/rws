@@ -9,11 +9,9 @@ env:
 
 on:
   schedule:
-    - cron: '30 8 * * *'   # 09:30 CET / 10:30 CEST
-    - cron: '30 11 * * *'  # 12:30 CET / 13:30 CEST
-    - cron: '0 16 * * *'   # 17:00 CET / 18:00 CEST
-
-  # Consente l'avvio manuale
+    - cron: '30 8 * * *'
+    - cron: '30 11 * * *'
+    - cron: '0 16 * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,9 +23,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ---------------------------------------------------------
+      # Checkout main repository
+      # ---------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ---------------------------------------------------------
+      # Install Node.js (fast, secure)
+      # ---------------------------------------------------------
+      - name: Install Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # ---------------------------------------------------------
+      # Cache Rust + Cargo + webclaw build
+      # ---------------------------------------------------------
+      - name: Cache cargo registry + git + webclaw target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            webclaw/target
+          key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-webclaw-
+
+      # ---------------------------------------------------------
+      # Install Rust toolchain
+      # ---------------------------------------------------------
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      # ---------------------------------------------------------
+      # Checkout webclaw repo (external code)
+      # ---------------------------------------------------------
+      - name: Checkout webclaw
+        uses: actions/checkout@v4
+        with:
+          repository: 0xMassi/webclaw
+          path: webclaw
+
+      # ---------------------------------------------------------
+      # Build webclaw CLI (cached)
+      # ---------------------------------------------------------
+      - name: Build webclaw CLI
+        run: |
+          cd webclaw
+          cargo build --release
+          echo "$PWD/target/release" >> $GITHUB_PATH
+
+      # ---------------------------------------------------------
+      # Authenticate to Google Cloud (secure ordering)
+      # ---------------------------------------------------------
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
         with:
@@ -37,30 +87,24 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
 
-      - name: Install Node.js 22 (required for Wrangler)
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
-          sudo apt-get install -y nodejs
-          node -v
-          npm -v
-          npx -v
-          
-      - name: Install webclaw CLI
-        run: |
-          cargo install --git https://github.com/0xMassi/webclaw.git webclaw-cli
-    
-      - name: Verify authentication
+      # ---------------------------------------------------------
+      # Verify GCP tools
+      # ---------------------------------------------------------
+      - name: Verify GCP authentication
         run: |
           gcloud auth list
           gcloud config list
           bq version
-          webclaw --version
+          node -v
           npx wrangler -v
+          webclaw --version
 
+      # ---------------------------------------------------------
+      # Execute item workflows
+      # ---------------------------------------------------------
       - name: Execute item workflows
-        working-directory: ${{ env.CMD_SCRIPT_FOLDER }} 
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }}
         run: |
           chmod +x ./scripts/*.sh
           chmod +x ./export_all.sh
-          ./export_all.sh 
-
+          ./export_all.sh
