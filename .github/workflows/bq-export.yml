@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       # ---------------------------------------------------------
-      # Install Node.js (fast, secure)
+      # Install Node.js (fast)
       # ---------------------------------------------------------
       - name: Install Node.js 22
         uses: actions/setup-node@v4
@@ -38,7 +38,16 @@ jobs:
           node-version: 22
 
       # ---------------------------------------------------------
-      # Cache Rust + Cargo + webclaw build
+      # Checkout webclaw BEFORE caching (critical)
+      # ---------------------------------------------------------
+      - name: Checkout webclaw
+        uses: actions/checkout@v4
+        with:
+          repository: 0xMassi/webclaw
+          path: webclaw
+
+      # ---------------------------------------------------------
+      # Cache cargo + git + webclaw target (working cache)
       # ---------------------------------------------------------
       - name: Cache cargo registry + git + webclaw target
         uses: actions/cache@v4
@@ -47,7 +56,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             webclaw/target
-          key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
+          key: ${{ runner.os }}-webclaw-cache
           restore-keys: |
             ${{ runner.os }}-webclaw-
 
@@ -58,22 +67,22 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       # ---------------------------------------------------------
-      # Checkout webclaw repo (external code)
-      # ---------------------------------------------------------
-      - name: Checkout webclaw
-        uses: actions/checkout@v4
-        with:
-          repository: 0xMassi/webclaw
-          path: webclaw
-
-      # ---------------------------------------------------------
-      # Build webclaw CLI (cached)
+      # Build webclaw CLI (now fast thanks to cache)
       # ---------------------------------------------------------
       - name: Build webclaw CLI
         run: |
           cd webclaw
           cargo build --release
           echo "$PWD/target/release" >> $GITHUB_PATH
+
+      # ---------------------------------------------------------
+      # Verify tools BEFORE touching GCP credentials
+      # ---------------------------------------------------------
+      - name: Verify tools
+        run: |
+          webclaw --version
+          node -v
+          npx -v
 
       # ---------------------------------------------------------
       # Authenticate to Google Cloud (secure ordering)
@@ -95,9 +104,7 @@ jobs:
           gcloud auth list
           gcloud config list
           bq version
-          node -v
           npx wrangler -v
-          webclaw --version
 
       # ---------------------------------------------------------
       # Execute item workflows
