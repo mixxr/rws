@@ -27,10 +27,8 @@ jobs:
         uses: actions/cache@v5.1.0
         with:
           path: |
-            webclaw/.cargo/registry
-            webclaw/.cargo/git
+            webclaw/.cargo
             webclaw/target
-          # An explicit key for restoring and saving the cache
           key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
     
       # ---------------------------------------------------------
@@ -38,16 +36,10 @@ jobs:
       # ---------------------------------------------------------
       - name: Verify ls
         run: |
-          echo 'pwd:$PWD'
+          echo 'pwd:${PWD}'
           ls -la
           echo '--- webclaw:'
           ls -la webclaw
-          echo 'lock:'
-          ls -la webclaw/Cargo.lock
-          echo '--- pwd'
-          ls -la /
-          echo '--- wc/.cargo'
-          ls -la webclaw/.cargo
 
       # ---------------------------------------------------------
       # Install Rust toolchain
@@ -60,14 +52,11 @@ jobs:
       # ---------------------------------------------------------
       - name: Verify ls 2
         run: |
-          echo 'pwd:$PWD'
           ls -la
           echo '--- webclaw:'
           ls -la webclaw
-          echo 'lock:'
-          ls -la webclaw/Cargo.lock
-          echo '--- pwd'
-          ls -la /
+          echo '--- webclaw/target'
+          ls -la webclaw/target
           echo '--- wc/.cargo'
           ls -la webclaw/.cargo
 
@@ -85,13 +74,10 @@ jobs:
       # ---------------------------------------------------------
       - name: Verify ls 3
         run: |
-          echo 'pwd:$PWD'
-          ls -la
           echo '--- webclaw:'
           ls -la webclaw
-          echo 'lock:'
-          ls -la webclaw/Cargo.lock
-          echo '--- pwd'
-          ls -la /
+          echo '--- webclaw/target'
+          ls -la webclaw/target
           echo '--- wc/.cargo'
           ls -la webclaw/.cargo
+          webclaw https://digital-posture.com
