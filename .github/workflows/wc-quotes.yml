@@ -55,10 +55,6 @@ jobs:
           ls -la
           echo '--- webclaw:'
           ls -la webclaw
-          echo '--- webclaw/target'
-          ls -la webclaw/target
-          echo '--- wc/.cargo'
-          ls -la webclaw/.cargo
 
       # ---------------------------------------------------------
       # Build webclaw CLI (now fast thanks to cache)
