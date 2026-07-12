@@ -38,44 +38,6 @@ jobs:
           node-version: 22
 
       # ---------------------------------------------------------
-      # Cache Rust + Cargo + webclaw build
-      # ---------------------------------------------------------
-      - name: Cache cargo registry + git + webclaw target
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            webclaw/target
-          key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-webclaw-
-
-      # ---------------------------------------------------------
-      # Install Rust toolchain
-      # ---------------------------------------------------------
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      # ---------------------------------------------------------
-      # Checkout webclaw repo (external code)
-      # ---------------------------------------------------------
-      - name: Checkout webclaw
-        uses: actions/checkout@v4
-        with:
-          repository: 0xMassi/webclaw
-          path: webclaw
-
-      # ---------------------------------------------------------
-      # Build webclaw CLI (cached)
-      # ---------------------------------------------------------
-      - name: Build webclaw CLI
-        run: |
-          cd webclaw
-          cargo build --release
-          echo "$PWD/target/release" >> $GITHUB_PATH
-
-      # ---------------------------------------------------------
       # Authenticate to Google Cloud (secure ordering)
       # ---------------------------------------------------------
       - name: Authenticate to Google Cloud
@@ -97,7 +59,6 @@ jobs:
           bq version
           node -v
           npx wrangler -v
-          webclaw --version
 
       # ---------------------------------------------------------
       # Execute item workflows
