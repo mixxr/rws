@@ -41,8 +41,7 @@ jobs:
       # Verify ls
       # ---------------------------------------------------------
       - name: Verify ls
-        run: |
-          ls -la
+        run: ls -la
 
       # ---------------------------------------------------------
       # Install Rust toolchain
@@ -54,8 +53,7 @@ jobs:
       # Verify ls
       # ---------------------------------------------------------
       - name: Verify ls 2
-        run: |
-          ls -la
+        run: ls -la
 
       # ---------------------------------------------------------
       # Build webclaw CLI (now fast thanks to cache)
@@ -70,5 +68,4 @@ jobs:
       # Verify tools BEFORE touching GCP credentials
       # ---------------------------------------------------------
       - name: Verify ls 3
-        run: |
-          ls -la
+        run: ls -la
