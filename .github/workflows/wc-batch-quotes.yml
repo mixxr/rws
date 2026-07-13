@@ -85,6 +85,6 @@ jobs:
       - name: Process quotes
         working-directory: ${{ env.CMD2_SCRIPT_FOLDER }}
         run: |
-          ls -R ${{ env.CMD_SCRIPT_FOLDER }}/quotes
+          ls -R ./quotes
           chmod +x ./setup*.sh
           MOUNT_BUCKET=${{ env.BUCKET_NAME }} ./setup_all.sh
