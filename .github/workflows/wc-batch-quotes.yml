@@ -108,3 +108,9 @@ jobs:
           ls -R ./quotes || true
           chmod +x ./setup*.sh
           MOUNT_BUCKET=${{ env.BUCKET_NAME }} ./setup_local.sh
+      
+      - name: Upload quotes output
+        uses: actions/upload-artifact@v4
+        with:
+          name: quotes-output-processed
+          path: ${{ env.CMD2_SCRIPT_FOLDER }}/quotes/**
