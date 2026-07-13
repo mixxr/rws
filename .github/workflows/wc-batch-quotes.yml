@@ -66,6 +66,7 @@ jobs:
         with:
           name: quotes-output
           path: ${{ env.CMD_SCRIPT_FOLDER }}/quotes/**
+          retention-days: 10
 
   extract_quotes:
     needs: get_quotes
@@ -113,3 +114,4 @@ jobs:
         with:
           name: quotes-output-processed
           path: ${{ env.CMD2_SCRIPT_FOLDER }}/quotes/**
+          retention-days: 3
