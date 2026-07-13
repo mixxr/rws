@@ -6,7 +6,7 @@ STATUS_TO=2
 datetime=$(date -u +"%Y-%m-%dT%H-%M-%S")
 mntdir=${MOUNT_DIR:-.}/${TYPE}
 #bucket=${MOUNT_BUCKET}/${TYPE}
-echo "Mount Dir: $mntdir Datetime: $datetime"
+echo "Mount Dir: $mntdir | Datetime: $datetime"
 webclaw --version
 mkdir -p "$mntdir/jobs/$STATUS_TO"
 echo "#!/bin/bash" > ./run.sh

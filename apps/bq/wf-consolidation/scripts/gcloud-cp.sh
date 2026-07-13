@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-echo "Quotes: move data to final destination"
+echo "GCP: copying..."
 gcloud storage cp $1 $2
