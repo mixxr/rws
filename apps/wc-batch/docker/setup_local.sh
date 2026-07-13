@@ -16,7 +16,7 @@ mkdir -p $WORKDIR_CFG
 gcloud storage cp $BUCKET_URI_CFG $WORKDIR_CFG/
 ls -la
 pwd
-setup.sh
+./setup.sh
 
 # echo "Uploading $WORKDIR_JOBS to $BUCKET_URI_JOBS..."
 # gcloud storage cp --recursive $WORKDIR_JOBS $BUCKET_URI_JOBS/
