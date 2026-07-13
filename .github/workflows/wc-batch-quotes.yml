@@ -3,8 +3,9 @@ name: Webclaw Batch Quotes
 env:
   PROJECT_ID: my-project
   DATASET: analytics
-  BUCKET_NAME: my-export-bucket
+  BUCKET_NAME: gs://rws-data
   CMD_SCRIPT_FOLDER: ./apps/wc-batch/docker
+  CMD2_SCRIPT_FOLDER: ./apps/f2/docker
 
 on:
   schedule:
@@ -20,69 +21,15 @@ permissions:
 jobs:
   get_quotes:
     runs-on: ubuntu-latest
-
+    container:
+      image: ghcr.io/0xmassi/webclaw:latest
+    
     steps:
       # ---------------------------------------------------------
       # Checkout main repository
       # ---------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # ---------------------------------------------------------
-      # Checkout webclaw repo
-      # ---------------------------------------------------------
-      - name: Checkout webclaw
-        uses: actions/checkout@v4
-        with:
-          repository: 0xMassi/webclaw
-          path: webclaw
-
-      - name: Cache
-        uses: actions/cache@v5.1.0
-        with:
-          path: |
-            webclaw/.cargo
-            webclaw/target
-          key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
-    
-      # ---------------------------------------------------------
-      # Verify ls
-      # ---------------------------------------------------------
-      - name: Verify ls
-        run: |
-          echo "pwd:$PWD"
-          pwd
-          ls -la
-          echo '--- webclaw:'
-          ls -la webclaw
-
-      # ---------------------------------------------------------
-      # Install Rust toolchain
-      # ---------------------------------------------------------
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      # ---------------------------------------------------------
-      # Build webclaw CLI (now fast thanks to cache)
-      # ---------------------------------------------------------
-      - name: Build webclaw CLI
-        run: |
-          cd webclaw
-          cargo build --release
-          echo "$PWD/target/release" >> $GITHUB_PATH
-
-      # ---------------------------------------------------------
-      # Verify tools BEFORE touching GCP credentials
-      # ---------------------------------------------------------
-      - name: Verify ls 3
-        run: |
-          echo '--- webclaw:'
-          ls -la webclaw
-          echo '--- webclaw/target'
-          ls -la webclaw/target
-          echo '--- wc/.cargo'
-          ls -la webclaw/.cargo
-          webclaw https://digital-posture.com
 
       # ---------------------------------------------------------
       # Authenticate to Google Cloud (secure ordering)
@@ -97,12 +44,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v3
 
       # ---------------------------------------------------------
-      # Verify GCP tools
+      # Verify tools
       # ---------------------------------------------------------
-      - name: Verify GCP authentication
+      - name: Verify GCP authentication and tools
         run: |
           gcloud auth list
           gcloud config list
+          webclaw --version
 
       # ---------------------------------------------------------
       # Execute webclaw workflows
@@ -112,3 +60,31 @@ jobs:
         run: |
           chmod +x ./setup*.sh
           ./setup_local.sh
+
+      - name: Upload quotes output
+        uses: actions/upload-artifact@v4
+        with:
+          name: quotes-output
+          path: ${{ env.CMD_SCRIPT_FOLDER }}/quotes/**
+
+  extract_quotes:
+    needs: get_quotes
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mixxr/format2:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download quotes output
+        uses: actions/download-artifact@v4
+        with:
+          name: quotes-output
+          path: ${{ env.CMD2_SCRIPT_FOLDER }}/quotes
+
+      - name: Process quotes
+        working-directory: ${{ env.CMD2_SCRIPT_FOLDER }}
+        run: |
+          ls -R ${{ env.CMD_SCRIPT_FOLDER }}/quotes
+          chmod +x ./setup*.sh
+          MOUNT_BUCKET=${{ env.BUCKET_NAME }} ./setup_all.sh
