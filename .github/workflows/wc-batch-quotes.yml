@@ -50,7 +50,8 @@ jobs:
       # ---------------------------------------------------------
       - name: Verify ls
         run: |
-          echo 'pwd:${PWD}'
+          echo "pwd:$PWD"
+          pwd
           ls -la
           echo '--- webclaw:'
           ls -la webclaw

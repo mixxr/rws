@@ -14,7 +14,8 @@ echo "Downloading $BUCKET_URI_CFG to $WORKDIR_CFG..."
 rm -rf $WORKDIR_CFG/*
 mkdir -p $WORKDIR_CFG
 gcloud storage cp $BUCKET_URI_CFG $WORKDIR_CFG/
-
+ls -la
+pwd
 setup.sh
 
 # echo "Uploading $WORKDIR_JOBS to $BUCKET_URI_JOBS..."
