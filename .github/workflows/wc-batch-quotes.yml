@@ -112,12 +112,3 @@ jobs:
         run: |
           chmod +x ./setup*.sh
           ./setup_local.sh
-
-      # ---------------------------------------------------------
-      # Verify ls
-      # ---------------------------------------------------------
-      - name: Verify ls
-        working-directory: ${{ env.CMD_SCRIPT_FOLDER }}
-        run: |
-          echo "pwd:$PWD, ls recursive on quotes:"
-          ls -laR ./quotes

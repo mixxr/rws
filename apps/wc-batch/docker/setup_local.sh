@@ -18,6 +18,6 @@ gcloud storage cp $BUCKET_URI_CFG $WORKDIR_CFG/
 ./setup.sh
 
 echo "Uploading $WORKDIR_JOBS to $BUCKET_URI_JOBS..."
-gcloud storage cp --recursive $WORKDIR_JOBS $BUCKET_URI_JOBS/
+gcloud storage cp --recursive $WORKDIR_JOBS $BUCKET_URI_JOBS/ || true
 echo "Uploading $WORKDIR_INPUT to $BUCKET_URI_INPUT..."
-gcloud storage cp --recursive $WORKDIR_INPUT $BUCKET_URI_INPUT/
+gcloud storage cp --recursive $WORKDIR_INPUT $BUCKET_URI_INPUT/ || true
