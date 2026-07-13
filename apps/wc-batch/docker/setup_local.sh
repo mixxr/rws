@@ -14,11 +14,10 @@ echo "Downloading $BUCKET_URI_CFG to $WORKDIR_CFG..."
 rm -rf $WORKDIR_CFG/*
 mkdir -p $WORKDIR_CFG
 gcloud storage cp $BUCKET_URI_CFG $WORKDIR_CFG/
-ls -la
-pwd
+
 ./setup.sh
 
-# echo "Uploading $WORKDIR_JOBS to $BUCKET_URI_JOBS..."
-# gcloud storage cp --recursive $WORKDIR_JOBS $BUCKET_URI_JOBS/
-# echo "Uploading $WORKDIR_INPUT to $BUCKET_URI_INPUT..."
-# gcloud storage cp --recursive $WORKDIR_INPUT $BUCKET_URI_INPUT/
+echo "Uploading $WORKDIR_JOBS to $BUCKET_URI_JOBS..."
+gcloud storage cp --recursive $WORKDIR_JOBS $BUCKET_URI_JOBS/
+echo "Uploading $WORKDIR_INPUT to $BUCKET_URI_INPUT..."
+gcloud storage cp --recursive $WORKDIR_INPUT $BUCKET_URI_INPUT/

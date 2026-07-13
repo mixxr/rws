@@ -117,6 +117,7 @@ jobs:
       # Verify ls
       # ---------------------------------------------------------
       - name: Verify ls
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }}
         run: |
           echo "pwd:$PWD, ls recursive on quotes:"
-          ls -laR quotes
+          ls -laR ./quotes
