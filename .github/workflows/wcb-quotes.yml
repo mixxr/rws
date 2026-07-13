@@ -1,0 +1,61 @@
+name: Webclaw Batch Quotes
+
+env:
+  PROJECT_ID: my-project
+  DATASET: analytics
+  BUCKET_NAME: my-export-bucket
+  CMD_SCRIPT_FOLDER: ./apps/wc-batch/docker
+
+on:
+  schedule:
+    - cron: '30 8 * * *'
+    - cron: '30 11 * * *'
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  get_quotes:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/0xmassi/webclaw:latest
+    
+    steps:
+      # ---------------------------------------------------------
+      # Checkout main repository
+      # ---------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ---------------------------------------------------------
+      # Authenticate to Google Cloud (secure ordering)
+      # ---------------------------------------------------------
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/600125851897/locations/global/workloadIdentityPools/github-pool/providers/github
+          service_account: github-actions@invcerts.iam.gserviceaccount.com
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      # ---------------------------------------------------------
+      # Verify tools
+      # ---------------------------------------------------------
+      - name: Verify GCP authentication and tools
+        run: |
+          gcloud auth list
+          gcloud config list
+          webclaw --version
+
+      # ---------------------------------------------------------
+      # Execute webclaw workflows
+      # ---------------------------------------------------------
+      - name: Execute webclaw workflows
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }}
+        run: |
+          chmod +x ./setup*.sh
+          ./setup_local.sh
