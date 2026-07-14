@@ -7,10 +7,6 @@ env:
   CMD_SCRIPT_FOLDER: ./apps/wc-batch/docker
 
 on:
-  schedule:
-    - cron: '30 8 * * *'
-    - cron: '30 11 * * *'
-    - cron: '0 16 * * *'
   workflow_dispatch:
 
 permissions:
