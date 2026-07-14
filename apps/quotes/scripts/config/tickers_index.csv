@@ -1,0 +1,145 @@
+stock_google_finance_ticker;stock_name;stock_exchange;stock_isin;stock_industry;stock_sector
+NASDAQ:AAPL;Apple Inc;NASDAQ;US0378331005;Consumer Electronics;Technology
+NASDAQ:AMZN;Amazon.com Inc;NASDAQ;US0231351067;E-Commerce and Cloud;Consumer Discretionary
+NASDAQ:GOOGL;Alphabet Inc;NASDAQ;US02079K3059;Internet and Media;Communication Services
+NASDAQ:SPCX;Space Exploration Technologies Corp;NASDAQ;US84615Q1031;Aerospace and Defense;Industrials
+BIT:LDO;Leonardo S.p.A.;BIT;IT0003856405;Aerospace and Defense;Industrials
+NASDAQ:RKLB;Rocket Lab USA, Inc.;Nasdaq Global Select Market;US7731211089;Aerospace and Defense;Industrials
+EPA:STM;STMicroelectronics N.V.;EPA;NL0000226223;Semiconductors;Technology
+BIT:STMMI;STMicroelectronics N.V.;BIT;NL0000226223;Semiconductors;Technology
+ETR:IFX;Infineon Technologies AG;XETRA (Frankfurt Stock Exchange);DE0006231004;Semiconductors;Technology
+ETR:CBK;Commerzbank AG;XETRA (Frankfurt Stock Exchange);DE000CBK1001;Banking;Financials
+NYSE:IONQ;IonQ Inc;NYSE American LLC;US46222L1089;Quantum Computing;Technology
+ETR:DBK;Deutsche Bank AG;Xetra;DE0005140008;Banks;Financials
+BIT:BMPS;Banca Monte dei Paschi di Siena S.p.A.;BIT;IT0005218752;Banks;Financials
+BIT:STLAM;Stellantis N.V.;BIT;NL00150001Q9;Auto Manufacturers;Consumer Cyclical
+NYSE:QBTS;D-Wave Quantum Inc.;NYSE;US26740W1099;Quantum Computing;Technology
+NASDAQ:RGTI;Rigetti Computing Inc.;NASDAQ;US76655K1034;Quantum Computing;Technology
+BIT:BPE;BPER Banca S.p.A.;BIT;IT0000066123;Banking;Financials
+BIT:BAMI;Banco BPM S.p.A.;BIT;IT0005218380;Banking;Financials
+EPA:STMPA;STMicroelectronics NV;EPA;NL0000226223;Semiconductors;Information Technology
+BIT:PRY;Prysmian SpA;BIT;IT0004176001;Electrical Equipment;Industrials
+NASDAQ:MSFT;Microsoft Corp;NASDAQ;US5949181045;Software;Information Technology
+NYSE:AI;C3.ai Inc;NYSE;US12468P1049;Software;Information Technology
+STOXX:SX7E;EURO STOXX Banks Index;STOXX;N/A;Banking;Financials
+INDEXSP:.INX;S&P 500 Index;CBOE;N/A;N/A;N/A
+NVDA:NASDAQ;Nasdaq 100 Index;NASDAQ;N/A;N/A;N/A
+SX5E;Euro Stoxx 50;N/A;EU0009658145;Indices;Finance
+FTSEMIB;FTSE MIB;N/A;GB00BNNLHW18;Indices;Finance
+NKY;Nikkei 225;N/A;JP9010C00002;Indices;Finance
+KOSPI2;KOSPI 200 Index;N/A;KRD020020008;Indices;Finance
+FRA:CBK;Commerzbank AG;XETRA (Frankfurt Stock Exchange);DE000CBK1001;Banks;Financials
+BIT:ISP;Intesa Sanpaolo;Borsa Italiana S.p.A;IT0000072618;Banks;Financials
+BME:BBVA;Banco Bilbao Vizcaya Argentaria (BBVA);BME;ES0113211835;Banks;Financials
+NASDAQ:INTC;Intel;NASDAQ;N/A;N/A;N/A
+NASDAQ:AVGO;Broadcom;NASDAQ;N/A;N/A;N/A
+NASDAQ:AMD;Advanced Micro Devices;NASDAQ;N/A;N/A;N/A
+NYSE:GS;Goldman Sachs;NYSE;N/A;N/A;N/A
+BME:SAN;Banco Santander;BME;N/A;N/A;N/A
+NYSE:MS;Morgan Stanley;NYSE;N/A;N/A;N/A
+NYSE:BA;Boeing;NYSE;N/A;N/A;N/A
+ETR:RHM;Rheinmetall;ETR;N/A;N/A;N/A
+EPA:HO;Thales;EPA;N/A;N/A;N/A
+MBG;Mercedes-Benz Group AG;XETRA;DE0007100000;Automotive;Automotive
+PLTR:NYSE;Ford Motor Co;NYSE;US3453708600;Automotive;Automotive
+NASDAQ:TSLA;Tesla Inc;NASDAQ;US88160R1014;Automotive;Automotive
+AU;Anglogold Ashanti ADR;NYSE;GB00BRXH2664;Gold Mining;Basic Materials
+NASDAQ:META;Meta Platforms Inc;NASDAQ;US30303M1027;Social Media;Communication Services
+BIT:RACE;FERRARI NV;BIT;NL0011585146;Auto Manufacturers;Consumer Cyclical
+RMS;HERMES INTERNATIONAL;EPA;FR0000052292;Luxury Goods;Consumer Cyclical
+EPA:KER;KERING;EPA;FR0000121485;Luxury Goods;Consumer Cyclical
+ZAL.DE;Zalando SE;XETRA;DE000ZAL1F18;Internet Retail;Consumer Cyclical
+DHER.DE;Delivery Hero SE;XETRA;DE000A2E4K43;Restaurants;Consumer Cyclical
+BIT:MONC;Moncler;BIT;IT0004965148;Luxury Goods;Consumer Cyclical
+RCL;Royal Caribbean Cruises Ltd;NYSE;LR0008862868;Travel and Leisure;Consumer Cyclical
+LON:BRBY;Burberry Group PLC;LSE;GB0031743007;Luxury Goods;Consumer Cyclical
+CL;Colgate-Palmolive;NYSE;US1941621039;Household and Personal Products;Consumer Defensive
+HFG.DE;HelloFresh SE;XETRA;DE000A161408;Food and Beverage;Consumer Defensive
+AMZN:NASDAQ;Amazon;NASDAQ;US0231351067;E-commerce;Consumer Discretionary
+CPR;DAVIDE CAMPARI-MILANO NV;BIT;NL0015435975;Beverages;Consumer Goods
+NYSEARCA:FXI;iShares China Large-Cap ETF;Not Specified;Not Specified;Financial Services;ETFs
+BIT:ENI;Eni;BIT;IT0003132636;Oil and Gas;Energy
+TTE.PA;TotalEnergies;EPA;FR0000120271;Oil and Gas Integrated;Energy
+CVX;Chevron;NYSE;US1667641005;Oil and Gas Integrated;Energy
+OXY;Occidental Petroleum;NYSE;US6745991058;Oil and Gas Exploration and Production;Energy
+BIT:SRG;Snam SpA;BIT;IT0003153415;Gas Utilities;Energy
+REP;Repsol;BME;ES0173516115;Integrated Oil and Gas;Energy
+BP;British Petroleum;LSE;GB00BN7L1Y91;Integrated Oil and Gas;Energy
+TTE;TotalEnergies;EPA;FR0000120271;Integrated Oil and Gas;Energy
+EQNR;Equinor ASA;Oslo Stock Exchange;NO0010096985;Oil and Gas;Energy
+SOLDE10E;Solactive Constant Maturity BUND 10Y Yield Index;N/A;N/A;Government Bonds;Finance
+NYSEARCA:SLV;iShares Silver Trust;NYSE Arca;US46428Q1094;Commodities;Financial
+NYSEARCA:GLD;SPDR Gold Shares;NYSE Arca;US78463V1070;Commodities;Financial
+LON:BARC;Barclays PLC;LSE;GB0031348658;Banking;Financial
+EPA:GLE;Société Générale;EPA;FR0000130809;Banking;Financial
+BIT:UNI;Unipol Assicurazioni SpA;BIT;IT0004810054;Insurance;Financial
+SWX:SREN;Swiss Re AG;SIX Swiss Exchange;CH0126881561;Insurance;Financial
+EPA:SCR;SCOR SE;EPA;FR0010411983;Insurance;Financial
+NYSEARCA:EWY;iShares MSCI South Korea ETF;NYSE Arca;US4642867765;ETF;Financial
+NASDAQ:MCHI;iShares MSCI China ETF;NASDAQ;US4642866858;ETF;Financial
+SOITA10Y;Solactive BTP 10 Annual Comp. Yield Index;Solactive;N/A;Indices;Financial
+SOLEU10E;Solactive Constant Maturity EU NXG 10Y;N/A;N/A;Indices;Financial
+BIT:UCG;Unicredit;BIT;IT0005239367;Banks;Financial Services
+AGN;AEGON LTD;Amsterdam;BMG0112X1056;Insurance;Financial Services
+ALV;ALLIANZ SE-REG;Xetra;DE0008404005;Insurance;Financial Services
+VIE:RBI;Raiffeisen Bank;Vienna Stock Exchange;AT0000606306;Banks-Regional;Financial Services
+EPA:BNP;BNP Paribas;EPA;FR0000131104;Banks-Diversified;Financial Services
+BMPS:MIL;Banca MPS;BIT;IT0005336171;Banks;Financial Services
+BME:CABK;CaixaBank S.A.;BME;ES0118620317;Banks-Diversified;Financial Services
+EPA:CS;AXA SA;EPA;FR0000120628;Insurance;Financials
+SWX:ZURN;Zurich Insurance Group;SIX Swiss Exchange;CH0011075394;Insurance;Financials
+BIT:NEXI;NEXI;BIT;IT0005366767;Financial Services;Financials
+BIT:FBK;Fineco;BIT;IT0000072170;Banks;Financials
+BIT:PST;Poste Italiane S.p.A.;BIT;IT0003794171;Diversified Financial Services;Financials
+BIT:G;Generali;BIT;IT0000062072;Multi-line Insurance;Financials
+BIT:AZM;Azimut Holding SpA;BIT;IT0003261697;Asset Management;Financials
+BGN;Banca Generali SpA;BIT;IT0001031084;Banking;Financials
+SXIE;ESTX Insurance (EUR) Pr;STOXX;EU0009658442;Insurance;Financials
+STOXX;EURO STOXX® Banks Index;STOXX;EU0009658426;Banking;Financials
+IT0005441883;2.15% BTPS Italia (03/01/72);BIT;IT0005441883;Government Bonds;Government
+FR0014001NN8;0.5% France Govt (05/25/2072);Euronext;FR0014001NN8;Sovereign Debt;Government
+MOT;BTP TF 0,95% GN32 EUR;MOT;IT0005405318;Sovereign Debt;Government
+Euronext;Banque de France TEC 10 CNO Constant 10 Year Maturity Treasury Benchmark;Euronext;N/A;Sovereign Bonds;Government
+BAYN;BAYER AG-REG;Xetra;DE000BAY0017;Pharmaceuticals;Healthcare
+PFE;PFIZER INC-REG;NYSE;US7170811035;Pharmaceuticals;Healthcare
+MRNA;Moderna Inc;NASDAQ;US60770K1079;Biotechnology;Healthcare
+MRK;Merck and Co Inc;NYSE;US58933Y1055;Pharmaceuticals;Healthcare
+LLY;Eli Lilly and Co;NYSE;US5324571083;Pharmaceuticals;Healthcare
+SPX;S&P 500 Index;NYSE;US78378X1072;Index;Index
+BIT:FCT;Fincantieri SpA;BIT;IT0005599938;Shipbuilding;Industrials
+ETR:ENR;Siemens Energy AG;Xetra;DE000ENER6Y0;Energy Equipment and Services;Industrials
+MSFT:NASDAQ;Microsoft;NASDAQ;US5949181045;Software;Information Technology
+NYSE:DELL;Dell;NYSE;US24703L2025;Technology Hardware, Storage and Peripherals;Information Technology
+NASDAQ:FTNT;Fortinet;NASDAQ;US34959E1091;Software;Information Technology
+NYSE:ORCL;Oracle;NYSE;US68389X1054;Software;Information Technology
+NYSE:COHR;Coherent;NYSE;US1924791031;Electronic Equipment, Instruments and Components;Information Technology
+NASDAQ:NVDA;NVIDIA Corporation;NASDAQ;US67066G1040;Semiconductors;Information Technology
+NASDAQ:MU;Micron Technology Inc;UW;N/A;N/A;N/A
+INTC UW;Intel Corp;Not specified;Not specified;Not specified;Not specified
+ASML NA;ASML Holding NV;Not specified;Not specified;Not specified;Not specified
+STMPA FP;STMicroelectronics NV;Not specified;Not specified;Not specified;Not specified
+ASML;ASML Holding N.V.;NASDAQ;US04583N1000;Semiconductor Equipment;Technology
+NASDAQ:SNDK;Sandisk Corp;NASDAQ;US80004C1018;Semiconductors;Technology
+NASDAQ:SMCI;Super Micro Computer Inc;NASDAQ;US86800U1043;Computer Hardware;Technology
+NYSE:PATH;UiPath;NYSE;US90364P1057;Software;Technology
+NASDAQ:KLAC;KLA;NASDAQ;US4824801009;Semiconductors;Technology
+NYSE:PLTR;Palantir Technologies Inc;Not specified;US69608A1088;Software;Technology
+EPA:DSY;Dassault Systemes SE;EPA;FR0014003TT8;Software;Technology
+SX8E;ESTX Technology (EUR) Pr;STOXX;EU0009658582;Technology;Technology
+HPQ;HP INC.;Not specified;Not specified;Hardware;Technology
+BIT:ENEL;ENEL SPA;BIT;IT0003128367;Electric Utilities;Utilities
+EPA:ENGI;Engie SA;EPA;FR0010208488;Multi-Utilities;Utilities
+BIT:ERG;Erg;BIT;IT0001157057;Renewable Energy;Utilities
+VIE;Veolia Environnement SA;EPA;FR0000124141;Environmental Services;Utilities
+A2A;A2A SpA;BIT;IT0001233417;Electric Utilities;Utilities
+EOAN;E.ON SE;XETRA;DE000ENAG999;Electric Utilities;Utilities
+ELE;Endesa SA;BME;ES0130670112;Electric Utilities;Utilities
+SX6E;EURO STOXX Utilities;STOXX;EU0009658962;Utilities;Utilities
+NYSEARCA:EWZ;iShares MSCI Brazil ETF;NYSE Arca;US4642840076;Emerging Markets Equity;ETF
+CAC;CAC 40;N/A;FR0003500008;Equity Index;Multi-Sector
+NDX;Nasdaq-100 Index;N/A;US6311011026;Equity Index;Technology
+SWX:CFR;Compagnie Financiere Richemont SA;SIX Swiss Exchange;CH0210483332;Apparel, Accessories and Luxury Goods;Consumer Discretionary
+NYSE:PL;Planet Labs PBC;NYSE;US72703X1063;Space and Satellite Technology;Technology
+NASDAQ:LUNR;Intuitive Machines Inc;NASDAQ;US46125A1007;Space and Satellite Technology;Industrials
+NASDAQ:SATS;EchoStar Corp;NASDAQ;US2787681061;Space and Satellite Technology;Communication Services
+NASDAQ:ASTS;AST SpaceMobile Inc;NASDAQ;US00217D1000;Telecommunications;Communication Services
