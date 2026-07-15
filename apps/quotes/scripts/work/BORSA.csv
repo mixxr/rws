@@ -1,0 +1,5 @@
+id;labels;parents
+BORSA;BORSA;
+Banks-BORSA;Banks;BORSA
+Financials-Banks-BORSA;Financials;Banks-BORSA
+ISP.MI-Financials-Banks-BORSA;ISP.MI;Financials-Banks-BORSA

@@ -1,0 +1,37 @@
+id;labels;parents
+EPA;EPA;
+Semiconductors-EPA;Semiconductors;EPA
+Integrated Oil and Gas-EPA;Integrated Oil and Gas;EPA
+Multi-Utilities-EPA;Multi-Utilities;EPA
+Software-EPA;Software;EPA
+Environmental Services-EPA;Environmental Services;EPA
+Banking-EPA;Banking;EPA
+Oil and Gas Integrated-EPA;Oil and Gas Integrated;EPA
+Banks-Diversified-EPA;Banks-Diversified;EPA
+Insurance-EPA;Insurance;EPA
+Luxury Goods-EPA;Luxury Goods;EPA
+Energy-Integrated Oil and Gas-EPA;Energy;Integrated Oil and Gas-EPA
+Financial-Banking-EPA;Financial;Banking-EPA
+Utilities-Environmental Services-EPA;Utilities;Environmental Services-EPA
+Utilities-Multi-Utilities-EPA;Utilities;Multi-Utilities-EPA
+Energy-Oil and Gas Integrated-EPA;Energy;Oil and Gas Integrated-EPA
+Financial-Insurance-EPA;Financial;Insurance-EPA
+Financials-Insurance-EPA;Financials;Insurance-EPA
+Information Technology-Semiconductors-EPA;Information Technology;Semiconductors-EPA
+Technology-Software-EPA;Technology;Software-EPA
+Technology-Semiconductors-EPA;Technology;Semiconductors-EPA
+Financial Services-Banks-Diversified-EPA;Financial Services;Banks-Diversified-EPA
+Consumer Cyclical-Luxury Goods-EPA;Consumer Cyclical;Luxury Goods-EPA
+CSPA.PA-Financials-Insurance-EPA;CSPA.PA;Financials-Insurance-EPA
+VIEPA.PA-Utilities-Environmental Services-EPA;VIEPA.PA;Utilities-Environmental Services-EPA
+TTEPA.PA-Energy-Integrated Oil and Gas-EPA;TTEPA.PA;Energy-Integrated Oil and Gas-EPA
+STMPA.PA-Technology-Semiconductors-EPA;STMPA.PA;Technology-Semiconductors-EPA
+SCRPA.PA-Financial-Insurance-EPA;SCRPA.PA;Financial-Insurance-EPA
+DSYPA.PA-Technology-Software-EPA;DSYPA.PA;Technology-Software-EPA
+BNPPA.PA-Financial Services-Banks-Diversified-EPA;BNPPA.PA;Financial Services-Banks-Diversified-EPA
+RMSPA.PA-Consumer Cyclical-Luxury Goods-EPA;RMSPA.PA;Consumer Cyclical-Luxury Goods-EPA
+KERPA.PA-Consumer Cyclical-Luxury Goods-EPA;KERPA.PA;Consumer Cyclical-Luxury Goods-EPA
+ENGIPA.PA-Utilities-Multi-Utilities-EPA;ENGIPA.PA;Utilities-Multi-Utilities-EPA
+TTE.PA-Energy-Oil and Gas Integrated-EPA;TTE.PA;Energy-Oil and Gas Integrated-EPA
+STMPAPA.PA-Information Technology-Semiconductors-EPA;STMPAPA.PA;Information Technology-Semiconductors-EPA
+GLEPA.PA-Financial-Banking-EPA;GLEPA.PA;Financial-Banking-EPA

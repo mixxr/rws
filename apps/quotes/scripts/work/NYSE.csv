@@ -1,0 +1,57 @@
+id;labels;parents
+NYSE;NYSE;
+Automotive-NYSE;Automotive;NYSE
+Software-NYSE;Software;NYSE
+Technology Hardware Storage and Peripherals-NYSE;Technology Hardware Storage and Peripherals;NYSE
+Oil and Gas Integrated-NYSE;Oil and Gas Integrated;NYSE
+Commodities-NYSE;Commodities;NYSE
+Index-NYSE;Index;NYSE
+ETF-NYSE;ETF;NYSE
+Oil and Gas Exploration and Production-NYSE;Oil and Gas Exploration and Production;NYSE
+Travel and Leisure-NYSE;Travel and Leisure;NYSE
+Household and Personal Products-NYSE;Household and Personal Products;NYSE
+Pharmaceuticals-NYSE;Pharmaceuticals;NYSE
+Quantum Computing-NYSE;Quantum Computing;NYSE
+Gold Mining-NYSE;Gold Mining;NYSE
+Emerging Markets Equity-NYSE;Emerging Markets Equity;NYSE
+Space and Satellite Technology-NYSE;Space and Satellite Technology;NYSE
+Electronic Equipment Instruments and Components-NYSE;Electronic Equipment Instruments and Components;NYSE
+Energy-Oil and Gas Integrated-NYSE;Energy;Oil and Gas Integrated-NYSE
+Technology-Quantum Computing-NYSE;Technology;Quantum Computing-NYSE
+Automotive-Automotive-NYSE;Automotive;Automotive-NYSE
+Basic Materials-Gold Mining-NYSE;Basic Materials;Gold Mining-NYSE
+Index-Index-NYSE;Index;Index-NYSE
+Financial-ETF-NYSE;Financial;ETF-NYSE
+Consumer Cyclical-Travel and Leisure-NYSE;Consumer Cyclical;Travel and Leisure-NYSE
+Energy-Oil and Gas Exploration and Production-NYSE;Energy;Oil and Gas Exploration and Production-NYSE
+Technology-Space and Satellite Technology-NYSE;Technology;Space and Satellite Technology-NYSE
+ETF-Emerging Markets Equity-NYSE;ETF;Emerging Markets Equity-NYSE
+Consumer Defensive-Household and Personal Products-NYSE;Consumer Defensive;Household and Personal Products-NYSE
+Information Technology-Software-NYSE;Information Technology;Software-NYSE
+Information Technology-Technology Hardware Storage and Peripherals-NYSE;Information Technology;Technology Hardware Storage and Peripherals-NYSE
+Technology-Software-NYSE;Technology;Software-NYSE
+Financial-Commodities-NYSE;Financial;Commodities-NYSE
+Healthcare-Pharmaceuticals-NYSE;Healthcare;Pharmaceuticals-NYSE
+Information Technology-Electronic Equipment Instruments and Components-NYSE;Information Technology;Electronic Equipment Instruments and Components-NYSE
+GLD-Financial-Commodities-NYSE;GLD;Financial-Commodities-NYSE
+EWZ-ETF-Emerging Markets Equity-NYSE;EWZ;ETF-Emerging Markets Equity-NYSE
+^SPX-Index-Index-NYSE;^SPX;Index-Index-NYSE
+PL-Technology-Space and Satellite Technology-NYSE;PL;Technology-Space and Satellite Technology-NYSE
+AU-Basic Materials-Gold Mining-NYSE;AU;Basic Materials-Gold Mining-NYSE
+ORCL-Information Technology-Software-NYSE;ORCL;Information Technology-Software-NYSE
+AI-Information Technology-Software-NYSE;AI;Information Technology-Software-NYSE
+LLY-Healthcare-Pharmaceuticals-NYSE;LLY;Healthcare-Pharmaceuticals-NYSE
+SLV-Financial-Commodities-NYSE;SLV;Financial-Commodities-NYSE
+COHR-Information Technology-Electronic Equipment Instruments and Components-NYSE;COHR;Information Technology-Electronic Equipment Instruments and Components-NYSE
+IONQ-Technology-Quantum Computing-NYSE;IONQ;Technology-Quantum Computing-NYSE
+NYSE-Automotive-Automotive-NYSE;NYSE;Automotive-Automotive-NYSE
+MRK-Healthcare-Pharmaceuticals-NYSE;MRK;Healthcare-Pharmaceuticals-NYSE
+PATH-Technology-Software-NYSE;PATH;Technology-Software-NYSE
+RCL-Consumer Cyclical-Travel and Leisure-NYSE;RCL;Consumer Cyclical-Travel and Leisure-NYSE
+CL-Consumer Defensive-Household and Personal Products-NYSE;CL;Consumer Defensive-Household and Personal Products-NYSE
+DELL-Information Technology-Technology Hardware Storage and Peripherals-NYSE;DELL;Information Technology-Technology Hardware Storage and Peripherals-NYSE
+EWY-Financial-ETF-NYSE;EWY;Financial-ETF-NYSE
+PFE-Healthcare-Pharmaceuticals-NYSE;PFE;Healthcare-Pharmaceuticals-NYSE
+CVX-Energy-Oil and Gas Integrated-NYSE;CVX;Energy-Oil and Gas Integrated-NYSE
+OXY-Energy-Oil and Gas Exploration and Production-NYSE;OXY;Energy-Oil and Gas Exploration and Production-NYSE
+QBTS-Technology-Quantum Computing-NYSE;QBTS;Technology-Quantum Computing-NYSE

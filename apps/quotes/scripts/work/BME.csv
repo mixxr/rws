@@ -1,0 +1,14 @@
+id;labels;parents
+BME;BME;
+Banks-Diversified-BME;Banks-Diversified;BME
+Integrated Oil and Gas-BME;Integrated Oil and Gas;BME
+Banks-BME;Banks;BME
+Electric Utilities-BME;Electric Utilities;BME
+Utilities-Electric Utilities-BME;Utilities;Electric Utilities-BME
+Energy-Integrated Oil and Gas-BME;Energy;Integrated Oil and Gas-BME
+Financial Services-Banks-Diversified-BME;Financial Services;Banks-Diversified-BME
+Financials-Banks-BME;Financials;Banks-BME
+BBVA.MC-Financials-Banks-BME;BBVA.MC;Financials-Banks-BME
+ELE.MC-Utilities-Electric Utilities-BME;ELE.MC;Utilities-Electric Utilities-BME
+REP.MC-Energy-Integrated Oil and Gas-BME;REP.MC;Energy-Integrated Oil and Gas-BME
+CABK.MC-Financial Services-Banks-Diversified-BME;CABK.MC;Financial Services-Banks-Diversified-BME

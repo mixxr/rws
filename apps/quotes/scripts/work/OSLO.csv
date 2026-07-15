@@ -1,0 +1,5 @@
+id;labels;parents
+OSLO;OSLO;
+Oil and Gas-OSLO;Oil and Gas;OSLO
+Energy-Oil and Gas-OSLO;Energy;Oil and Gas-OSLO
+EQNR-Energy-Oil and Gas-OSLO;EQNR;Energy-Oil and Gas-OSLO

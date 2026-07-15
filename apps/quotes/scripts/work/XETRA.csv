@@ -1,0 +1,36 @@
+id;labels;parents
+XETRA;XETRA;
+Banks-XETRA;Banks;XETRA
+Pharmaceuticals-XETRA;Pharmaceuticals;XETRA
+Banking-XETRA;Banking;XETRA
+Energy Equipment and Services-XETRA;Energy Equipment and Services;XETRA
+Automotive-XETRA;Automotive;XETRA
+Food and Beverage-XETRA;Food and Beverage;XETRA
+Restaurants-XETRA;Restaurants;XETRA
+Internet Retail-XETRA;Internet Retail;XETRA
+Electric Utilities-XETRA;Electric Utilities;XETRA
+Insurance-XETRA;Insurance;XETRA
+Semiconductors-XETRA;Semiconductors;XETRA
+Utilities-Electric Utilities-XETRA;Utilities;Electric Utilities-XETRA
+Consumer Cyclical-Restaurants-XETRA;Consumer Cyclical;Restaurants-XETRA
+Automotive-Automotive-XETRA;Automotive;Automotive-XETRA
+Financials-Banks-XETRA;Financials;Banks-XETRA
+Consumer Cyclical-Internet Retail-XETRA;Consumer Cyclical;Internet Retail-XETRA
+Financial Services-Insurance-XETRA;Financial Services;Insurance-XETRA
+Industrials-Energy Equipment and Services-XETRA;Industrials;Energy Equipment and Services-XETRA
+Consumer Defensive-Food and Beverage-XETRA;Consumer Defensive;Food and Beverage-XETRA
+Healthcare-Pharmaceuticals-XETRA;Healthcare;Pharmaceuticals-XETRA
+Financials-Banking-XETRA;Financials;Banking-XETRA
+Technology-Semiconductors-XETRA;Technology;Semiconductors-XETRA
+CBK.DE-Financials-Banks-XETRA;CBK.DE;Financials-Banks-XETRA
+ENR.DE-Industrials-Energy Equipment and Services-XETRA;ENR.DE;Industrials-Energy Equipment and Services-XETRA
+EOAN.DE-Utilities-Electric Utilities-XETRA;EOAN.DE;Utilities-Electric Utilities-XETRA
+ALV-Financial Services-Insurance-XETRA;ALV;Financial Services-Insurance-XETRA
+BAYN-Healthcare-Pharmaceuticals-XETRA;BAYN;Healthcare-Pharmaceuticals-XETRA
+ZAL.DE-Consumer Cyclical-Internet Retail-XETRA;ZAL.DE;Consumer Cyclical-Internet Retail-XETRA
+IFX.DE-Technology-Semiconductors-XETRA;IFX.DE;Technology-Semiconductors-XETRA
+MBG.DE-Automotive-Automotive-XETRA;MBG.DE;Automotive-Automotive-XETRA
+DHER.DE-Consumer Cyclical-Restaurants-XETRA;DHER.DE;Consumer Cyclical-Restaurants-XETRA
+DBK.DE-Financials-Banks-XETRA;DBK.DE;Financials-Banks-XETRA
+HFG.DE-Consumer Defensive-Food and Beverage-XETRA;HFG.DE;Consumer Defensive-Food and Beverage-XETRA
+CBK.DE-Financials-Banking-XETRA;CBK.DE;Financials-Banking-XETRA

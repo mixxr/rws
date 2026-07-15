@@ -1,0 +1,15 @@
+id;labels;parents
+STOXX;STOXX;
+Banking-STOXX;Banking;STOXX
+Insurance-STOXX;Insurance;STOXX
+Technology-STOXX;Technology;STOXX
+Utilities-STOXX;Utilities;STOXX
+Financials-Banking-STOXX;Financials;Banking-STOXX
+Technology-Technology-STOXX;Technology;Technology-STOXX
+Utilities-Utilities-STOXX;Utilities;Utilities-STOXX
+Financials-Insurance-STOXX;Financials;Insurance-STOXX
+SXIE-Financials-Insurance-STOXX;SXIE;Financials-Insurance-STOXX
+SX6E-Utilities-Utilities-STOXX;SX6E;Utilities-Utilities-STOXX
+^SX7E-Financials-Banking-STOXX;^SX7E;Financials-Banking-STOXX
+SX8E-Technology-Technology-STOXX;SX8E;Technology-Technology-STOXX
+^STOXX-Financials-Banking-STOXX;^STOXX;Financials-Banking-STOXX
