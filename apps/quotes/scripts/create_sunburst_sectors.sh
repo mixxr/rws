@@ -14,30 +14,41 @@ normalize_exchange() {
     echo "${ex^^}"     # uppercase
 }
 
+sanitize() {
+    local s="$1"
+    s="${s//,/}"   # rimuove virgole
+    s="${s//;/}"   # rimuove punti e virgola
+    s="${s//:/}"   # rimuove due punti
+    echo "$s"
+}
+
 {
     read -r header
 
     while IFS=";" read -r ticker name exchange isin industry sector; do
 
-        # Normalizza exchange
         ex_norm=$(normalize_exchange "$exchange")
 
+        # ❗ Sanifica industry e sector
+        industry_clean=$(sanitize "$industry")
+        sector_clean=$(sanitize "$sector")
+
         # Filtri
-        [[ "$industry" == "Not specified" || "$industry" == "N/A" ]] && continue
-        [[ "$sector" == "Not specified" || "$sector" == "N/A" ]] && continue
+        [[ "$industry_clean" == "Not specified" || "$industry_clean" == "N/A" ]] && continue
+        [[ "$sector_clean" == "Not specified" || "$sector_clean" == "N/A" ]] && continue
         [[ "$ex_norm" == "NOT" || "$ex_norm" == "N/A" ]] && continue
 
         # Livello 1: exchange
         exchanges["$ex_norm"]=1
 
         # Livello 2: industry-exchange
-        ind_id="${industry}-${ex_norm}"
-        industries["$ind_id"]="$industry;$ex_norm"
+        ind_id="${industry_clean}-${ex_norm}"
+        industries["$ind_id"]="$industry_clean;$ex_norm"
 
         # Livello 3: sector-industry-exchange
-        sec_parent="${industry}-${ex_norm}"
-        sec_id="${sector}-${sec_parent}"
-        sectors["$sec_id"]="$sector;$sec_parent"
+        sec_parent="${industry_clean}-${ex_norm}"
+        sec_id="${sector_clean}-${sec_parent}"
+        sectors["$sec_id"]="$sector_clean;$sec_parent"
 
         # ⭐ Livello 4: ticker-sector-industry-exchange
         tick_id="${ticker}-${sec_id}"
@@ -46,7 +57,6 @@ normalize_exchange() {
     done
 } < "$input"
 
-# Output
 {
     echo "id;labels;parents"
 
@@ -67,10 +77,9 @@ normalize_exchange() {
         echo "$sec;$label;$parent"
     done
 
-    # ⭐ Livello 4
+    # Livello 4
     for tk in "${!tickers[@]}"; do
         IFS=";" read -r label parent <<< "${tickers[$tk]}"
         echo "$tk;$label;$parent"
     done
-
 }
