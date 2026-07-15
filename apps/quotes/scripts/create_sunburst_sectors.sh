@@ -1,0 +1,76 @@
+#!/bin/bash
+
+input="$1"
+
+declare -A exchanges
+declare -A industries
+declare -A sectors
+declare -A tickers
+
+normalize_exchange() {
+    local ex="$1"
+    ex="${ex%% *}"     # rimuove dopo spazio
+    ex="${ex%%(*}"     # rimuove dopo parentesi
+    echo "${ex^^}"     # uppercase
+}
+
+{
+    read -r header
+
+    while IFS=";" read -r ticker name exchange isin industry sector; do
+
+        # Normalizza exchange
+        ex_norm=$(normalize_exchange "$exchange")
+
+        # Filtri
+        [[ "$industry" == "Not specified" || "$industry" == "N/A" ]] && continue
+        [[ "$sector" == "Not specified" || "$sector" == "N/A" ]] && continue
+        [[ "$ex_norm" == "NOT" || "$ex_norm" == "N/A" ]] && continue
+
+        # Livello 1: exchange
+        exchanges["$ex_norm"]=1
+
+        # Livello 2: industry-exchange
+        ind_id="${industry}-${ex_norm}"
+        industries["$ind_id"]="$industry;$ex_norm"
+
+        # Livello 3: sector-industry-exchange
+        sec_parent="${industry}-${ex_norm}"
+        sec_id="${sector}-${sec_parent}"
+        sectors["$sec_id"]="$sector;$sec_parent"
+
+        # ⭐ Livello 4: ticker-sector-industry-exchange
+        tick_id="${ticker}-${sec_id}"
+        tickers["$tick_id"]="$ticker;$sec_id"
+
+    done
+} < "$input"
+
+# Output
+{
+    echo "id;labels;parents"
+
+    # Livello 1
+    for ex in "${!exchanges[@]}"; do
+        echo "$ex;$ex;"
+    done
+
+    # Livello 2
+    for ind in "${!industries[@]}"; do
+        IFS=";" read -r label parent <<< "${industries[$ind]}"
+        echo "$ind;$label;$parent"
+    done
+
+    # Livello 3
+    for sec in "${!sectors[@]}"; do
+        IFS=";" read -r label parent <<< "${sectors[$sec]}"
+        echo "$sec;$label;$parent"
+    done
+
+    # ⭐ Livello 4
+    for tk in "${!tickers[@]}"; do
+        IFS=";" read -r label parent <<< "${tickers[$tk]}"
+        echo "$tk;$label;$parent"
+    done
+
+}
