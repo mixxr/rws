@@ -1,19 +1,19 @@
 isin;name;ask_old;ask_new;diff_percent;flag
 NLBNPIT304E3;Certificato NLBNPIT304E3 - Coupon: -% (-% p.a.) - Barrier: -%;102.45;102.84;0.38%;+
-NLBNPIT303N6;Certificato NLBNPIT303N6 - Coupon: -% (-% p.a.) - Barrier: -%;87.16;86.18;-1.12%;-
+NLBNPIT303N6;Coherent, Leonardo, Rheinmetall - Coupon: -% (-% p.a.) - Barrier: -%;87.16;86.18;-1.12%;-
 NLBNPIT304L8;Certificato NLBNPIT304L8 - Coupon: -% (-% p.a.) - Barrier: -%;99.97;100.5;0.53%;+
 NLBNPIT304D5;Certificato NLBNPIT304D5 - Coupon: -% (-% p.a.) - Barrier: -%;103.48;103.76;0.27%;+
 NLBNPIT2TQK4;Boeing, Dassault, Leonardo, Rheinmetall - Premi Fissi Cash Collect - Coupon: -% (-% p.a.) - Barrier: -%;60.7;59.91;-1.30%;-
 NLBNPIT304J2;Enel | Poste Italiane | Leonardo - Coupon: 0.98% (11.76% p.a.) - Barrier: 60%;102.28;102.11;-0.17%;-
 NLBNPIT30614;SpaceX Tesla - Premi Fissi Cash Collect - Coupon: 1.09% (-% p.a.) - Barrier: 40%;991.74;994.32;0.26%;+
 NLBNPIT303V9;Certificato NLBNPIT303V9 - Coupon: -% (-% p.a.) - Barrier: -%;85.41;85.91;0.59%;+
-NLBNPIT305Z5;Certificato NLBNPIT305Z5 - Coupon: -% (-% p.a.) - Barrier: -%;989.16;991.03;0.19%;+
+NLBNPIT305Z5;SpaceX - Coupon: 0.97% (11.64% p.a.) - Barrier: 40%;989.16;991.03;0.19%;+
 NLBNPIT30507;EURO STOXX 50®, S&P 500®, iShares MSCI China ETF, iShares MSCI South Korea - Memory Cash Collect - Coupon: 1.40% (-% p.a.) - Barrier: 60%;96.14;96.23;0.09%;+
 NLBNPIT300T9;Tesla - Coupon: 1.12% (13.44% p.a.) - Barrier: 60%;96.82;97.85;1.06%;+
 NLBNPIT300U7;Certificato NLBNPIT300U7 - Coupon: -% (-% p.a.) - Barrier: -%;88.56;89.87;1.48%;+
 NLBNPIT30374;Certificato NLBNPIT30374 - Coupon: -% (-% p.a.) - Barrier: -%;85.76;84.58;-1.38%;-
-NLBNPIT305I1;Certificato NLBNPIT305I1 - Coupon: -% (-% p.a.) - Barrier: -%;100.36;100.49;0.13%;+
-NLBNPIT304W5;Certificato NLBNPIT304W5 - Coupon: -% (-% p.a.) - Barrier: -%;101.29;101.34;0.05%;+
+NLBNPIT305I1;Generali, Enel, Eni, Poste Italiane Enjoy - Coupon: 0.85% (-% p.a.) - Barrier: 60%;100.36;100.49;0.13%;+
+NLBNPIT304W5;EURO STOXX® Banks, EURO STOXX® (Utilities), ESTX (Technology), ESTX (Insurance)  - Coupon: 1% (-% p.a.) - Barrier: 60%;101.29;101.34;0.05%;+
 NLBNPIT304M6;Certificato NLBNPIT304M6 - Coupon: -% (-% p.a.) - Barrier: -%;97.22;96.58;-0.66%;-
 NLBNPIT305X0;Certificato NLBNPIT305X0 - Coupon: -% (-% p.a.) - Barrier: -%;987.04;988.38;0.14%;+
 NLBNPIT302V1;Certificato NLBNPIT302V1 - Coupon: -% (-% p.a.) - Barrier: -%;108.99;109.08;0.08%;+
@@ -21,35 +21,35 @@ NLBNPIT303Y3;Certificato NLBNPIT303Y3 - Coupon: -% (-% p.a.) - Barrier: -%;81.52
 NLBNPIT304Q7;Alphabet | Microsoft | C3.AI - Coupon: 1.6% (19.80% p.a.) - Barrier: 45%;97.9;98.58;0.69%;+
 NLBNPIT305E0;Certificato NLBNPIT305E0 - Coupon: -% (-% p.a.) - Barrier: -%;101.23;101.75;0.51%;+
 NLBNPIT30382;Certificato NLBNPIT30382 - Coupon: -% (-% p.a.) - Barrier: -%;91.91;91.51;-0.44%;-
-NLBNPIT304X3;Certificato NLBNPIT304X3 - Coupon: -% (-% p.a.) - Barrier: -%;101.61;101.77;0.16%;+
+NLBNPIT304X3;EURO STOXX 50®, FTSE MIB Index, S&P 500 - Coupon: 0.6% (-% p.a.) - Barrier: 65%;101.61;101.77;0.16%;+
 NLBNPIT305D2;Infineon Intel Micron - Low Barrier Cash Collect - Coupon: 2.15% (-% p.a.) - Barrier: 30%;94.87;93.88;-1.04%;-
 NLBNPIT303W7;Certificato NLBNPIT303W7 - Coupon: -% (-% p.a.) - Barrier: -%;88.1;88.76;0.75%;+
-NLBNPIT304V7;Certificato NLBNPIT304V7 - Coupon: -% (-% p.a.) - Barrier: -%;101.89;102.2;0.30%;+
+NLBNPIT304V7;EURO STOXX® Banks, Nasdaq 100 Index, Nikkei 225, S&P 500 - Coupon: -% (-% p.a.) - Barrier: -%;101.89;102.2;0.30%;+
 NLBNPIT21TB7;C3.AI | KLA | UiPath - Coupon: 1.30% (15.60% p.a.) - Barrier: 40%;52.2;53.45;2.39%;+
 NLBNPIT304G8;Certificato NLBNPIT304G8 - Coupon: -% (-% p.a.) - Barrier: -%;104.92;105.25;0.31%;+
 NLBNPIT303C9;Certificato NLBNPIT303C9 - Coupon: -% (-% p.a.) - Barrier: -%;102.94;103.41;0.46%;+
 NLBNPIT303A3;Certificato NLBNPIT303A3 - Coupon: -% (-% p.a.) - Barrier: -%;111.12;111.72;0.54%;+
 NLBNPIT30358;Certificato NLBNPIT30358 - Coupon: -% (-% p.a.) - Barrier: -%;107.39;107.46;0.07%;+
 NLBNPIT305H3;Certificato NLBNPIT305H3 - Coupon: -% (-% p.a.) - Barrier: -%;99.7;100.69;0.99%;+
-NLBNPIT30622;Certificato NLBNPIT30622 - Coupon: -% (-% p.a.) - Barrier: -%;976.92;976.89;-0.00%;-
+NLBNPIT30622;SpaceMobile, Planet Labs, SpaceX - Coupon: 1.7% (20.4% p.a.) - Barrier: 40%;976.92;976.89;-0.00%;-
 NLBNPIT30150;Certificato NLBNPIT30150 - Coupon: -% (-% p.a.) - Barrier: -%;92.8;92.27;-0.57%;-
 NLBNPIT2HHH4;ERG | Ferrari | Leonardo | Moncler - Coupon: 1.20% (14.00% p.a.) - Barrier: 55%;94.9;95.17;0.28%;+
 NLBNPIT305L5;Certificato NLBNPIT305L5 - Coupon: -% (-% p.a.) - Barrier: -%;100.51;100.81;0.30%;+
-NLBNPIT304Z8;EURO STOXX 50®, FTSE MIB Index, Kospi 200, Nikkei 225 Memory Cash Collect - Coupon: 1.30% (-% p.a.) - Barrier: 50%;99.1;99.8;0.71%;+
+NLBNPIT304Z8;EURO STOXX 50®, FTSE MIB Index, Kospi 200, Nikkei 225 Memory Cash Collect - Coupon: 1.30% (-% p.a.) - Barrier: 50% **;99.1;99.8;0.71%;+
 NLBNPIT304S3;Bayer | Eli Lilly | Merck & co - Coupon: 1.15% (13.80% p.a.) - Barrier: 55%;105.8;105.88;0.08%;+
 NLBNPIT21T57;Certificato NLBNPIT21T57 - Coupon: -% (-% p.a.) - Barrier: -%;91.11;91.07;-0.04%;-
 NLBNPIT2SP93;Advanced Micro Devices, Google, Amazon, Meta - Premi Fissi Cash Collect - Coupon: 0.95% (-% p.a.) - Barrier: 55%;97.47;98.51;1.07%;+
 NLBNPIT305V4;EchoStar Intuitive Machines Planet Labs - Enjoy Cash Collect - Coupon: 2.05% (-% p.a.) - Barrier: 30%;96.08;95.59;-0.51%;-
 NLBNPIT302Y5;Banca Monte dei Paschi di Siena | Banco BPM | BPER Banca | Unicredit - Coupon: 15.60% p.a. - Barrier: 45.60%;112.1;112.19;0.08%;+
-NLBNPIT305C4;Certificato NLBNPIT305C4 - Coupon: -% (-% p.a.) - Barrier: -%;96.71;96.93;0.23%;+
+NLBNPIT305C4;Banco BPM, Siemens Energy, Stellantis, STMicroelectronics - Coupon: 1.65% (-% p.a.) - Barrier: 35% **;96.71;96.93;0.23%;+
 NLBNPIT303P1;Certificato NLBNPIT303P1 - Coupon: -% (-% p.a.) - Barrier: -%;102.87;102.91;0.04%;+
 NLBNPIT303S5;Certificato NLBNPIT303S5 - Coupon: -% (-% p.a.) - Barrier: -%;103.77;104.81;1.00%;+
-NLBNPIT304Y1;Certificato NLBNPIT304Y1 - Coupon: -% (-% p.a.) - Barrier: -%;102.47;102.7;0.22%;+
+NLBNPIT304Y1;EURO STOXX® Banks, S&P 500 - Coupon: -% (-% p.a.) - Barrier: -%;102.47;102.7;0.22%;+
 NLBNPIT304N4;Certificato NLBNPIT304N4 - Coupon: -% (-% p.a.) - Barrier: -%;95.19;95.56;0.39%;+
 NLBNPIT303I6;Certificato NLBNPIT303I6 - Coupon: -% (-% p.a.) - Barrier: -%;103.88;104.32;0.42%;+
 NLBNPIT303E5;Certificato NLBNPIT303E5 - Coupon: -% (-% p.a.) - Barrier: -%;103.65;103.72;0.07%;+
 NLBNPIT302W9;Certificato NLBNPIT302W9 - Coupon: -% (-% p.a.) - Barrier: -%;103.51;103.52;0.01%;+
-NLBNPIT304K0;Certificato NLBNPIT304K0 - Coupon: -% (-% p.a.) - Barrier: -%;98.53;98.52;-0.01%;-
+NLBNPIT304K0;ERG, Fincantieri, Snam, STMicroelectronics - Coupon: 1.31% (-% p.a.) - Barrier: 50% **;98.53;98.52;-0.01%;-
 NLBNPIT300C5;Certificato NLBNPIT300C5 - Coupon: -% (-% p.a.) - Barrier: -%;103.51;103.51;0.00%;+
 NLBNPIT30325;Certificato NLBNPIT30325 - Coupon: -% (-% p.a.) - Barrier: -%;100.22;100.46;0.24%;+
 NLBNPIT300H4;Stellantis - Coupon: 0.90% (10.80% p.a.) - Barrier: 60%;62.19;63.99;2.89%;+
@@ -59,13 +59,12 @@ NLBNPIT2T027;Nvidia | Palantir Technologies | Tesla - Coupon: 1.35% (16.20% p.a.
 NLBNPIT303D7;Certificato NLBNPIT303D7 - Coupon: -% (-% p.a.) - Barrier: -%;101.73;102;0.27%;+
 NLBNPIT305S0;Broadcom Intel Nvidia Oracle - Coupon: 1.89% (-% p.a.) - Barrier: 45%;93.51;92.83;-0.73%;-
 NLBNPIT30549;Certificato NLBNPIT30549 - Coupon: -% (-% p.a.) - Barrier: -%;94.02;94.17;0.16%;+
-NLBNPIT305N1;Certificato NLBNPIT305N1 - Coupon: -% (-% p.a.) - Barrier: -%;99.55;100.58;1.03%;+
+NLBNPIT305N1;Google, C3.ai, Meta Enjoy - Coupon: 1.5% (18% p.a.) - Barrier: 50%;99.55;100.58;1.03%;+
 NLBNPIT30333;Certificato NLBNPIT30333 - Coupon: -% (-% p.a.) - Barrier: -%;93.92;93.62;-0.32%;-
 NLBNPIT302Z2;Certificato NLBNPIT302Z2 - Coupon: -% (-% p.a.) - Barrier: -%;106.12;106.25;0.12%;+
-NLBNPIT305R2;Certificato NLBNPIT305R2 - Coupon: -% (-% p.a.) - Barrier: -%;99.42;99.53;0.11%;+
+NLBNPIT305R2;Burberry, Richemont, Kering, Moncler Enjoy - Coupon: 1% (-% p.a.) - Barrier: 50%;99.42;99.53;0.11%;+
 NLBNPIT2EPV5;Certificato NLBNPIT2EPV5 - Coupon: -% (-% p.a.) - Barrier: -%;95.37;99.29;4.11%;+
 NLBNPIT30309;Banca Monte dei Paschi di Siena | BBVA | CaixaBank | Société Générale - Coupon: 12.60% p.a. - Barrier: 50.51%;111.05;111.2;0.14%;+
 NLBNPIT303M8;Certificato NLBNPIT303M8 - Coupon: -% (-% p.a.) - Barrier: -%;104.1;104.32;0.21%;+
 NLBNPIT303F2;Certificato NLBNPIT303F2 - Coupon: -% (-% p.a.) - Barrier: -%;103.79;104.21;0.40%;+
 NLBNPIT303O4;Certificato NLBNPIT303O4 - Coupon: -% (-% p.a.) - Barrier: -%;94.39;95.04;0.69%;+
-NLBNPIT30341;Certificato NLBNPIT30341 - Coupon: -% (-% p.a.) - Barrier: -%;107.92;108.1;0.17%;+
