@@ -9,12 +9,12 @@ EPA:STM;STMicroelectronics N.V.;EPA;NL0000226223;Semiconductors;Technology
 BIT:STMMI;STMicroelectronics N.V.;BIT;NL0000226223;Semiconductors;Technology
 ETR:IFX;Infineon Technologies AG;XETRA (Frankfurt Stock Exchange);DE0006231004;Semiconductors;Technology
 ETR:CBK;Commerzbank AG;XETRA (Frankfurt Stock Exchange);DE000CBK1001;Banking;Financials
-NYSE:IONQ;IonQ Inc;NYSE American LLC;US46222L1089;Quantum Computing;Technology
+NYSE:IONQ;IonQ Inc;NYSE American LLC;US46222L1089;Quantum-Computing;Technology
 ETR:DBK;Deutsche Bank AG;Xetra;DE0005140008;Banks;Financials
 BIT:BMPS;Banca Monte dei Paschi di Siena S.p.A.;BIT;IT0005218752;Banks;Financials
 BIT:STLAM;Stellantis N.V.;BIT;NL00150001Q9;Auto Manufacturers;Consumer Cyclical
-NYSE:QBTS;D-Wave Quantum Inc.;NYSE;US26740W1099;Quantum Computing;Technology
-NASDAQ:RGTI;Rigetti Computing Inc.;NASDAQ;US76655K1034;Quantum Computing;Technology
+NYSE:QBTS;D-Wave Quantum Inc.;NYSE;US26740W1099;Quantum-Computing;Technology
+NASDAQ:RGTI;Rigetti Computing Inc.;NASDAQ;US76655K1034;Quantum-Computing;Technology
 BIT:BPE;BPER Banca S.p.A.;BIT;IT0000066123;Banking;Financials
 BIT:BAMI;Banco BPM S.p.A.;BIT;IT0005218380;Banking;Financials
 EPA:STMPA;STMicroelectronics NV;EPA;NL0000226223;Semiconductors;Information Technology

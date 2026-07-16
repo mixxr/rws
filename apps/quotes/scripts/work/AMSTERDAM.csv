@@ -1,5 +1,0 @@
-id;labels;parents
-AMSTERDAM;AMSTERDAM;
-Insurance-AMSTERDAM;Insurance;AMSTERDAM
-Financial Services-Insurance-AMSTERDAM;Financial Services;Insurance-AMSTERDAM
-AGN-Financial Services-Insurance-AMSTERDAM;AGN;Financial Services-Insurance-AMSTERDAM

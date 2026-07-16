@@ -1,6 +1,9 @@
 #!/bin/bash
 
-input="$1"
+input="${1:-stock_index_adjusted.csv}"
+output="${2:-sunburst_sectors.csv}"
+
+echo "Reading $input... > $output"
 
 declare -A exchanges
 declare -A industries
@@ -19,6 +22,8 @@ sanitize() {
     s="${s//,/}"   # rimuove virgole
     s="${s//;/}"   # rimuove punti e virgola
     s="${s//:/}"   # rimuove due punti
+    # s="${s//-/ }"  # rimuove -
+    s="$(echo "$s" | tr -s ' ')"   # squeeze repeated spaces
     echo "$s"
 }
 
@@ -42,16 +47,16 @@ sanitize() {
         exchanges["$ex_norm"]=1
 
         # Livello 2: industry-exchange
-        ind_id="${industry_clean}-${ex_norm}"
+        ind_id="${industry_clean}__${ex_norm}"
         industries["$ind_id"]="$industry_clean;$ex_norm"
 
         # Livello 3: sector-industry-exchange
-        sec_parent="${industry_clean}-${ex_norm}"
-        sec_id="${sector_clean}-${sec_parent}"
+        sec_parent="${industry_clean}__${ex_norm}"
+        sec_id="${sector_clean}__${sec_parent}"
         sectors["$sec_id"]="$sector_clean;$sec_parent"
 
         # ⭐ Livello 4: ticker-sector-industry-exchange
-        tick_id="${ticker}-${sec_id}"
+        tick_id="${ticker}__${sec_id}"
         tickers["$tick_id"]="$ticker;$sec_id"
 
     done
@@ -82,4 +87,4 @@ sanitize() {
         IFS=";" read -r label parent <<< "${tickers[$tk]}"
         echo "$tk;$label;$parent"
     done
-}
+} > "$output"

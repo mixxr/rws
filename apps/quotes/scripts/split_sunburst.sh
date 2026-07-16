@@ -1,9 +1,9 @@
 #!/bin/bash
 
-input="$1"
-OUTPUT_FOLDER="${2:-./work}"
+input="${1:-sunburst_sectors.csv}"
+OUTPUT_FOLDER="${2:-./sectors}"
 
-echo "Reading $input..."
+echo "Reading $input... > $OUTPUT_FOLDER/"
 
 # Trova tutte le radici (id==labels e parents vuoto)
 roots=()
@@ -12,6 +12,8 @@ while IFS=";" read -r id label parent; do
 done < "$input"
 
 echo "Found roots: ${roots[*]}"
+
+mkdir -p "$OUTPUT_FOLDER"
 
 # Per ogni root crea un CSV
 for root in "${roots[@]}"; do

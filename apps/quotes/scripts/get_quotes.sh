@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Default values
-INPUT="STOCK_INDEX_adjusted.csv"
+INPUT="stock_index_adjusted.csv"
 BATCH_SIZE=5
 OUTPUT_FOLDER="./quotes"
 
@@ -19,13 +19,13 @@ for arg in "$@"; do
             ;;
         *)
             echo "Unknown parameter: $arg"
-            echo "Usage: $0 --input=STOCK_INDEX_adjusted.csv --batch-size=5 --output-folder=quotes/"
+            echo "Usage: $0 --input=stock_index_adjusted.csv --batch-size=5 --output-folder=quotes/"
             exit 1
             ;;
     esac
 done
 
-echo "Usage: $0 --input=STOCK_INDEX_adjusted.csv --batch-size=5 --output-folder=quotes/"
+echo "Usage: $0 --input=stock_index_adjusted.csv --batch-size=5 --output-folder=quotes/"
 echo "Reading stock symbols from $INPUT..."
 ERRLOG="${OUTPUT_FOLDER}/quotes.err"
 

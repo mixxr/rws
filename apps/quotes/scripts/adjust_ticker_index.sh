@@ -2,7 +2,7 @@
 
 STOCK_INDEX="$1"
 EXCHANGE_FILE="$2"
-OUTPUT="${3:-STOCK_INDEX_adjusted.csv}"
+OUTPUT="${3:-stock_index_adjusted.csv}"
 
 if [[ -z "$STOCK_INDEX" || -z "$EXCHANGE_FILE" ]]; then
     echo "Usage: $0 STOCK_INDEX EXCHANGE_FILE [OUTPUT_FILE]"

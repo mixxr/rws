@@ -5,3 +5,7 @@
 datetime=$(TZ="Europe/Rome" date +"%Y-%m-%dT%H-%M-%S")
 BUCKET_URI="gs://rws-data"
 # gcloud storage cp --recursive ./quotes/* $BUCKET_URI/stocks/quotes/$datetime/
+
+# sunburst flow
+ ./create_sunburst_sectors.sh 
+ ./split_sunburst.sh
