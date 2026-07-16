@@ -22,7 +22,7 @@ for root in "${roots[@]}"; do
     echo "id${DELIM}labels${DELIM}parents" > "$OUTPUT_FOLDER/$outfile"
 
     # Aggiungi tutte le righe che appartengono a questo root
-    while IFS=";" read -r id label parent; do
+    while IFS="${DELIM}" read -r id label parent; do
         # root: id==label and no parent
         if [[ "$id" == "$label" && -z "$parent" && "$id" == "$root" ]]; then
             echo "$id${DELIM}$label${DELIM}$parent" >> "$OUTPUT_FOLDER/$outfile"
