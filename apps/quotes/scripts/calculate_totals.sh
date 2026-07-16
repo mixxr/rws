@@ -92,6 +92,8 @@ done
 echo "id,labels,parents,values" > $INPUT.csv
 while IFS=',' read -r id label parent; do
     [[ "$id" == "id" ]] && continue
-    echo "$id,$label,$parent,""${root_total[$id]}""${sector_total[$id]}""${industry_total[$id]}""${stock_total[$id]}" >> $INPUT.csv
+    value="${root_total[$id]}""${sector_total[$id]}""${industry_total[$id]}""${stock_total[$id]}"
+    [[ "$value" == "" ]] && continue
+    echo "$id,$label,$parent,$value" >> $INPUT.csv
 
 done < "$INPUT"

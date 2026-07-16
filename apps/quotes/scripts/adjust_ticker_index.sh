@@ -3,6 +3,7 @@
 STOCK_INDEX="$1"
 EXCHANGE_FILE="$2"
 OUTPUT="${3:-stock_index_adjusted.csv}"
+DELIM=";"
 
 if [[ -z "$STOCK_INDEX" || -z "$EXCHANGE_FILE" ]]; then
     echo "Usage: $0 STOCK_INDEX EXCHANGE_FILE [OUTPUT_FILE]"
@@ -20,6 +21,7 @@ done < "$EXCHANGE_FILE"
 {
     # Read and write header
     read -r header
+    header="${header//;/$DELIM}"
     echo "$header" > "$OUTPUT"
 
     while IFS=';' read -r ticker name exch isin industry sector; do
@@ -59,7 +61,7 @@ done < "$EXCHANGE_FILE"
             ticker="^${ticker}"
         fi
         
-        echo "${ticker};${name};${exch};${isin};${industry};${sector}" >> "$OUTPUT"
+        echo "${ticker}${DELIM}${name}${DELIM}${exch}${DELIM}${isin}${DELIM}${industry}${DELIM}${sector}" >> "$OUTPUT"
 
     done
 

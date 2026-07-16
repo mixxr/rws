@@ -1,328 +1,328 @@
-id;labels;parents
-EURONEXT;EURONEXT;
-MOT;MOT;
-AMSTERDAM;AMSTERDAM;
-LSE;LSE;
-XETRA;XETRA;
-BORSA;BORSA;
-BME;BME;
-SOLACTIVE;SOLACTIVE;
-VIENNA;VIENNA;
-STOXX;STOXX;
-NASDAQ;NASDAQ;
-OSLO;OSLO;
-BIT;BIT;
-SIX;SIX;
-NYSE;NYSE;
-EPA;EPA;
-Semiconductors-EPA;Semiconductors;EPA
-Banks-Regional-VIENNA;Banks-Regional;VIENNA
-Automotive-NASDAQ;Automotive;NASDAQ
-Automotive-NYSE;Automotive;NYSE
-Banks-XETRA;Banks;XETRA
-Integrated Oil and Gas-EPA;Integrated Oil and Gas;EPA
-Government Bonds-BIT;Government Bonds;BIT
-Multi-Utilities-EPA;Multi-Utilities;EPA
-Renewable Energy-BIT;Renewable Energy;BIT
-Asset Management-BIT;Asset Management;BIT
-Internet and Media-NASDAQ;Internet and Media;NASDAQ
-Sovereign Bonds-EURONEXT;Sovereign Bonds;EURONEXT
-Banking-BIT;Banking;BIT
-Software-EPA;Software;EPA
-Banks-Diversified-BME;Banks-Diversified;BME
-Social Media-NASDAQ;Social Media;NASDAQ
-Software-NYSE;Software;NYSE
-Technology Hardware Storage and Peripherals-NYSE;Technology Hardware Storage and Peripherals;NYSE
-Oil and Gas Integrated-NYSE;Oil and Gas Integrated;NYSE
-ETF-NASDAQ;ETF;NASDAQ
-E-Commerce and Cloud-NASDAQ;E-Commerce and Cloud;NASDAQ
-Electric Utilities-BIT;Electric Utilities;BIT
-Computer Hardware-NASDAQ;Computer Hardware;NASDAQ
-Semiconductor Equipment-NASDAQ;Semiconductor Equipment;NASDAQ
-Banks-BORSA;Banks;BORSA
-Pharmaceuticals-XETRA;Pharmaceuticals;XETRA
-Commodities-NYSE;Commodities;NYSE
-Banking-XETRA;Banking;XETRA
-Energy Equipment and Services-XETRA;Energy Equipment and Services;XETRA
-Auto Manufacturers-BIT;Auto Manufacturers;BIT
-Integrated Oil and Gas-LSE;Integrated Oil and Gas;LSE
-Automotive-XETRA;Automotive;XETRA
-Index-NYSE;Index;NYSE
-ETF-NYSE;ETF;NYSE
-Insurance-AMSTERDAM;Insurance;AMSTERDAM
-Food and Beverage-XETRA;Food and Beverage;XETRA
-Banks-BIT;Banks;BIT
-Multi-line Insurance-BIT;Multi-line Insurance;BIT
-Aerospace and Defense-BIT;Aerospace and Defense;BIT
-Environmental Services-EPA;Environmental Services;EPA
-Electrical Equipment-BIT;Electrical Equipment;BIT
-Software-NASDAQ;Software;NASDAQ
-Indices-SOLACTIVE;Indices;SOLACTIVE
-Banking-STOXX;Banking;STOXX
-Oil and Gas Exploration and Production-NYSE;Oil and Gas Exploration and Production;NYSE
-Restaurants-XETRA;Restaurants;XETRA
-Apparel Accessories and Luxury Goods-SIX;Apparel Accessories and Luxury Goods;SIX
-Travel and Leisure-NYSE;Travel and Leisure;NYSE
-Oil and Gas-BIT;Oil and Gas;BIT
-Semiconductors-NASDAQ;Semiconductors;NASDAQ
-Shipbuilding-BIT;Shipbuilding;BIT
-Insurance-STOXX;Insurance;STOXX
-Banking-EPA;Banking;EPA
-Household and Personal Products-NYSE;Household and Personal Products;NYSE
-Pharmaceuticals-NYSE;Pharmaceuticals;NYSE
-Oil and Gas Integrated-EPA;Oil and Gas Integrated;EPA
-Banking-LSE;Banking;LSE
-Telecommunications-NASDAQ;Telecommunications;NASDAQ
-Sovereign Debt-MOT;Sovereign Debt;MOT
-Financial Services-BIT;Financial Services;BIT
-Internet Retail-XETRA;Internet Retail;XETRA
-Quantum Computing-NYSE;Quantum Computing;NYSE
-Electric Utilities-XETRA;Electric Utilities;XETRA
-Space and Satellite Technology-NASDAQ;Space and Satellite Technology;NASDAQ
-Technology-STOXX;Technology;STOXX
-Banks-Diversified-EPA;Banks-Diversified;EPA
-Insurance-XETRA;Insurance;XETRA
-Integrated Oil and Gas-BME;Integrated Oil and Gas;BME
-Banks-BME;Banks;BME
-Insurance-EPA;Insurance;EPA
-Aerospace and Defense-NASDAQ;Aerospace and Defense;NASDAQ
-Gold Mining-NYSE;Gold Mining;NYSE
-Semiconductors-XETRA;Semiconductors;XETRA
-Electric Utilities-BME;Electric Utilities;BME
-Luxury Goods-LSE;Luxury Goods;LSE
-Utilities-STOXX;Utilities;STOXX
-Emerging Markets Equity-NYSE;Emerging Markets Equity;NYSE
-Insurance-BIT;Insurance;BIT
-Consumer Electronics-NASDAQ;Consumer Electronics;NASDAQ
-Sovereign Debt-EURONEXT;Sovereign Debt;EURONEXT
-Semiconductors-BIT;Semiconductors;BIT
-Diversified Financial Services-BIT;Diversified Financial Services;BIT
-Biotechnology-NASDAQ;Biotechnology;NASDAQ
-Space and Satellite Technology-NYSE;Space and Satellite Technology;NYSE
-Beverages-BIT;Beverages;BIT
-Luxury Goods-EPA;Luxury Goods;EPA
-Oil and Gas-OSLO;Oil and Gas;OSLO
-Electronic Equipment Instruments and Components-NYSE;Electronic Equipment Instruments and Components;NYSE
-Gas Utilities-BIT;Gas Utilities;BIT
-E-commerce-NASDAQ;E-commerce;NASDAQ
-Quantum Computing-NASDAQ;Quantum Computing;NASDAQ
-Insurance-SIX;Insurance;SIX
-Luxury Goods-BIT;Luxury Goods;BIT
-Energy-Oil and Gas Integrated-NYSE;Energy;Oil and Gas Integrated-NYSE
-Technology-Quantum Computing-NYSE;Technology;Quantum Computing-NYSE
-Utilities-Electric Utilities-BME;Utilities;Electric Utilities-BME
-Utilities-Electric Utilities-XETRA;Utilities;Electric Utilities-XETRA
-Automotive-Automotive-NYSE;Automotive;Automotive-NYSE
-Consumer Cyclical-Restaurants-XETRA;Consumer Cyclical;Restaurants-XETRA
-Automotive-Automotive-XETRA;Automotive;Automotive-XETRA
-Financials-Banking-BIT;Financials;Banking-BIT
-Energy-Oil and Gas-OSLO;Energy;Oil and Gas-OSLO
-Financials-Insurance-SIX;Financials;Insurance-SIX
-Energy-Integrated Oil and Gas-EPA;Energy;Integrated Oil and Gas-EPA
-Financial Services-Banks-Regional-VIENNA;Financial Services;Banks-Regional-VIENNA
-Basic Materials-Gold Mining-NYSE;Basic Materials;Gold Mining-NYSE
-Consumer Cyclical-Luxury Goods-BIT;Consumer Cyclical;Luxury Goods-BIT
-Consumer Discretionary-Apparel Accessories and Luxury Goods-SIX;Consumer Discretionary;Apparel Accessories and Luxury Goods-SIX
-Communication Services-Telecommunications-NASDAQ;Communication Services;Telecommunications-NASDAQ
-Energy-Integrated Oil and Gas-LSE;Energy;Integrated Oil and Gas-LSE
-Financial-ETF-NASDAQ;Financial;ETF-NASDAQ
-Financials-Banking-STOXX;Financials;Banking-STOXX
-Energy-Gas Utilities-BIT;Energy;Gas Utilities-BIT
-Financial-Banking-EPA;Financial;Banking-EPA
-Index-Index-NYSE;Index;Index-NYSE
-Government-Sovereign Debt-EURONEXT;Government;Sovereign Debt-EURONEXT
-Industrials-Shipbuilding-BIT;Industrials;Shipbuilding-BIT
-Consumer Discretionary-E-commerce-NASDAQ;Consumer Discretionary;E-commerce-NASDAQ
-Financials-Banks-XETRA;Financials;Banks-XETRA
-Communication Services-Space and Satellite Technology-NASDAQ;Communication Services;Space and Satellite Technology-NASDAQ
-Healthcare-Biotechnology-NASDAQ;Healthcare;Biotechnology-NASDAQ
-Technology-Technology-STOXX;Technology;Technology-STOXX
-Financial-ETF-NYSE;Financial;ETF-NYSE
-Consumer Cyclical-Travel and Leisure-NYSE;Consumer Cyclical;Travel and Leisure-NYSE
-Consumer Goods-Beverages-BIT;Consumer Goods;Beverages-BIT
-Consumer Cyclical-Internet Retail-XETRA;Consumer Cyclical;Internet Retail-XETRA
-Energy-Oil and Gas Exploration and Production-NYSE;Energy;Oil and Gas Exploration and Production-NYSE
-Utilities-Renewable Energy-BIT;Utilities;Renewable Energy-BIT
-Technology-Space and Satellite Technology-NYSE;Technology;Space and Satellite Technology-NYSE
-Utilities-Environmental Services-EPA;Utilities;Environmental Services-EPA
-ETF-Emerging Markets Equity-NYSE;ETF;Emerging Markets Equity-NYSE
-Consumer Discretionary-E-Commerce and Cloud-NASDAQ;Consumer Discretionary;E-Commerce and Cloud-NASDAQ
-Industrials-Electrical Equipment-BIT;Industrials;Electrical Equipment-BIT
-Financial Services-Insurance-AMSTERDAM;Financial Services;Insurance-AMSTERDAM
-Energy-Integrated Oil and Gas-BME;Energy;Integrated Oil and Gas-BME
-Consumer Defensive-Household and Personal Products-NYSE;Consumer Defensive;Household and Personal Products-NYSE
-Energy-Oil and Gas-BIT;Energy;Oil and Gas-BIT
-Utilities-Multi-Utilities-EPA;Utilities;Multi-Utilities-EPA
-Consumer Cyclical-Auto Manufacturers-BIT;Consumer Cyclical;Auto Manufacturers-BIT
-Financial Services-Insurance-XETRA;Financial Services;Insurance-XETRA
-Information Technology-Software-NYSE;Information Technology;Software-NYSE
-Information Technology-Technology Hardware Storage and Peripherals-NYSE;Information Technology;Technology Hardware Storage and Peripherals-NYSE
-Technology-Consumer Electronics-NASDAQ;Technology;Consumer Electronics-NASDAQ
-Utilities-Utilities-STOXX;Utilities;Utilities-STOXX
-Financial Services-Banks-Diversified-BME;Financial Services;Banks-Diversified-BME
-Energy-Oil and Gas Integrated-EPA;Energy;Oil and Gas Integrated-EPA
-Financials-Diversified Financial Services-BIT;Financials;Diversified Financial Services-BIT
-Financials-Banks-BIT;Financials;Banks-BIT
-Financial-Insurance-EPA;Financial;Insurance-EPA
-Financials-Insurance-EPA;Financials;Insurance-EPA
-Industrials-Energy Equipment and Services-XETRA;Industrials;Energy Equipment and Services-XETRA
-Information Technology-Semiconductors-NASDAQ;Information Technology;Semiconductors-NASDAQ
-Technology-Semiconductors-BIT;Technology;Semiconductors-BIT
-Financials-Banks-BORSA;Financials;Banks-BORSA
-Information Technology-Semiconductors-EPA;Information Technology;Semiconductors-EPA
-Utilities-Electric Utilities-BIT;Utilities;Electric Utilities-BIT
-Financials-Financial Services-BIT;Financials;Financial Services-BIT
-Government-Government Bonds-BIT;Government;Government Bonds-BIT
-Financials-Insurance-STOXX;Financials;Insurance-STOXX
-Industrials-Space and Satellite Technology-NASDAQ;Industrials;Space and Satellite Technology-NASDAQ
-Industrials-Aerospace and Defense-NASDAQ;Industrials;Aerospace and Defense-NASDAQ
-Financial-Banking-LSE;Financial;Banking-LSE
-Industrials-Aerospace and Defense-BIT;Industrials;Aerospace and Defense-BIT
-Consumer Defensive-Food and Beverage-XETRA;Consumer Defensive;Food and Beverage-XETRA
-Financial-Indices-SOLACTIVE;Financial;Indices-SOLACTIVE
-Healthcare-Pharmaceuticals-XETRA;Healthcare;Pharmaceuticals-XETRA
-Government-Sovereign Bonds-EURONEXT;Government;Sovereign Bonds-EURONEXT
-Technology-Semiconductors-NASDAQ;Technology;Semiconductors-NASDAQ
-Financial-Insurance-SIX;Financial;Insurance-SIX
-Technology-Software-NYSE;Technology;Software-NYSE
-Financials-Multi-line Insurance-BIT;Financials;Multi-line Insurance-BIT
-Financial Services-Banks-BIT;Financial Services;Banks-BIT
-Financial-Insurance-BIT;Financial;Insurance-BIT
-Communication Services-Social Media-NASDAQ;Communication Services;Social Media-NASDAQ
-Financial-Commodities-NYSE;Financial;Commodities-NYSE
-Government-Sovereign Debt-MOT;Government;Sovereign Debt-MOT
-Healthcare-Pharmaceuticals-NYSE;Healthcare;Pharmaceuticals-NYSE
-Technology-Software-EPA;Technology;Software-EPA
-Consumer Cyclical-Luxury Goods-LSE;Consumer Cyclical;Luxury Goods-LSE
-Automotive-Automotive-NASDAQ;Automotive;Automotive-NASDAQ
-Information Technology-Electronic Equipment Instruments and Components-NYSE;Information Technology;Electronic Equipment Instruments and Components-NYSE
-Financials-Banks-BME;Financials;Banks-BME
-Technology-Semiconductors-EPA;Technology;Semiconductors-EPA
-Financial Services-Banks-Diversified-EPA;Financial Services;Banks-Diversified-EPA
-Financials-Banking-XETRA;Financials;Banking-XETRA
-Consumer Cyclical-Luxury Goods-EPA;Consumer Cyclical;Luxury Goods-EPA
-Technology-Semiconductors-XETRA;Technology;Semiconductors-XETRA
-Communication Services-Internet and Media-NASDAQ;Communication Services;Internet and Media-NASDAQ
-Technology-Quantum Computing-NASDAQ;Technology;Quantum Computing-NASDAQ
-Technology-Computer Hardware-NASDAQ;Technology;Computer Hardware-NASDAQ
-Technology-Semiconductor Equipment-NASDAQ;Technology;Semiconductor Equipment-NASDAQ
-Information Technology-Software-NASDAQ;Information Technology;Software-NASDAQ
-Financials-Asset Management-BIT;Financials;Asset Management-BIT
-EQNR-Energy-Oil and Gas-OSLO;EQNR;Energy-Oil and Gas-OSLO
-SXIE-Financials-Insurance-STOXX;SXIE;Financials-Insurance-STOXX
-AAPL-Technology-Consumer Electronics-NASDAQ;AAPL;Technology-Consumer Electronics-NASDAQ
-BMPS.MI-Financials-Banks-BIT;BMPS.MI;Financials-Banks-BIT
-IT0005441883.MI-Government-Government Bonds-BIT;IT0005441883.MI;Government-Government Bonds-BIT
-CBK.DE-Financials-Banks-XETRA;CBK.DE;Financials-Banks-XETRA
-FBK.MI-Financials-Banks-BIT;FBK.MI;Financials-Banks-BIT
-ENR.DE-Industrials-Energy Equipment and Services-XETRA;ENR.DE;Industrials-Energy Equipment and Services-XETRA
-GLD-Financial-Commodities-NYSE;GLD;Financial-Commodities-NYSE
-AZM.MI-Financials-Asset Management-BIT;AZM.MI;Financials-Asset Management-BIT
-EOAN.DE-Utilities-Electric Utilities-XETRA;EOAN.DE;Utilities-Electric Utilities-XETRA
-NEXI.MI-Financials-Financial Services-BIT;NEXI.MI;Financials-Financial Services-BIT
-CSPA.PA-Financials-Insurance-EPA;CSPA.PA;Financials-Insurance-EPA
-VIEPA.PA-Utilities-Environmental Services-EPA;VIEPA.PA;Utilities-Environmental Services-EPA
-MIL.MI-Financial Services-Banks-BIT;MIL.MI;Financial Services-Banks-BIT
-EWZ-ETF-Emerging Markets Equity-NYSE;EWZ;ETF-Emerging Markets Equity-NYSE
-^SPX-Index-Index-NYSE;^SPX;Index-Index-NYSE
-SRG.MI-Energy-Gas Utilities-BIT;SRG.MI;Energy-Gas Utilities-BIT
-BBVA.MC-Financials-Banks-BME;BBVA.MC;Financials-Banks-BME
-PL-Technology-Space and Satellite Technology-NYSE;PL;Technology-Space and Satellite Technology-NYSE
-ENEL.MI-Utilities-Electric Utilities-BIT;ENEL.MI;Utilities-Electric Utilities-BIT
-CPR.MI-Consumer Goods-Beverages-BIT;CPR.MI;Consumer Goods-Beverages-BIT
-Euronext-Government-Sovereign Bonds-EURONEXT;Euronext;Government-Sovereign Bonds-EURONEXT
-ELE.MC-Utilities-Electric Utilities-BME;ELE.MC;Utilities-Electric Utilities-BME
-ALV-Financial Services-Insurance-XETRA;ALV;Financial Services-Insurance-XETRA
-TTEPA.PA-Energy-Integrated Oil and Gas-EPA;TTEPA.PA;Energy-Integrated Oil and Gas-EPA
-STMPA.PA-Technology-Semiconductors-EPA;STMPA.PA;Technology-Semiconductors-EPA
-G.MI-Financials-Multi-line Insurance-BIT;G.MI;Financials-Multi-line Insurance-BIT
-AU-Basic Materials-Gold Mining-NYSE;AU;Basic Materials-Gold Mining-NYSE
-BARC-Financial-Banking-LSE;BARC;Financial-Banking-LSE
-SCRPA.PA-Financial-Insurance-EPA;SCRPA.PA;Financial-Insurance-EPA
-ORCL-Information Technology-Software-NYSE;ORCL;Information Technology-Software-NYSE
-AI-Information Technology-Software-NYSE;AI;Information Technology-Software-NYSE
-LLY-Healthcare-Pharmaceuticals-NYSE;LLY;Healthcare-Pharmaceuticals-NYSE
-SLV-Financial-Commodities-NYSE;SLV;Financial-Commodities-NYSE
-SATS-Communication Services-Space and Satellite Technology-NASDAQ;SATS;Communication Services-Space and Satellite Technology-NASDAQ
-META-Communication Services-Social Media-NASDAQ;META;Communication Services-Social Media-NASDAQ
-BPE.MI-Financials-Banking-BIT;BPE.MI;Financials-Banking-BIT
-TSLA-Automotive-Automotive-NASDAQ;TSLA;Automotive-Automotive-NASDAQ
-FTNT-Information Technology-Software-NASDAQ;FTNT;Information Technology-Software-NASDAQ
-DSYPA.PA-Technology-Software-EPA;DSYPA.PA;Technology-Software-EPA
-SX6E-Utilities-Utilities-STOXX;SX6E;Utilities-Utilities-STOXX
-BAYN-Healthcare-Pharmaceuticals-XETRA;BAYN;Healthcare-Pharmaceuticals-XETRA
-COHR-Information Technology-Electronic Equipment Instruments and Components-NYSE;COHR;Information Technology-Electronic Equipment Instruments and Components-NYSE
-NVDA-Information Technology-Semiconductors-NASDAQ;NVDA;Information Technology-Semiconductors-NASDAQ
-FCT.MI-Industrials-Shipbuilding-BIT;FCT.MI;Industrials-Shipbuilding-BIT
-IONQ-Technology-Quantum Computing-NYSE;IONQ;Technology-Quantum Computing-NYSE
-NYSE-Automotive-Automotive-NYSE;NYSE;Automotive-Automotive-NYSE
-BNPPA.PA-Financial Services-Banks-Diversified-EPA;BNPPA.PA;Financial Services-Banks-Diversified-EPA
-RMSPA.PA-Consumer Cyclical-Luxury Goods-EPA;RMSPA.PA;Consumer Cyclical-Luxury Goods-EPA
-SNDK-Technology-Semiconductors-NASDAQ;SNDK;Technology-Semiconductors-NASDAQ
-AMZN-Consumer Discretionary-E-Commerce and Cloud-NASDAQ;AMZN;Consumer Discretionary-E-Commerce and Cloud-NASDAQ
-PRY.MI-Industrials-Electrical Equipment-BIT;PRY.MI;Industrials-Electrical Equipment-BIT
-REP.MC-Energy-Integrated Oil and Gas-BME;REP.MC;Energy-Integrated Oil and Gas-BME
-KLAC-Technology-Semiconductors-NASDAQ;KLAC;Technology-Semiconductors-NASDAQ
-ZAL.DE-Consumer Cyclical-Internet Retail-XETRA;ZAL.DE;Consumer Cyclical-Internet Retail-XETRA
-^SX7E-Financials-Banking-STOXX;^SX7E;Financials-Banking-STOXX
-KERPA.PA-Consumer Cyclical-Luxury Goods-EPA;KERPA.PA;Consumer Cyclical-Luxury Goods-EPA
-ASTS-Communication Services-Telecommunications-NASDAQ;ASTS;Communication Services-Telecommunications-NASDAQ
-RBI-Financial Services-Banks-Regional-VIENNA;RBI;Financial Services-Banks-Regional-VIENNA
-SREN-Financial-Insurance-SIX;SREN;Financial-Insurance-SIX
-IFX.DE-Technology-Semiconductors-XETRA;IFX.DE;Technology-Semiconductors-XETRA
-PST.MI-Financials-Diversified Financial Services-BIT;PST.MI;Financials-Diversified Financial Services-BIT
-MRK-Healthcare-Pharmaceuticals-NYSE;MRK;Healthcare-Pharmaceuticals-NYSE
-SX8E-Technology-Technology-STOXX;SX8E;Technology-Technology-STOXX
-PATH-Technology-Software-NYSE;PATH;Technology-Software-NYSE
-CABK.MC-Financial Services-Banks-Diversified-BME;CABK.MC;Financial Services-Banks-Diversified-BME
-MBG.DE-Automotive-Automotive-XETRA;MBG.DE;Automotive-Automotive-XETRA
-RGTI-Technology-Quantum Computing-NASDAQ;RGTI;Technology-Quantum Computing-NASDAQ
-RCL-Consumer Cyclical-Travel and Leisure-NYSE;RCL;Consumer Cyclical-Travel and Leisure-NYSE
-ZURN-Financials-Insurance-SIX;ZURN;Financials-Insurance-SIX
-BP-Energy-Integrated Oil and Gas-LSE;BP;Energy-Integrated Oil and Gas-LSE
-UCG.MI-Financial Services-Banks-BIT;UCG.MI;Financial Services-Banks-BIT
-STMMI.MI-Technology-Semiconductors-BIT;STMMI.MI;Technology-Semiconductors-BIT
-CL-Consumer Defensive-Household and Personal Products-NYSE;CL;Consumer Defensive-Household and Personal Products-NYSE
-FR0014001NN8-Government-Sovereign Debt-EURONEXT;FR0014001NN8;Government-Sovereign Debt-EURONEXT
-A2A.MI-Utilities-Electric Utilities-BIT;A2A.MI;Utilities-Electric Utilities-BIT
-DELL-Information Technology-Technology Hardware Storage and Peripherals-NYSE;DELL;Information Technology-Technology Hardware Storage and Peripherals-NYSE
-STLAM.MI-Consumer Cyclical-Auto Manufacturers-BIT;STLAM.MI;Consumer Cyclical-Auto Manufacturers-BIT
-LUNR-Industrials-Space and Satellite Technology-NASDAQ;LUNR;Industrials-Space and Satellite Technology-NASDAQ
-NASDAQ-Information Technology-Software-NASDAQ;NASDAQ;Information Technology-Software-NASDAQ
-CFR-Consumer Discretionary-Apparel Accessories and Luxury Goods-SIX;CFR;Consumer Discretionary-Apparel Accessories and Luxury Goods-SIX
-^SOITA10Y-Financial-Indices-SOLACTIVE;^SOITA10Y;Financial-Indices-SOLACTIVE
-DHER.DE-Consumer Cyclical-Restaurants-XETRA;DHER.DE;Consumer Cyclical-Restaurants-XETRA
-ENGIPA.PA-Utilities-Multi-Utilities-EPA;ENGIPA.PA;Utilities-Multi-Utilities-EPA
-UNI.MI-Financial-Insurance-BIT;UNI.MI;Financial-Insurance-BIT
-GOOGL-Communication Services-Internet and Media-NASDAQ;GOOGL;Communication Services-Internet and Media-NASDAQ
-MOT-Government-Sovereign Debt-MOT;MOT;Government-Sovereign Debt-MOT
-EWY-Financial-ETF-NYSE;EWY;Financial-ETF-NYSE
-MCHI-Financial-ETF-NASDAQ;MCHI;Financial-ETF-NASDAQ
-LDO.MI-Industrials-Aerospace and Defense-BIT;LDO.MI;Industrials-Aerospace and Defense-BIT
-DBK.DE-Financials-Banks-XETRA;DBK.DE;Financials-Banks-XETRA
-ENI.MI-Energy-Oil and Gas-BIT;ENI.MI;Energy-Oil and Gas-BIT
-TTE.PA-Energy-Oil and Gas Integrated-EPA;TTE.PA;Energy-Oil and Gas Integrated-EPA
-RKLB-Industrials-Aerospace and Defense-NASDAQ;RKLB;Industrials-Aerospace and Defense-NASDAQ
-BRBY-Consumer Cyclical-Luxury Goods-LSE;BRBY;Consumer Cyclical-Luxury Goods-LSE
-PFE-Healthcare-Pharmaceuticals-NYSE;PFE;Healthcare-Pharmaceuticals-NYSE
-ISP.MI-Financials-Banks-BORSA;ISP.MI;Financials-Banks-BORSA
-SPCX-Industrials-Aerospace and Defense-NASDAQ;SPCX;Industrials-Aerospace and Defense-NASDAQ
-MSFT-Information Technology-Software-NASDAQ;MSFT;Information Technology-Software-NASDAQ
-STMPAPA.PA-Information Technology-Semiconductors-EPA;STMPAPA.PA;Information Technology-Semiconductors-EPA
-HFG.DE-Consumer Defensive-Food and Beverage-XETRA;HFG.DE;Consumer Defensive-Food and Beverage-XETRA
-RACE.MI-Consumer Cyclical-Auto Manufacturers-BIT;RACE.MI;Consumer Cyclical-Auto Manufacturers-BIT
-CBK.DE-Financials-Banking-XETRA;CBK.DE;Financials-Banking-XETRA
-CVX-Energy-Oil and Gas Integrated-NYSE;CVX;Energy-Oil and Gas Integrated-NYSE
-OXY-Energy-Oil and Gas Exploration and Production-NYSE;OXY;Energy-Oil and Gas Exploration and Production-NYSE
-QBTS-Technology-Quantum Computing-NYSE;QBTS;Technology-Quantum Computing-NYSE
-MONC.MI-Consumer Cyclical-Luxury Goods-BIT;MONC.MI;Consumer Cyclical-Luxury Goods-BIT
-NASDAQ-Consumer Discretionary-E-commerce-NASDAQ;NASDAQ;Consumer Discretionary-E-commerce-NASDAQ
-BAMI.MI-Financials-Banking-BIT;BAMI.MI;Financials-Banking-BIT
-GLEPA.PA-Financial-Banking-EPA;GLEPA.PA;Financial-Banking-EPA
-BGN.MI-Financials-Banking-BIT;BGN.MI;Financials-Banking-BIT
-AGN-Financial Services-Insurance-AMSTERDAM;AGN;Financial Services-Insurance-AMSTERDAM
-MRNA-Healthcare-Biotechnology-NASDAQ;MRNA;Healthcare-Biotechnology-NASDAQ
-ERG.MI-Utilities-Renewable Energy-BIT;ERG.MI;Utilities-Renewable Energy-BIT
-ASML-Technology-Semiconductor Equipment-NASDAQ;ASML;Technology-Semiconductor Equipment-NASDAQ
-^STOXX-Financials-Banking-STOXX;^STOXX;Financials-Banking-STOXX
-SMCI-Technology-Computer Hardware-NASDAQ;SMCI;Technology-Computer Hardware-NASDAQ
+id,labels,parents
+EURONEXT,EURONEXT,
+MOT,MOT,
+AMSTERDAM,AMSTERDAM,
+LSE,LSE,
+XETRA,XETRA,
+BORSA,BORSA,
+BME,BME,
+SOLACTIVE,SOLACTIVE,
+VIENNA,VIENNA,
+STOXX,STOXX,
+NASDAQ,NASDAQ,
+OSLO,OSLO,
+BIT,BIT,
+SIX,SIX,
+NYSE,NYSE,
+EPA,EPA,
+Space and Satellite Technology|NASDAQ,Space and Satellite Technology,NASDAQ
+Space and Satellite Technology|NYSE,Space and Satellite Technology,NYSE
+Banking|BIT,Banking,BIT
+Social Media|NASDAQ,Social Media,NASDAQ
+Telecommunications|NASDAQ,Telecommunications,NASDAQ
+Sovereign Bonds|EURONEXT,Sovereign Bonds,EURONEXT
+Integrated Oil and Gas|BME,Integrated Oil and Gas,BME
+Oil and Gas Integrated|EPA,Oil and Gas Integrated,EPA
+Banks|BME,Banks,BME
+Luxury Goods|BIT,Luxury Goods,BIT
+Insurance|BIT,Insurance,BIT
+Electric Utilities|BIT,Electric Utilities,BIT
+Household and Personal Products|NYSE,Household and Personal Products,NYSE
+Software|EPA,Software,EPA
+Semiconductors|EPA,Semiconductors,EPA
+Electrical Equipment|BIT,Electrical Equipment,BIT
+Integrated Oil and Gas|EPA,Integrated Oil and Gas,EPA
+Banking|XETRA,Banking,XETRA
+Travel and Leisure|NYSE,Travel and Leisure,NYSE
+Beverages|BIT,Beverages,BIT
+E-Commerce and Cloud|NASDAQ,E-Commerce and Cloud,NASDAQ
+Sovereign Debt|EURONEXT,Sovereign Debt,EURONEXT
+Gas Utilities|BIT,Gas Utilities,BIT
+Luxury Goods|LSE,Luxury Goods,LSE
+Insurance|SIX,Insurance,SIX
+Gold Mining|NYSE,Gold Mining,NYSE
+ETF|NASDAQ,ETF,NASDAQ
+Technology|STOXX,Technology,STOXX
+Apparel Accessories and Luxury Goods|SIX,Apparel Accessories and Luxury Goods,SIX
+Renewable Energy|BIT,Renewable Energy,BIT
+Integrated Oil and Gas|LSE,Integrated Oil and Gas,LSE
+Oil and Gas|OSLO,Oil and Gas,OSLO
+Shipbuilding|BIT,Shipbuilding,BIT
+Banking|LSE,Banking,LSE
+Energy Equipment and Services|XETRA,Energy Equipment and Services,XETRA
+Banks|BIT,Banks,BIT
+Food and Beverage|XETRA,Food and Beverage,XETRA
+Semiconductors|NASDAQ,Semiconductors,NASDAQ
+Insurance|XETRA,Insurance,XETRA
+Banking|STOXX,Banking,STOXX
+Software|NASDAQ,Software,NASDAQ
+Electric Utilities|XETRA,Electric Utilities,XETRA
+Auto Manufacturers|BIT,Auto Manufacturers,BIT
+ETF|NYSE,ETF,NYSE
+Asset Management|BIT,Asset Management,BIT
+Semiconductors|XETRA,Semiconductors,XETRA
+Aerospace and Defense|NASDAQ,Aerospace and Defense,NASDAQ
+Consumer Electronics|NASDAQ,Consumer Electronics,NASDAQ
+Semiconductors|BIT,Semiconductors,BIT
+Insurance|EPA,Insurance,EPA
+Oil and Gas|BIT,Oil and Gas,BIT
+Banking|EPA,Banking,EPA
+Computer Hardware|NASDAQ,Computer Hardware,NASDAQ
+Semiconductor Equipment|NASDAQ,Semiconductor Equipment,NASDAQ
+Sovereign Debt|MOT,Sovereign Debt,MOT
+Electronic Equipment Instruments and Components|NYSE,Electronic Equipment Instruments and Components,NYSE
+Commodities|NYSE,Commodities,NYSE
+Automotive|XETRA,Automotive,XETRA
+Automotive|NASDAQ,Automotive,NASDAQ
+Banks|XETRA,Banks,XETRA
+Restaurants|XETRA,Restaurants,XETRA
+Multi-Utilities|EPA,Multi-Utilities,EPA
+Environmental Services|EPA,Environmental Services,EPA
+Pharmaceuticals|XETRA,Pharmaceuticals,XETRA
+Quantum-Computing|NASDAQ,Quantum-Computing,NASDAQ
+Government Bonds|BIT,Government Bonds,BIT
+Internet Retail|XETRA,Internet Retail,XETRA
+Pharmaceuticals|NYSE,Pharmaceuticals,NYSE
+Financial Services|BIT,Financial Services,BIT
+Quantum-Computing|NYSE,Quantum-Computing,NYSE
+Oil and Gas Exploration and Production|NYSE,Oil and Gas Exploration and Production,NYSE
+Emerging Markets Equity|NYSE,Emerging Markets Equity,NYSE
+Insurance|AMSTERDAM,Insurance,AMSTERDAM
+Utilities|STOXX,Utilities,STOXX
+Electric Utilities|BME,Electric Utilities,BME
+Luxury Goods|EPA,Luxury Goods,EPA
+Technology Hardware Storage and Peripherals|NYSE,Technology Hardware Storage and Peripherals,NYSE
+Oil and Gas Integrated|NYSE,Oil and Gas Integrated,NYSE
+Banks-Regional|VIENNA,Banks-Regional,VIENNA
+Aerospace and Defense|BIT,Aerospace and Defense,BIT
+Automotive|NYSE,Automotive,NYSE
+Diversified Financial Services|BIT,Diversified Financial Services,BIT
+Multi-line Insurance|BIT,Multi-line Insurance,BIT
+Biotechnology|NASDAQ,Biotechnology,NASDAQ
+Banks-Diversified|BME,Banks-Diversified,BME
+Software|NYSE,Software,NYSE
+Insurance|STOXX,Insurance,STOXX
+Indices|SOLACTIVE,Indices,SOLACTIVE
+Index|NYSE,Index,NYSE
+E-commerce|NASDAQ,E-commerce,NASDAQ
+Internet and Media|NASDAQ,Internet and Media,NASDAQ
+Banks|BORSA,Banks,BORSA
+Banks-Diversified|EPA,Banks-Diversified,EPA
+Financial|Insurance|EPA,Financial,Insurance|EPA
+Financial|Banking|EPA,Financial,Banking|EPA
+Financials|Insurance|EPA,Financials,Insurance|EPA
+Technology|Software|NYSE,Technology,Software|NYSE
+Energy|Integrated Oil and Gas|LSE,Energy,Integrated Oil and Gas|LSE
+Financials|Banks|XETRA,Financials,Banks|XETRA
+Industrials|Electrical Equipment|BIT,Industrials,Electrical Equipment|BIT
+Financial Services|Banks-Regional|VIENNA,Financial Services,Banks-Regional|VIENNA
+Financials|Banks|BIT,Financials,Banks|BIT
+Energy|Oil and Gas Integrated|NYSE,Energy,Oil and Gas Integrated|NYSE
+Utilities|Electric Utilities|XETRA,Utilities,Electric Utilities|XETRA
+Financials|Banking|XETRA,Financials,Banking|XETRA
+Healthcare|Pharmaceuticals|XETRA,Healthcare,Pharmaceuticals|XETRA
+Technology|Semiconductors|NASDAQ,Technology,Semiconductors|NASDAQ
+Automotive|Automotive|NYSE,Automotive,Automotive|NYSE
+Consumer Discretionary|Apparel Accessories and Luxury Goods|SIX,Consumer Discretionary,Apparel Accessories and Luxury Goods|SIX
+Technology|Semiconductors|XETRA,Technology,Semiconductors|XETRA
+Communication Services|Telecommunications|NASDAQ,Communication Services,Telecommunications|NASDAQ
+Communication Services|Space and Satellite Technology|NASDAQ,Communication Services,Space and Satellite Technology|NASDAQ
+Consumer Cyclical|Luxury Goods|LSE,Consumer Cyclical,Luxury Goods|LSE
+Consumer Cyclical|Luxury Goods|BIT,Consumer Cyclical,Luxury Goods|BIT
+Consumer Discretionary|E-Commerce and Cloud|NASDAQ,Consumer Discretionary,E-Commerce and Cloud|NASDAQ
+Utilities|Electric Utilities|BME,Utilities,Electric Utilities|BME
+Financials|Diversified Financial Services|BIT,Financials,Diversified Financial Services|BIT
+Energy|Integrated Oil and Gas|EPA,Energy,Integrated Oil and Gas|EPA
+Consumer Cyclical|Luxury Goods|EPA,Consumer Cyclical,Luxury Goods|EPA
+Information Technology|Software|NASDAQ,Information Technology,Software|NASDAQ
+Consumer Discretionary|E-commerce|NASDAQ,Consumer Discretionary,E-commerce|NASDAQ
+Technology|Semiconductor Equipment|NASDAQ,Technology,Semiconductor Equipment|NASDAQ
+Financials|Insurance|SIX,Financials,Insurance|SIX
+Financial|Banking|LSE,Financial,Banking|LSE
+Information Technology|Semiconductors|EPA,Information Technology,Semiconductors|EPA
+Financials|Banks|BME,Financials,Banks|BME
+Financial|Indices|SOLACTIVE,Financial,Indices|SOLACTIVE
+Consumer Cyclical|Auto Manufacturers|BIT,Consumer Cyclical,Auto Manufacturers|BIT
+Index|Index|NYSE,Index,Index|NYSE
+Utilities|Multi-Utilities|EPA,Utilities,Multi-Utilities|EPA
+Financial|ETF|NASDAQ,Financial,ETF|NASDAQ
+Utilities|Renewable Energy|BIT,Utilities,Renewable Energy|BIT
+Energy|Oil and Gas|BIT,Energy,Oil and Gas|BIT
+Technology|Consumer Electronics|NASDAQ,Technology,Consumer Electronics|NASDAQ
+Technology|Quantum-Computing|NYSE,Technology,Quantum-Computing|NYSE
+Technology|Space and Satellite Technology|NYSE,Technology,Space and Satellite Technology|NYSE
+Technology|Semiconductors|EPA,Technology,Semiconductors|EPA
+Energy|Oil and Gas Integrated|EPA,Energy,Oil and Gas Integrated|EPA
+Healthcare|Pharmaceuticals|NYSE,Healthcare,Pharmaceuticals|NYSE
+Communication Services|Internet and Media|NASDAQ,Communication Services,Internet and Media|NASDAQ
+Basic Materials|Gold Mining|NYSE,Basic Materials,Gold Mining|NYSE
+Industrials|Energy Equipment and Services|XETRA,Industrials,Energy Equipment and Services|XETRA
+Industrials|Aerospace and Defense|BIT,Industrials,Aerospace and Defense|BIT
+Financial|ETF|NYSE,Financial,ETF|NYSE
+Industrials|Aerospace and Defense|NASDAQ,Industrials,Aerospace and Defense|NASDAQ
+Financial Services|Banks-Diversified|BME,Financial Services,Banks-Diversified|BME
+Energy|Oil and Gas Exploration and Production|NYSE,Energy,Oil and Gas Exploration and Production|NYSE
+Technology|Computer Hardware|NASDAQ,Technology,Computer Hardware|NASDAQ
+Financial|Insurance|SIX,Financial,Insurance|SIX
+Consumer Cyclical|Travel and Leisure|NYSE,Consumer Cyclical,Travel and Leisure|NYSE
+Government|Sovereign Bonds|EURONEXT,Government,Sovereign Bonds|EURONEXT
+Utilities|Electric Utilities|BIT,Utilities,Electric Utilities|BIT
+Automotive|Automotive|XETRA,Automotive,Automotive|XETRA
+ETF|Emerging Markets Equity|NYSE,ETF,Emerging Markets Equity|NYSE
+Financial|Insurance|BIT,Financial,Insurance|BIT
+Financial Services|Banks|BIT,Financial Services,Banks|BIT
+Energy|Oil and Gas|OSLO,Energy,Oil and Gas|OSLO
+Financials|Financial Services|BIT,Financials,Financial Services|BIT
+Government|Sovereign Debt|EURONEXT,Government,Sovereign Debt|EURONEXT
+Financials|Multi-line Insurance|BIT,Financials,Multi-line Insurance|BIT
+Technology|Semiconductors|BIT,Technology,Semiconductors|BIT
+Financial Services|Insurance|XETRA,Financial Services,Insurance|XETRA
+Technology|Quantum-Computing|NASDAQ,Technology,Quantum-Computing|NASDAQ
+Consumer Defensive|Household and Personal Products|NYSE,Consumer Defensive,Household and Personal Products|NYSE
+Utilities|Environmental Services|EPA,Utilities,Environmental Services|EPA
+Financials|Banking|BIT,Financials,Banking|BIT
+Energy|Gas Utilities|BIT,Energy,Gas Utilities|BIT
+Consumer Cyclical|Restaurants|XETRA,Consumer Cyclical,Restaurants|XETRA
+Financials|Asset Management|BIT,Financials,Asset Management|BIT
+Technology|Software|EPA,Technology,Software|EPA
+Industrials|Space and Satellite Technology|NASDAQ,Industrials,Space and Satellite Technology|NASDAQ
+Communication Services|Social Media|NASDAQ,Communication Services,Social Media|NASDAQ
+Consumer Defensive|Food and Beverage|XETRA,Consumer Defensive,Food and Beverage|XETRA
+Utilities|Utilities|STOXX,Utilities,Utilities|STOXX
+Consumer Cyclical|Internet Retail|XETRA,Consumer Cyclical,Internet Retail|XETRA
+Technology|Technology|STOXX,Technology,Technology|STOXX
+Industrials|Shipbuilding|BIT,Industrials,Shipbuilding|BIT
+Information Technology|Electronic Equipment Instruments and Components|NYSE,Information Technology,Electronic Equipment Instruments and Components|NYSE
+Financials|Banks|BORSA,Financials,Banks|BORSA
+Consumer Goods|Beverages|BIT,Consumer Goods,Beverages|BIT
+Financials|Banking|STOXX,Financials,Banking|STOXX
+Financial|Commodities|NYSE,Financial,Commodities|NYSE
+Automotive|Automotive|NASDAQ,Automotive,Automotive|NASDAQ
+Financial Services|Banks-Diversified|EPA,Financial Services,Banks-Diversified|EPA
+Information Technology|Semiconductors|NASDAQ,Information Technology,Semiconductors|NASDAQ
+Financials|Insurance|STOXX,Financials,Insurance|STOXX
+Government|Government Bonds|BIT,Government,Government Bonds|BIT
+Financial Services|Insurance|AMSTERDAM,Financial Services,Insurance|AMSTERDAM
+Energy|Integrated Oil and Gas|BME,Energy,Integrated Oil and Gas|BME
+Information Technology|Technology Hardware Storage and Peripherals|NYSE,Information Technology,Technology Hardware Storage and Peripherals|NYSE
+Information Technology|Software|NYSE,Information Technology,Software|NYSE
+Healthcare|Biotechnology|NASDAQ,Healthcare,Biotechnology|NASDAQ
+Government|Sovereign Debt|MOT,Government,Sovereign Debt|MOT
+DBK.DE|Financials|Banks|XETRA,DBK.DE,Financials|Banks|XETRA
+Euronext|Government|Sovereign Bonds|EURONEXT,Euronext,Government|Sovereign Bonds|EURONEXT
+SCRPA.PA|Financial|Insurance|EPA,SCRPA.PA,Financial|Insurance|EPA
+ASML|Technology|Semiconductor Equipment|NASDAQ,ASML,Technology|Semiconductor Equipment|NASDAQ
+STMMI.MI|Technology|Semiconductors|BIT,STMMI.MI,Technology|Semiconductors|BIT
+REP.MC|Energy|Integrated Oil and Gas|BME,REP.MC,Energy|Integrated Oil and Gas|BME
+CPR.MI|Consumer Goods|Beverages|BIT,CPR.MI,Consumer Goods|Beverages|BIT
+ZAL.DE|Consumer Cyclical|Internet Retail|XETRA,ZAL.DE,Consumer Cyclical|Internet Retail|XETRA
+MSFT|Information Technology|Software|NASDAQ,MSFT,Information Technology|Software|NASDAQ
+BGN.MI|Financials|Banking|BIT,BGN.MI,Financials|Banking|BIT
+AI|Information Technology|Software|NYSE,AI,Information Technology|Software|NYSE
+EOAN.DE|Utilities|Electric Utilities|XETRA,EOAN.DE,Utilities|Electric Utilities|XETRA
+G.MI|Financials|Multi-line Insurance|BIT,G.MI,Financials|Multi-line Insurance|BIT
+RBI|Financial Services|Banks-Regional|VIENNA,RBI,Financial Services|Banks-Regional|VIENNA
+LLY|Healthcare|Pharmaceuticals|NYSE,LLY,Healthcare|Pharmaceuticals|NYSE
+ISP.MI|Financials|Banks|BORSA,ISP.MI,Financials|Banks|BORSA
+BNPPA.PA|Financial Services|Banks-Diversified|EPA,BNPPA.PA,Financial Services|Banks-Diversified|EPA
+RGTI|Technology|Quantum-Computing|NASDAQ,RGTI,Technology|Quantum-Computing|NASDAQ
+GLD|Financial|Commodities|NYSE,GLD,Financial|Commodities|NYSE
+PRY.MI|Industrials|Electrical Equipment|BIT,PRY.MI,Industrials|Electrical Equipment|BIT
+SREN|Financial|Insurance|SIX,SREN,Financial|Insurance|SIX
+META|Communication Services|Social Media|NASDAQ,META,Communication Services|Social Media|NASDAQ
+KERPA.PA|Consumer Cyclical|Luxury Goods|EPA,KERPA.PA,Consumer Cyclical|Luxury Goods|EPA
+DELL|Information Technology|Technology Hardware Storage and Peripherals|NYSE,DELL,Information Technology|Technology Hardware Storage and Peripherals|NYSE
+ERG.MI|Utilities|Renewable Energy|BIT,ERG.MI,Utilities|Renewable Energy|BIT
+GLEPA.PA|Financial|Banking|EPA,GLEPA.PA,Financial|Banking|EPA
+BP|Energy|Integrated Oil and Gas|LSE,BP,Energy|Integrated Oil and Gas|LSE
+MBG.DE|Automotive|Automotive|XETRA,MBG.DE,Automotive|Automotive|XETRA
+SRG.MI|Energy|Gas Utilities|BIT,SRG.MI,Energy|Gas Utilities|BIT
+TTE.PA|Energy|Oil and Gas Integrated|EPA,TTE.PA,Energy|Oil and Gas Integrated|EPA
+MONC.MI|Consumer Cyclical|Luxury Goods|BIT,MONC.MI,Consumer Cyclical|Luxury Goods|BIT
+NVDA|Information Technology|Semiconductors|NASDAQ,NVDA,Information Technology|Semiconductors|NASDAQ
+AAPL|Technology|Consumer Electronics|NASDAQ,AAPL,Technology|Consumer Electronics|NASDAQ
+IT0005441883.MI|Government|Government Bonds|BIT,IT0005441883.MI,Government|Government Bonds|BIT
+UCG.MI|Financial Services|Banks|BIT,UCG.MI,Financial Services|Banks|BIT
+EQNR|Energy|Oil and Gas|OSLO,EQNR,Energy|Oil and Gas|OSLO
+AGN|Financial Services|Insurance|AMSTERDAM,AGN,Financial Services|Insurance|AMSTERDAM
+AMZN|Consumer Discretionary|E-Commerce and Cloud|NASDAQ,AMZN,Consumer Discretionary|E-Commerce and Cloud|NASDAQ
+MOT|Government|Sovereign Debt|MOT,MOT,Government|Sovereign Debt|MOT
+SATS|Communication Services|Space and Satellite Technology|NASDAQ,SATS,Communication Services|Space and Satellite Technology|NASDAQ
+FBK.MI|Financials|Banks|BIT,FBK.MI,Financials|Banks|BIT
+^SPX|Index|Index|NYSE,^SPX,Index|Index|NYSE
+BPE.MI|Financials|Banking|BIT,BPE.MI,Financials|Banking|BIT
+SNDK|Technology|Semiconductors|NASDAQ,SNDK,Technology|Semiconductors|NASDAQ
+CBK.DE|Financials|Banks|XETRA,CBK.DE,Financials|Banks|XETRA
+PL|Technology|Space and Satellite Technology|NYSE,PL,Technology|Space and Satellite Technology|NYSE
+FTNT|Information Technology|Software|NASDAQ,FTNT,Information Technology|Software|NASDAQ
+OXY|Energy|Oil and Gas Exploration and Production|NYSE,OXY,Energy|Oil and Gas Exploration and Production|NYSE
+DHER.DE|Consumer Cyclical|Restaurants|XETRA,DHER.DE,Consumer Cyclical|Restaurants|XETRA
+CL|Consumer Defensive|Household and Personal Products|NYSE,CL,Consumer Defensive|Household and Personal Products|NYSE
+CABK.MC|Financial Services|Banks-Diversified|BME,CABK.MC,Financial Services|Banks-Diversified|BME
+COHR|Information Technology|Electronic Equipment Instruments and Components|NYSE,COHR,Information Technology|Electronic Equipment Instruments and Components|NYSE
+NYSE|Automotive|Automotive|NYSE,NYSE,Automotive|Automotive|NYSE
+EWZ|ETF|Emerging Markets Equity|NYSE,EWZ,ETF|Emerging Markets Equity|NYSE
+TTEPA.PA|Energy|Integrated Oil and Gas|EPA,TTEPA.PA,Energy|Integrated Oil and Gas|EPA
+STMPA.PA|Technology|Semiconductors|EPA,STMPA.PA,Technology|Semiconductors|EPA
+CFR|Consumer Discretionary|Apparel Accessories and Luxury Goods|SIX,CFR,Consumer Discretionary|Apparel Accessories and Luxury Goods|SIX
+STMPAPA.PA|Information Technology|Semiconductors|EPA,STMPAPA.PA,Information Technology|Semiconductors|EPA
+IONQ|Technology|Quantum-Computing|NYSE,IONQ,Technology|Quantum-Computing|NYSE
+^SX7E|Financials|Banking|STOXX,^SX7E,Financials|Banking|STOXX
+ENGIPA.PA|Utilities|Multi-Utilities|EPA,ENGIPA.PA,Utilities|Multi-Utilities|EPA
+NASDAQ|Information Technology|Software|NASDAQ,NASDAQ,Information Technology|Software|NASDAQ
+ALV|Financial Services|Insurance|XETRA,ALV,Financial Services|Insurance|XETRA
+DSYPA.PA|Technology|Software|EPA,DSYPA.PA,Technology|Software|EPA
+CVX|Energy|Oil and Gas Integrated|NYSE,CVX,Energy|Oil and Gas Integrated|NYSE
+PFE|Healthcare|Pharmaceuticals|NYSE,PFE,Healthcare|Pharmaceuticals|NYSE
+KLAC|Technology|Semiconductors|NASDAQ,KLAC,Technology|Semiconductors|NASDAQ
+ASTS|Communication Services|Telecommunications|NASDAQ,ASTS,Communication Services|Telecommunications|NASDAQ
+NASDAQ|Consumer Discretionary|E-commerce|NASDAQ,NASDAQ,Consumer Discretionary|E-commerce|NASDAQ
+HFG.DE|Consumer Defensive|Food and Beverage|XETRA,HFG.DE,Consumer Defensive|Food and Beverage|XETRA
+BARC|Financial|Banking|LSE,BARC,Financial|Banking|LSE
+AU|Basic Materials|Gold Mining|NYSE,AU,Basic Materials|Gold Mining|NYSE
+QBTS|Technology|Quantum-Computing|NYSE,QBTS,Technology|Quantum-Computing|NYSE
+MRK|Healthcare|Pharmaceuticals|NYSE,MRK,Healthcare|Pharmaceuticals|NYSE
+SX8E|Technology|Technology|STOXX,SX8E,Technology|Technology|STOXX
+ENEL.MI|Utilities|Electric Utilities|BIT,ENEL.MI,Utilities|Electric Utilities|BIT
+SLV|Financial|Commodities|NYSE,SLV,Financial|Commodities|NYSE
+GOOGL|Communication Services|Internet and Media|NASDAQ,GOOGL,Communication Services|Internet and Media|NASDAQ
+^STOXX|Financials|Banking|STOXX,^STOXX,Financials|Banking|STOXX
+BRBY|Consumer Cyclical|Luxury Goods|LSE,BRBY,Consumer Cyclical|Luxury Goods|LSE
+RCL|Consumer Cyclical|Travel and Leisure|NYSE,RCL,Consumer Cyclical|Travel and Leisure|NYSE
+TSLA|Automotive|Automotive|NASDAQ,TSLA,Automotive|Automotive|NASDAQ
+CSPA.PA|Financials|Insurance|EPA,CSPA.PA,Financials|Insurance|EPA
+EWY|Financial|ETF|NYSE,EWY,Financial|ETF|NYSE
+BAYN|Healthcare|Pharmaceuticals|XETRA,BAYN,Healthcare|Pharmaceuticals|XETRA
+RKLB|Industrials|Aerospace and Defense|NASDAQ,RKLB,Industrials|Aerospace and Defense|NASDAQ
+PATH|Technology|Software|NYSE,PATH,Technology|Software|NYSE
+VIEPA.PA|Utilities|Environmental Services|EPA,VIEPA.PA,Utilities|Environmental Services|EPA
+BMPS.MI|Financials|Banks|BIT,BMPS.MI,Financials|Banks|BIT
+MRNA|Healthcare|Biotechnology|NASDAQ,MRNA,Healthcare|Biotechnology|NASDAQ
+ENI.MI|Energy|Oil and Gas|BIT,ENI.MI,Energy|Oil and Gas|BIT
+UNI.MI|Financial|Insurance|BIT,UNI.MI,Financial|Insurance|BIT
+FR0014001NN8|Government|Sovereign Debt|EURONEXT,FR0014001NN8,Government|Sovereign Debt|EURONEXT
+A2A.MI|Utilities|Electric Utilities|BIT,A2A.MI,Utilities|Electric Utilities|BIT
+BBVA.MC|Financials|Banks|BME,BBVA.MC,Financials|Banks|BME
+BAMI.MI|Financials|Banking|BIT,BAMI.MI,Financials|Banking|BIT
+LDO.MI|Industrials|Aerospace and Defense|BIT,LDO.MI,Industrials|Aerospace and Defense|BIT
+NEXI.MI|Financials|Financial Services|BIT,NEXI.MI,Financials|Financial Services|BIT
+ELE.MC|Utilities|Electric Utilities|BME,ELE.MC,Utilities|Electric Utilities|BME
+IFX.DE|Technology|Semiconductors|XETRA,IFX.DE,Technology|Semiconductors|XETRA
+FCT.MI|Industrials|Shipbuilding|BIT,FCT.MI,Industrials|Shipbuilding|BIT
+RACE.MI|Consumer Cyclical|Auto Manufacturers|BIT,RACE.MI,Consumer Cyclical|Auto Manufacturers|BIT
+ENR.DE|Industrials|Energy Equipment and Services|XETRA,ENR.DE,Industrials|Energy Equipment and Services|XETRA
+CBK.DE|Financials|Banking|XETRA,CBK.DE,Financials|Banking|XETRA
+RMSPA.PA|Consumer Cyclical|Luxury Goods|EPA,RMSPA.PA,Consumer Cyclical|Luxury Goods|EPA
+MCHI|Financial|ETF|NASDAQ,MCHI,Financial|ETF|NASDAQ
+ZURN|Financials|Insurance|SIX,ZURN,Financials|Insurance|SIX
+SX6E|Utilities|Utilities|STOXX,SX6E,Utilities|Utilities|STOXX
+SXIE|Financials|Insurance|STOXX,SXIE,Financials|Insurance|STOXX
+MIL.MI|Financial Services|Banks|BIT,MIL.MI,Financial Services|Banks|BIT
+SMCI|Technology|Computer Hardware|NASDAQ,SMCI,Technology|Computer Hardware|NASDAQ
+PST.MI|Financials|Diversified Financial Services|BIT,PST.MI,Financials|Diversified Financial Services|BIT
+^SOITA10Y|Financial|Indices|SOLACTIVE,^SOITA10Y,Financial|Indices|SOLACTIVE
+ORCL|Information Technology|Software|NYSE,ORCL,Information Technology|Software|NYSE
+AZM.MI|Financials|Asset Management|BIT,AZM.MI,Financials|Asset Management|BIT
+SPCX|Industrials|Aerospace and Defense|NASDAQ,SPCX,Industrials|Aerospace and Defense|NASDAQ
+LUNR|Industrials|Space and Satellite Technology|NASDAQ,LUNR,Industrials|Space and Satellite Technology|NASDAQ
+STLAM.MI|Consumer Cyclical|Auto Manufacturers|BIT,STLAM.MI,Consumer Cyclical|Auto Manufacturers|BIT

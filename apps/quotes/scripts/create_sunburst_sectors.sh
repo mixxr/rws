@@ -2,6 +2,8 @@
 
 input="${1:-stock_index_adjusted.csv}"
 output="${2:-sunburst_sectors.csv}"
+ID_SEP="|"
+DELIM=","
 
 echo "Reading $input... > $output"
 
@@ -22,7 +24,6 @@ sanitize() {
     s="${s//,/}"   # rimuove virgole
     s="${s//;/}"   # rimuove punti e virgola
     s="${s//:/}"   # rimuove due punti
-    # s="${s//-/ }"  # rimuove -
     s="$(echo "$s" | tr -s ' ')"   # squeeze repeated spaces
     echo "$s"
 }
@@ -47,44 +48,44 @@ sanitize() {
         exchanges["$ex_norm"]=1
 
         # Livello 2: industry-exchange
-        ind_id="${industry_clean}__${ex_norm}"
-        industries["$ind_id"]="$industry_clean;$ex_norm"
+        ind_id="${industry_clean}${ID_SEP}${ex_norm}"
+        industries["$ind_id"]="$industry_clean${DELIM}$ex_norm"
 
         # Livello 3: sector-industry-exchange
-        sec_parent="${industry_clean}__${ex_norm}"
-        sec_id="${sector_clean}__${sec_parent}"
-        sectors["$sec_id"]="$sector_clean;$sec_parent"
+        sec_parent="${industry_clean}${ID_SEP}${ex_norm}"
+        sec_id="${sector_clean}${ID_SEP}${sec_parent}"
+        sectors["$sec_id"]="$sector_clean${DELIM}$sec_parent"
 
         # ⭐ Livello 4: ticker-sector-industry-exchange
-        tick_id="${ticker}__${sec_id}"
-        tickers["$tick_id"]="$ticker;$sec_id"
+        tick_id="${ticker}${ID_SEP}${sec_id}"
+        tickers["$tick_id"]="$ticker${DELIM}$sec_id"
 
     done
 } < "$input"
 
 {
-    echo "id;labels;parents"
+    echo "id${DELIM}labels${DELIM}parents"
 
     # Livello 1
     for ex in "${!exchanges[@]}"; do
-        echo "$ex;$ex;"
+        echo "$ex${DELIM}$ex${DELIM}"
     done
 
     # Livello 2
     for ind in "${!industries[@]}"; do
-        IFS=";" read -r label parent <<< "${industries[$ind]}"
-        echo "$ind;$label;$parent"
+        IFS="${DELIM}" read -r label parent <<< "${industries[$ind]}"
+        echo "$ind${DELIM}$label${DELIM}$parent"
     done
 
     # Livello 3
     for sec in "${!sectors[@]}"; do
-        IFS=";" read -r label parent <<< "${sectors[$sec]}"
-        echo "$sec;$label;$parent"
+        IFS="${DELIM}" read -r label parent <<< "${sectors[$sec]}"
+        echo "$sec${DELIM}$label${DELIM}$parent"
     done
 
     # Livello 4
     for tk in "${!tickers[@]}"; do
-        IFS=";" read -r label parent <<< "${tickers[$tk]}"
-        echo "$tk;$label;$parent"
+        IFS="${DELIM}" read -r label parent <<< "${tickers[$tk]}"
+        echo "$tk${DELIM}$label${DELIM}$parent"
     done
 } > "$output"
