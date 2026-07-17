@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Default values
-INPUT="stock_index_adjusted.csv"
+INPUT="./_work/stock_index_adjusted.csv"
 BATCH_SIZE=5
-OUTPUT_FOLDER="./quotes"
+OUTPUT_FOLDER="./_quotes"
 
 # Parse flags
 for arg in "$@"; do

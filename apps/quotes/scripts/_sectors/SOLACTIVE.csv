@@ -1,0 +1,5 @@
+id,labels,parents
+SOLACTIVE,SOLACTIVE,
+Indices|SOLACTIVE,Indices,SOLACTIVE
+Financial|Indices|SOLACTIVE,Financial,Indices|SOLACTIVE
+^SOITA10Y|Financial|Indices|SOLACTIVE,^SOITA10Y,Financial|Indices|SOLACTIVE

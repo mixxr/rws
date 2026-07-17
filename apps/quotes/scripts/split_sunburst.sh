@@ -1,10 +1,9 @@
 #!/bin/bash
-
-input="${1:-sunburst_sectors.csv}"
-OUTPUT_FOLDER="${2:-./sectors}"
+input="${1:-./_work/sunburst_sectors.csv}"
+OUTPUT_FOLDER="${2:-./_sectors}"
 DELIM=","
 
-echo "Reading $input... > $OUTPUT_FOLDER/"
+echo "Reading $input... > folder $OUTPUT_FOLDER/"
 
 # Trova tutte le radici (id==labels e parents vuoto)
 roots=()

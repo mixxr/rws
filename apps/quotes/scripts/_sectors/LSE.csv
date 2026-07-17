@@ -1,0 +1,11 @@
+id,labels,parents
+LSE,LSE,
+Luxury Goods|LSE,Luxury Goods,LSE
+Integrated Oil and Gas|LSE,Integrated Oil and Gas,LSE
+Banking|LSE,Banking,LSE
+Energy|Integrated Oil and Gas|LSE,Energy,Integrated Oil and Gas|LSE
+Consumer Cyclical|Luxury Goods|LSE,Consumer Cyclical,Luxury Goods|LSE
+Financial|Banking|LSE,Financial,Banking|LSE
+BP|Energy|Integrated Oil and Gas|LSE,BP,Energy|Integrated Oil and Gas|LSE
+BARC|Financial|Banking|LSE,BARC,Financial|Banking|LSE
+BRBY|Consumer Cyclical|Luxury Goods|LSE,BRBY,Consumer Cyclical|Luxury Goods|LSE

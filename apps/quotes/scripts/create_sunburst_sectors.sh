@@ -1,7 +1,7 @@
 #!/bin/bash
 
-input="${1:-stock_index_adjusted.csv}"
-output="${2:-sunburst_sectors.csv}"
+input="${1:-./_work/stock_index_adjusted.csv}"
+output="${2:-./_work/sunburst_sectors.csv}"
 ID_SEP="|"
 DELIM=","
 
@@ -64,7 +64,7 @@ sanitize() {
 } < "$input"
 
 {
-    echo "id${DELIM}labels${DELIM}parents"
+    echo "ids${DELIM}labels${DELIM}parents"
 
     # Livello 1
     for ex in "${!exchanges[@]}"; do

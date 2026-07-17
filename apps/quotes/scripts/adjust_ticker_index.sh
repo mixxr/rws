@@ -3,12 +3,16 @@
 STOCK_INDEX="$1"
 EXCHANGE_FILE="$2"
 OUTPUT="${3:-stock_index_adjusted.csv}"
+OUTPUT_FOLDER="${4:-./_work}"
 DELIM=";"
 
 if [[ -z "$STOCK_INDEX" || -z "$EXCHANGE_FILE" ]]; then
-    echo "Usage: $0 STOCK_INDEX EXCHANGE_FILE [OUTPUT_FILE]"
+    echo "Usage: $0 STOCK_INDEX EXCHANGE_FILE [OUTPUT_FILE] [OUTPUT_FOLDER]"
     exit 1
 fi
+
+mkdir -p $OUTPUT_FOLDER
+output_file="$OUTPUT_FOLDER/$OUTPUT"
 
 # Load exchange → suffix mapping
 declare -A EXMAP
@@ -22,7 +26,7 @@ done < "$EXCHANGE_FILE"
     # Read and write header
     read -r header
     header="${header//;/$DELIM}"
-    echo "$header" > "$OUTPUT"
+    echo "$header" > "$output_file"
 
     while IFS=';' read -r ticker name exch isin industry sector; do
 
@@ -61,10 +65,10 @@ done < "$EXCHANGE_FILE"
             ticker="^${ticker}"
         fi
         
-        echo "${ticker}${DELIM}${name}${DELIM}${exch}${DELIM}${isin}${DELIM}${industry}${DELIM}${sector}" >> "$OUTPUT"
+        echo "${ticker}${DELIM}${name}${DELIM}${exch}${DELIM}${isin}${DELIM}${industry}${DELIM}${sector}" >> "$output_file"
 
     done
 
 } < "$STOCK_INDEX"
 
-echo "Adjusted file written to: $OUTPUT"
+echo "Adjusted file written to: $output_file"

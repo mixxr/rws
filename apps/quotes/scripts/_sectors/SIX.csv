@@ -1,0 +1,10 @@
+id,labels,parents
+SIX,SIX,
+Insurance|SIX,Insurance,SIX
+Apparel Accessories and Luxury Goods|SIX,Apparel Accessories and Luxury Goods,SIX
+Consumer Discretionary|Apparel Accessories and Luxury Goods|SIX,Consumer Discretionary,Apparel Accessories and Luxury Goods|SIX
+Financials|Insurance|SIX,Financials,Insurance|SIX
+Financial|Insurance|SIX,Financial,Insurance|SIX
+SREN|Financial|Insurance|SIX,SREN,Financial|Insurance|SIX
+CFR|Consumer Discretionary|Apparel Accessories and Luxury Goods|SIX,CFR,Consumer Discretionary|Apparel Accessories and Luxury Goods|SIX
+ZURN|Financials|Insurance|SIX,ZURN,Financials|Insurance|SIX

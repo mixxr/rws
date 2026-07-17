@@ -11,3 +11,5 @@ test_*
 nohup.out
 node_modules/
 .wrangler/
+_quotes/
+_work/

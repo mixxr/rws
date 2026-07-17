@@ -1,0 +1,58 @@
+id,labels,parents
+NASDAQ,NASDAQ,
+Space and Satellite Technology|NASDAQ,Space and Satellite Technology,NASDAQ
+Social Media|NASDAQ,Social Media,NASDAQ
+Telecommunications|NASDAQ,Telecommunications,NASDAQ
+E-Commerce and Cloud|NASDAQ,E-Commerce and Cloud,NASDAQ
+ETF|NASDAQ,ETF,NASDAQ
+Semiconductors|NASDAQ,Semiconductors,NASDAQ
+Software|NASDAQ,Software,NASDAQ
+Aerospace and Defense|NASDAQ,Aerospace and Defense,NASDAQ
+Consumer Electronics|NASDAQ,Consumer Electronics,NASDAQ
+Computer Hardware|NASDAQ,Computer Hardware,NASDAQ
+Semiconductor Equipment|NASDAQ,Semiconductor Equipment,NASDAQ
+Automotive|NASDAQ,Automotive,NASDAQ
+Quantum-Computing|NASDAQ,Quantum-Computing,NASDAQ
+Biotechnology|NASDAQ,Biotechnology,NASDAQ
+E-commerce|NASDAQ,E-commerce,NASDAQ
+Internet and Media|NASDAQ,Internet and Media,NASDAQ
+Technology|Semiconductors|NASDAQ,Technology,Semiconductors|NASDAQ
+Communication Services|Telecommunications|NASDAQ,Communication Services,Telecommunications|NASDAQ
+Communication Services|Space and Satellite Technology|NASDAQ,Communication Services,Space and Satellite Technology|NASDAQ
+Consumer Discretionary|E-Commerce and Cloud|NASDAQ,Consumer Discretionary,E-Commerce and Cloud|NASDAQ
+Information Technology|Software|NASDAQ,Information Technology,Software|NASDAQ
+Consumer Discretionary|E-commerce|NASDAQ,Consumer Discretionary,E-commerce|NASDAQ
+Technology|Semiconductor Equipment|NASDAQ,Technology,Semiconductor Equipment|NASDAQ
+Financial|ETF|NASDAQ,Financial,ETF|NASDAQ
+Technology|Consumer Electronics|NASDAQ,Technology,Consumer Electronics|NASDAQ
+Communication Services|Internet and Media|NASDAQ,Communication Services,Internet and Media|NASDAQ
+Industrials|Aerospace and Defense|NASDAQ,Industrials,Aerospace and Defense|NASDAQ
+Technology|Computer Hardware|NASDAQ,Technology,Computer Hardware|NASDAQ
+Technology|Quantum-Computing|NASDAQ,Technology,Quantum-Computing|NASDAQ
+Industrials|Space and Satellite Technology|NASDAQ,Industrials,Space and Satellite Technology|NASDAQ
+Communication Services|Social Media|NASDAQ,Communication Services,Social Media|NASDAQ
+Automotive|Automotive|NASDAQ,Automotive,Automotive|NASDAQ
+Information Technology|Semiconductors|NASDAQ,Information Technology,Semiconductors|NASDAQ
+Healthcare|Biotechnology|NASDAQ,Healthcare,Biotechnology|NASDAQ
+ASML|Technology|Semiconductor Equipment|NASDAQ,ASML,Technology|Semiconductor Equipment|NASDAQ
+MSFT|Information Technology|Software|NASDAQ,MSFT,Information Technology|Software|NASDAQ
+RGTI|Technology|Quantum-Computing|NASDAQ,RGTI,Technology|Quantum-Computing|NASDAQ
+META|Communication Services|Social Media|NASDAQ,META,Communication Services|Social Media|NASDAQ
+NVDA|Information Technology|Semiconductors|NASDAQ,NVDA,Information Technology|Semiconductors|NASDAQ
+AAPL|Technology|Consumer Electronics|NASDAQ,AAPL,Technology|Consumer Electronics|NASDAQ
+AMZN|Consumer Discretionary|E-Commerce and Cloud|NASDAQ,AMZN,Consumer Discretionary|E-Commerce and Cloud|NASDAQ
+SATS|Communication Services|Space and Satellite Technology|NASDAQ,SATS,Communication Services|Space and Satellite Technology|NASDAQ
+SNDK|Technology|Semiconductors|NASDAQ,SNDK,Technology|Semiconductors|NASDAQ
+FTNT|Information Technology|Software|NASDAQ,FTNT,Information Technology|Software|NASDAQ
+NASDAQ|Information Technology|Software|NASDAQ,NASDAQ,Information Technology|Software|NASDAQ
+KLAC|Technology|Semiconductors|NASDAQ,KLAC,Technology|Semiconductors|NASDAQ
+ASTS|Communication Services|Telecommunications|NASDAQ,ASTS,Communication Services|Telecommunications|NASDAQ
+NASDAQ|Consumer Discretionary|E-commerce|NASDAQ,NASDAQ,Consumer Discretionary|E-commerce|NASDAQ
+GOOGL|Communication Services|Internet and Media|NASDAQ,GOOGL,Communication Services|Internet and Media|NASDAQ
+TSLA|Automotive|Automotive|NASDAQ,TSLA,Automotive|Automotive|NASDAQ
+RKLB|Industrials|Aerospace and Defense|NASDAQ,RKLB,Industrials|Aerospace and Defense|NASDAQ
+MRNA|Healthcare|Biotechnology|NASDAQ,MRNA,Healthcare|Biotechnology|NASDAQ
+MCHI|Financial|ETF|NASDAQ,MCHI,Financial|ETF|NASDAQ
+SMCI|Technology|Computer Hardware|NASDAQ,SMCI,Technology|Computer Hardware|NASDAQ
+SPCX|Industrials|Aerospace and Defense|NASDAQ,SPCX,Industrials|Aerospace and Defense|NASDAQ
+LUNR|Industrials|Space and Satellite Technology|NASDAQ,LUNR,Industrials|Space and Satellite Technology|NASDAQ
