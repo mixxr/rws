@@ -1,8 +1,0 @@
-id,labels,parents
-EURONEXT,EURONEXT,
-Sovereign Bonds|EURONEXT,Sovereign Bonds,EURONEXT
-Sovereign Debt|EURONEXT,Sovereign Debt,EURONEXT
-Government|Sovereign Bonds|EURONEXT,Government,Sovereign Bonds|EURONEXT
-Government|Sovereign Debt|EURONEXT,Government,Sovereign Debt|EURONEXT
-Euronext|Government|Sovereign Bonds|EURONEXT,Euronext,Government|Sovereign Bonds|EURONEXT
-FR0014001NN8|Government|Sovereign Debt|EURONEXT,FR0014001NN8,Government|Sovereign Debt|EURONEXT

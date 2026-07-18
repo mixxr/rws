@@ -1,5 +1,0 @@
-id,labels,parents
-MOT,MOT,
-Sovereign Debt|MOT,Sovereign Debt,MOT
-Government|Sovereign Debt|MOT,Government,Sovereign Debt|MOT
-MOT|Government|Sovereign Debt|MOT,MOT,Government|Sovereign Debt|MOT

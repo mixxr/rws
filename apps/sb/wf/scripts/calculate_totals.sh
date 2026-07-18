@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-INPUT=$1
+INPUT="${1:-./_work/sunburst_sectors.csv}"
 QUOTES_FOLDER="${2:-./_quotes}"
 output_file="./_sectors/sunburst_calculated.csv"
 
