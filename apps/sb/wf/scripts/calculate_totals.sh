@@ -2,6 +2,7 @@
 INPUT="${1:-./_work/sunburst_sectors.csv}"
 QUOTES_FOLDER="${2:-./_quotes}"
 output_file="./_sectors/sunburst_calculated.csv"
+mkdir -p _sectors
 
 declare -A stock_total
 declare -A sector_total
