@@ -1,3 +1,4 @@
+mkdir -p ~/.config/rclone/
 echo "[r2]
 type = s3
 provider = Cloudflare
