@@ -36,6 +36,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      
+      - name: Install rclone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
 
       # ---------------------------------------------------------
       # Verify tools
@@ -44,6 +48,7 @@ jobs:
         run: |
           node -v
           npx wrangler -v
+          rclone version
 
       # ---------------------------------------------------------
       # Execute item workflows
