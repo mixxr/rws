@@ -1,6 +1,6 @@
 #!/bin/bash
-input="${1:-./_sectors/sunburst_calculated.csv}"
-OUTPUT_FOLDER="${2:-./_sectors}"
+input="${1:-./_sunburst/ALL.csv}"
+OUTPUT_FOLDER="${2:-./_sunburst}"
 DELIM=","
 
 echo "Reading $input... > folder $OUTPUT_FOLDER/"
