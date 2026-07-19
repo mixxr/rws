@@ -67,4 +67,7 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           chmod +x ./run*.sh
+          ./run_rclone_setup.sh
           ./run_upl.sh
+        env:
+          R2_CLONE_SECRET: ${{ secrets.R2_CLONE_SECRET }}
