@@ -1,0 +1,101 @@
+name: Test New ISIN
+
+env:
+  WS_URL: ${{ secrets.WS_URL }}
+  WS_SECRET: ${{ secrets.WS_SECRET }}
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  process_ISIN:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'issues' &&
+        contains(join(fromJson(toJson(github.event.issue.labels)).*.name, ','), 'enhancement') &&
+        (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr')
+      )
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract values from issue body
+        id: extract
+        run: |
+          echo "ISIN=$(echo "${{ github.event.issue.body }}" | grep -oP 'ISIN_LIST *= *\K[A-Z0-9]+')" >> $GITHUB_OUTPUT
+          echo "FILE_PATH=$(echo "${{ github.event.issue.body }}" | grep -oP 'check *\Kgs://[^ ]+')" >> $GITHUB_OUTPUT
+
+      - name: Validate ISIN details from WS
+        id: validate
+        run: |
+          ISIN="${{ steps.extract.outputs.ISIN }}"
+
+          echo "Checking ISIN: $ISIN"
+
+          RESPONSE=$(curl -s -X GET "${{ secrets.WS_URL }}details/$ISIN" \
+            -H "Authorization: Bearer ${{ secrets.WS_SECRET }}" \
+            -H "Referer: https://github.com/mixxr/rws/actions")
+
+          echo "Raw WS response:"
+          echo "$RESPONSE"
+
+          # Count rows
+          ROW_COUNT=$(echo "$RESPONSE" | jq 'length')
+
+          if [[ "$ROW_COUNT" -eq 0 ]]; then
+            echo "ERROR: WS returned an empty array []"
+            exit 1
+          fi
+
+          if [[ "$ROW_COUNT" -eq 1 ]]; then
+            echo "Payload contains only 1 row → using row[0]"
+            ROW=$(echo "$RESPONSE" | jq -r '.[0]')
+          else
+            echo "Payload contains multiple rows → using row[1]"
+            ROW=$(echo "$RESPONSE" | jq -r '.[1]')
+          fi
+
+          echo "Extracted row:"
+          echo "$ROW"
+
+          # Basic validation: row must start with ISIN
+          if [[ "$ROW" != "$ISIN"* ]]; then
+            echo "ERROR: Returned row does not match expected ISIN prefix"
+            exit 1
+          fi
+
+          echo "OK: WS validation OK"
+
+      
+      - name: Add comment to issue
+        if: always()   # ensures comment is posted even if previous step failed
+        run: |
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+
+          # Determine status based on previous step
+          if [[ "${{ steps.validate.outcome }}" == "success" ]]; then
+            STATUS="OK"
+            MESSAGE="WS validation completed successfully for ISIN: ${{ steps.extract.outputs.ISIN }}."
+          else
+            STATUS="ERROR"
+            MESSAGE="WS validation failed for ISIN: ${{ steps.extract.outputs.ISIN }}. Please check logs."
+          fi
+
+          echo "Posting comment: $STATUS"
+
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"body\":\":information_source: Validation result: **$STATUS**\n\n$MESSAGE\"}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments"
+
+
+
+
+

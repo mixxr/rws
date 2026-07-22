@@ -10,7 +10,6 @@ on:
   issues:
     types: [labeled]
 
-  # Consente l'avvio manuale
   workflow_dispatch:
 
 permissions:
