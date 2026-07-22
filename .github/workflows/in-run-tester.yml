@@ -92,6 +92,23 @@ jobs:
             -d "{\"body\":\":information_source: Validation result: **$STATUS**\n\n$MESSAGE\"}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments"
 
+      - name: Update issue labels
+        if: steps.validate.outcome == 'success'
+        run: |
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          REPO="${{ github.repository }}"
+
+          # Remove "to test" label (ignore errors if not present)
+          curl -s -X DELETE \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/$REPO/issues/$ISSUE_NUMBER/labels/to%20test" || true
+
+          # Add "tested" label
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"labels": ["tested"]}' \
+            "https://api.github.com/repos/$REPO/issues/$ISSUE_NUMBER/labels"
 
 
 
