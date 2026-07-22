@@ -1,4 +1,4 @@
-name: Test New ISIN
+name: App IN Runner Tester
 
 env:
   WS_URL: ${{ secrets.WS_URL }}
@@ -6,7 +6,7 @@ env:
 
 on:
   issues:
-    types: [closed]
+    types: [labeled]
 
 permissions:
   id-token: write
@@ -19,8 +19,8 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (
         github.event_name == 'issues' &&
-        contains(join(fromJson(toJson(github.event.issue.labels)).*.name, ','), 'enhancement') &&
-        (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr')
+        github.event.label.name == 'to test' &&
+        (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr' )
       )
     runs-on: ubuntu-latest
 
@@ -42,10 +42,8 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.WS_SECRET }}" \
             -H "Referer: https://github.com/mixxr/rws/actions")
 
-          echo "Raw WS response:"
           echo "$RESPONSE"
 
-          # Count rows
           ROW_COUNT=$(echo "$RESPONSE" | jq 'length')
 
           if [[ "$ROW_COUNT" -eq 0 ]]; then
@@ -74,11 +72,10 @@ jobs:
 
       
       - name: Add comment to issue
-        if: always()   # ensures comment is posted even if previous step failed
+        if: always()  
         run: |
           ISSUE_NUMBER="${{ github.event.issue.number }}"
 
-          # Determine status based on previous step
           if [[ "${{ steps.validate.outcome }}" == "success" ]]; then
             STATUS="OK"
             MESSAGE="WS validation completed successfully for ISIN: ${{ steps.extract.outputs.ISIN }}."
