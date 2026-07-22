@@ -7,11 +7,12 @@ env:
   CMD_SCRIPT_FOLDER: ./apps/in/docker/helpers
 
 on:
-  issues:
-    types: [labeled]
-
-  # Consente l'avvio manuale
   workflow_dispatch:
+    inputs:
+      issue_number:
+        required: true
+      issue_body:
+        required: true
 
 permissions:
   id-token: write
@@ -20,13 +21,13 @@ permissions:
 
 jobs:
   remove_ISIN:
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (
-        github.event_name == 'issues' &&
-        github.event.label.name == 'invalid' &&
-        (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr' )
-      )
+    # if: >
+    #   github.event_name == 'workflow_dispatch' ||
+    #   (
+    #     github.event_name == 'issues' &&
+    #     github.event.label.name == 'invalid' &&
+    #     (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr' )
+    #   )
     runs-on: ubuntu-latest
 
     steps:
@@ -50,7 +51,7 @@ jobs:
       - name: Parse commit message into env vars
         id: parsevars
         run: |
-          COMMIT_MSG="${{ github.event.issue.body }}"
+          COMMIT_MSG="${{ github.event.inputs.issue_body }}"
           echo "Commit message: $COMMIT_MSG"
 
           # Extract ISSUER
@@ -89,7 +90,7 @@ jobs:
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.inputs.issue_number }}/comments \
             -d "{\"body\": $BODY}"
 
 

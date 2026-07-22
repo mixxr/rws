@@ -1,0 +1,48 @@
+name: Triage Workflow
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  actions: write
+  issues: read
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Detect label
+        id: detect
+        run: |
+          LABEL="${{ github.event.label.name }}"
+          echo "LABEL=$LABEL" >> $GITHUB_OUTPUT
+
+      - name: Trigger in-run-tester
+        if: steps.detect.outputs.LABEL == 'to test'
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/in-run-tester.yml/dispatches \
+            -d '{"ref":"main","inputs":{"issue_number":"${{ github.event.issue.number }}","issue_body": "${{ github.event.issue.body }}"}}'
+
+      - name: Trigger in-run
+        if: steps.detect.outputs.LABEL == 'enhancement'
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/in-run.yml/dispatches \
+            -d '{"ref":"main","inputs":{"issue_number":"${{ github.event.issue.number }}","issue_body": "${{ github.event.issue.body }}"}}'
+
+      - name: Trigger rm-isin
+        if: steps.detect.outputs.LABEL == 'invalid'
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/rm-isin.yml/dispatches \
+            -d '{"ref":"main","inputs":{"issue_number":"${{ github.event.issue.number }}","issue_body": "${{ github.event.issue.body }}"}}'

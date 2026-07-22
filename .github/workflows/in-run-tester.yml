@@ -5,8 +5,12 @@ env:
   WS_SECRET: ${{ secrets.WS_SECRET }}
 
 on:
-  issues:
-    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        required: true
+      issue_body:
+        required: true
 
 permissions:
   id-token: write
@@ -15,21 +19,21 @@ permissions:
 
 jobs:
   process_ISIN:
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (
-        github.event_name == 'issues' &&
-        github.event.label.name == 'to test' &&
-        (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr' )
-      )
+    # if: >
+    #   github.event_name == 'workflow_dispatch' ||
+    #   (
+    #     github.event_name == 'issues' &&
+    #     github.event.label.name == 'to test' &&
+    #     (github.event.issue.user.login == 'digitalposture' || github.event.issue.user.login == 'mixxr' )
+    #   )
     runs-on: ubuntu-latest
 
     steps:
       - name: Extract values from issue body
         id: extract
         run: |
-          echo "ISIN=$(echo "${{ github.event.issue.body }}" | grep -oP 'ISIN_LIST *= *\K[A-Z0-9]+')" >> $GITHUB_OUTPUT
-          echo "FILE_PATH=$(echo "${{ github.event.issue.body }}" | grep -oP 'check *\Kgs://[^ ]+')" >> $GITHUB_OUTPUT
+          echo "ISIN=$(echo "${{ github.event.inputs.issue_body }}" | grep -oP 'ISIN_LIST *= *\K[A-Z0-9]+')" >> $GITHUB_OUTPUT
+          echo "FILE_PATH=$(echo "${{ github.event.inputs.issue_body }}" | grep -oP 'check *\Kgs://[^ ]+')" >> $GITHUB_OUTPUT
 
       - name: Validate ISIN details from WS
         id: validate
@@ -74,7 +78,7 @@ jobs:
       - name: Add comment to issue
         if: always()  
         run: |
-          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          ISSUE_NUMBER="${{ github.event.inputs.issue_number }}"
 
           if [[ "${{ steps.validate.outcome }}" == "success" ]]; then
             STATUS="OK"
@@ -95,7 +99,7 @@ jobs:
       - name: Update issue labels
         if: steps.validate.outcome == 'success'
         run: |
-          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          ISSUE_NUMBER="${{ github.event.inputs.issue_number }}"
           REPO="${{ github.repository }}"
 
           # Remove "to test" label (ignore errors if not present)
