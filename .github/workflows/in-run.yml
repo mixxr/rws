@@ -1,4 +1,4 @@
-name: App IN Runner
+name: App IN Runner - Add ISIN (enhancement)
 
 env:
   PROJECT_ID: my-project

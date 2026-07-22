@@ -1,4 +1,4 @@
-name: App IN Runner Tester
+name: App IN Runner - Tester (to test)
 
 env:
   WS_URL: ${{ secrets.WS_URL }}
