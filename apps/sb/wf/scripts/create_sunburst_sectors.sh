@@ -3,7 +3,7 @@
 input="${1:-./_work/stock_index_adjusted.csv}"
 output="${2:-./_work/sunburst_sectors.csv}"
 ID_SEP="|"
-DELIM=","
+DELIM=";"
 
 echo "Reading $input... > $output"
 
@@ -31,7 +31,7 @@ sanitize() {
 {
     read -r header
 
-    while IFS=";" read -r ticker name exchange isin industry sector; do
+    while IFS="${DELIM}" read -r ticker name exchange isin industry sector; do
 
         ex_norm=$(normalize_exchange "$exchange")
 

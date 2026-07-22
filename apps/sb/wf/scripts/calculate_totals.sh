@@ -2,7 +2,8 @@
 INPUT="${1:-./_work/sunburst_sectors.csv}"
 QUOTES_FOLDER="${2:-./_quotes}"
 output_file="./_sunburst/ALL.csv"
-mkdir -p _sectors
+DELIM=";"
+mkdir -p _sunburst
 
 declare -A stock_total
 declare -A sector_total
@@ -22,7 +23,7 @@ add() {
 }
 
 
-while IFS=',' read -r id labels parents; do
+while IFS="${DELIM}" read -r id labels parents; do
     [[ "$id" == "id" ]] && continue
     
     # tmp="${id//__/|}"     # replace __ with |
@@ -103,14 +104,14 @@ for k in "${!root_total[@]}"; do
     echo "$k ${root_total[$k]} ${root_count[$k]} avg: $avg"
 done
 
-echo "ids,labels,parents,values,counts,avgs" > $output_file
-while IFS=',' read -r id label parent; do
+echo "ids${DELIM}labels${DELIM}parents${DELIM}values${DELIM}counts${DELIM}avgs" > $output_file
+while IFS="${DELIM}" read -r id label parent; do
     [[ "$id" == "id" ]] && continue
     value="${root_total[$id]}""${sector_total[$id]}""${industry_total[$id]}""${stock_total[$id]}"
     [[ "$value" == "" ]] && continue
     count="${root_count[$id]:-${sector_count[$id]:-${industry_count[$id]:-1}}}"
     avg="${root_avg[$id]}""${sector_avg[$id]}""${industry_avg[$id]}""${stock_total[$id]}"
     
-    echo "$id,$label,$parent,$value,$count,$avg" >> $output_file
+    echo "$id${DELIM}$label${DELIM}$parent${DELIM}$value${DELIM}$count${DELIM}$avg" >> $output_file
 
 done < "$INPUT"
