@@ -1,5 +1,7 @@
 name: App IN Runner - Add ISIN (enhancement)
 
+run-name: "Adding ${{ inputs.issue_title }}"
+
 env:
   PROJECT_ID: my-project
   DATASET: analytics
@@ -12,6 +14,8 @@ on:
       issue_number:
         required: true
       issue_body:
+        required: true
+      issue_title:
         required: true
 
 permissions:

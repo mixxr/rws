@@ -1,4 +1,4 @@
-name: Triage Workflow
+name: App IN Runner - Triage
 
 on:
   issues:
@@ -36,7 +36,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/in-run.yml/dispatches \
-            -d '{"ref":"main","inputs":{"issue_number":"${{ github.event.issue.number }}","issue_body": "${{ github.event.issue.body }}"}}'
+            -d '{"ref":"main","inputs":{"issue_number":"${{ github.event.issue.number }}","issue_body": "${{ github.event.issue.body }}","issue_title":"${{ github.event.issue.title }}"}}'
 
       - name: Trigger rm-isin
         if: steps.detect.outputs.LABEL == 'invalid'
