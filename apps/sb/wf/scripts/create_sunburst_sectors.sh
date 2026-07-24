@@ -47,18 +47,18 @@ sanitize() {
         # Livello 1: exchange
         exchanges["$ex_norm"]=1
 
-        # Livello 2: industry-exchange
-        ind_id="${industry_clean}${ID_SEP}${ex_norm}"
-        industries["$ind_id"]="$industry_clean${DELIM}$ex_norm"
+        # Livello 2: sector-exchange
+        sec_id="${sector_clean}${ID_SEP}${ex_norm}"
+        sectors["$sec_id"]="$sector_clean${DELIM}$ex_norm"
 
-        # Livello 3: sector-industry-exchange
-        sec_parent="${industry_clean}${ID_SEP}${ex_norm}"
-        sec_id="${sector_clean}${ID_SEP}${sec_parent}"
-        sectors["$sec_id"]="$sector_clean${DELIM}$sec_parent"
+        # Livello 3: industry-sector-exchange
+        ind_parent="${sector_clean}${ID_SEP}${ex_norm}"
+        ind_id="${industry_clean}${ID_SEP}${ind_parent}"
+        industries["$ind_id"]="$industry_clean${DELIM}$ind_parent"
 
-        # ⭐ Livello 4: ticker-sector-industry-exchange
-        tick_id="${ticker}${ID_SEP}${sec_id}"
-        tickers["$tick_id"]="$ticker${DELIM}$sec_id"
+        # ⭐ Livello 4: ticker-industry-sector-exchange
+        tick_id="${ticker}${ID_SEP}${ind_id}"
+        tickers["$tick_id"]="$ticker${DELIM}$ind_id"
 
     done
 } < "$input"
@@ -72,15 +72,15 @@ sanitize() {
     done
 
     # Livello 2
-    for ind in "${!industries[@]}"; do
-        IFS="${DELIM}" read -r label parent <<< "${industries[$ind]}"
-        echo "$ind${DELIM}$label${DELIM}$parent"
-    done
-
-    # Livello 3
     for sec in "${!sectors[@]}"; do
         IFS="${DELIM}" read -r label parent <<< "${sectors[$sec]}"
         echo "$sec${DELIM}$label${DELIM}$parent"
+    done
+
+    # Livello 3
+    for ind in "${!industries[@]}"; do
+        IFS="${DELIM}" read -r label parent <<< "${industries[$ind]}"
+        echo "$ind${DELIM}$label${DELIM}$parent"
     done
 
     # Livello 4
