@@ -1,4 +1,5 @@
-name: App IN Runner - Delete ISIN (invalid)
+name: App IN Runner - Remove ISIN (invalid)
+run-name: "Removing ${{ inputs.issue_title }}"
 
 env:
   PROJECT_ID: my-project
@@ -12,6 +13,8 @@ on:
       issue_number:
         required: true
       issue_body:
+        required: true
+      issue_title:
         required: true
 
 permissions:
@@ -84,7 +87,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Comment on issue with result
-        if: github.event_name == 'issues'
+        if: always()  
         run: |
           BODY=$(jq -Rs . <<< "${{ steps.exec.outputs.result }}")
           curl -X POST \

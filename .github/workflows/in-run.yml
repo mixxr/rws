@@ -88,6 +88,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Comment on issue with result
+        if: always()  
         run: |
           BODY=$(jq -Rs . <<< "${{ steps.exec.outputs.result }}")
           curl -X POST \
