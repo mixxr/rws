@@ -9,9 +9,9 @@ env:
 
 on:
   schedule:
-    - cron: '30 8 * * *'
-    - cron: '30 11 * * *'
-    - cron: '0 16 * * *'
+    - cron: '30 8 * * 1-5'
+    - cron: '30 11 * * 1-5'
+    - cron: '0 16 * * 1-5'
   workflow_dispatch:
 
 permissions:
