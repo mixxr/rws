@@ -2,12 +2,13 @@
 
 STOCK_INDEX="$1"
 EXCHANGE_FILE="$2"
-OUTPUT="${3:-stock_index_adjusted.csv}"
-OUTPUT_FOLDER="${4:-./_work}"
+INDEX_FILE="$3"
+OUTPUT="${4:-stock_index_adjusted.csv}"
+OUTPUT_FOLDER="${5:-./_work}"
 DELIM=";"
 
 if [[ -z "$STOCK_INDEX" || -z "$EXCHANGE_FILE" ]]; then
-    echo "Usage: $0 STOCK_INDEX EXCHANGE_FILE [OUTPUT_FILE] [OUTPUT_FOLDER]"
+    echo "Usage: $0 STOCK_INDEX EXCHANGE_FILE INDEX_FILE [OUTPUT_FILE] [OUTPUT_FOLDER]"
     exit 1
 fi
 
@@ -20,6 +21,14 @@ while IFS=';' read -r exch suffix || [[ -n "$exch" ]]; do
     [[ -z "$exch" ]] && continue
     EXMAP["$exch"]="$suffix"
 done < "$EXCHANGE_FILE"
+
+# Load symbols for indexed -> goal: replace symbols
+declare -A INDEXMAP
+while IFS=';' read -r name symbol || [[ -n "$name" ]]; do
+    [[ -z "$name" ]] && continue
+    name="${name^^}"
+    INDEXMAP["$name"]="$symbol"
+done < "$INDEX_FILE"
 
 # Process STOCK_INDEX
 {
@@ -60,11 +69,23 @@ done < "$EXCHANGE_FILE"
             ticker="$t_sym"
         fi
 
-        # Detect index: stock_name or stock_industry contains "index"
-        if [[ "$name" =~ [Ii][Nn][Dd][Ee] ]] || [[ "$industry" =~ [Ii][Nn][Dd][Ee] ]]; then
-            ticker="^${ticker}"
+        # Detect index: stock_name or stock_industry contains "index" or similar
+        name="${name//®/}"      # remove ® anywhere in name
+        name="${name//-/ }"     # replace - with space
+        name="${name^^}"
+        industry="${industry^^}"
+        ticker="${ticker^^}"
+        if [[ "$name" == *INDE* ]] || [[ "$industry" == IND* ]]; then
+            # Replace Indexes (Eg. SP 500, KOSPI 200, ...)
+            for key in "${!INDEXMAP[@]}"; do
+                if [[ "$ticker" == "$key"* ]] || [[ "$name" == "$key"* ]]; then
+                    ticker="${INDEXMAP[$key]}"
+                    break
+                fi
+            done
         fi
-        
+
+
         echo "${ticker}${DELIM}${name}${DELIM}${exch}${DELIM}${isin}${DELIM}${industry}${DELIM}${sector}" >> "$output_file"
 
     done
