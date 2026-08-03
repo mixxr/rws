@@ -15,3 +15,5 @@ cd scripts
 
 echo "Done, see updates at $FILE_OUT:"
 cat $FILE_OUT
+pwd
+ls

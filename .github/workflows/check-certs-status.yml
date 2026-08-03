@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: new_data.csv
-          path: ${{ env.CMD_SCRIPT_FOLDER }}/new_data.csv
+          path: ${{ env.CMD_SCRIPT_FOLDER }}/scripts/new_data.csv
           retention-days: 10
   
   update_bq:
@@ -96,7 +96,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: new_data.csv
-          path: ${{ env.CMD_SCRIPT_FOLDER }}/new_data.csv
+          path: ${{ env.CMD_SCRIPT_FOLDER }}/scripts/new_data.csv
       
       # ---------------------------------------------------------
       # Execute item workflows
