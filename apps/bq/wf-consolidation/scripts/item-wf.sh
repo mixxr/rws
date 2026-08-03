@@ -57,5 +57,9 @@ if [ $(stat -c%s "$ITEM-final.csv") -gt "100" ]; then
 else
     echo "[WARN] $ITEM-final.csv is empty!"
 fi
+# if [[ "$ITEM" == "details" ]]; then
+#     ./create_certs_phases.sh details.csv certs_phases.csv
+#     npx wrangler r2 object put rws/ws/certs_phases.csv --file ./certs_phases.csv --remote
+# fi
 rm $ITEM-tmp*.csv $ITEM-consolidated.csv
 echo "$ITEM: Completed."

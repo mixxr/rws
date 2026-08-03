@@ -2,6 +2,7 @@
 /data/output
 *.log
 *test.json
+*test.csv
 **\\target
 *.old
 test_*
