@@ -100,7 +100,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: new_data.csv
-          path: ${{ env.CMD_SCRIPT_FOLDER }}/scripts/new_data.csv
+          path: ${{ env.CMD_SCRIPT_FOLDER }}/scripts
       
       # ---------------------------------------------------------
       # Execute item workflows
@@ -149,7 +149,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: new_data.csv
-          path: ${{ env.CMD_RM_SCRIPT_FOLDER }}/helpers/new_data.csv
+          path: ${{ env.CMD_RM_SCRIPT_FOLDER }}/helpers
       
       # ---------------------------------------------------------
       # Execute item workflows
