@@ -13,6 +13,8 @@ if [[ ! -f "$INPUT_FILE" ]]; then
     echo "Error: input file '$INPUT_FILE' not found"
     exit 1
 fi
+echo "Reading $INPUT_FILE..."
+cat "$INPUT_FILE"
 
 # Open output file once
 exec > "$OUTPUT_FILE"
@@ -27,7 +29,7 @@ mapfile -t rows < <(tail -n +2 "$INPUT_FILE")
 last_index=$(( ${#rows[@]} - 1 ))
 
 for i in "${!rows[@]}"; do
-    IFS=";" read -r isin phase <<< "${rows[$i]}"
+    IFS=";" read -r isin issuer phase <<< "${rows[$i]}"
     [[ -z "$isin" ]] && continue
 
     if [[ "$i" -eq "$last_index" ]]; then

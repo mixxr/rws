@@ -16,7 +16,7 @@ echo "isin;issuer;phase" > "$output_file"
 
 # Skip header and read rows
 tail -n +2 "$input_file" | while IFS=";" read -r isin issuer phase; do
-
+    phase="$(echo "$phase" | xargs)"
     # Skip rimborsato
     if [[ "$phase" == "rimborsato" ]]; then
         continue
@@ -34,7 +34,7 @@ tail -n +2 "$input_file" | while IFS=";" read -r isin issuer phase; do
     new_phase=$(echo "$html" \
         | grep -o '<tr><th>FASE</th><td>[^<]*</td></tr>' \
         | sed -E 's/.*<td>([^<]+)<\/td>.*/\1/')
-    
+    new_phase="$(echo "$new_phase" | xargs)"
     # If extraction failed, skip
     if [[ -z "$new_phase" ]]; then
         continue

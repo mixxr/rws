@@ -42,17 +42,6 @@ jobs:
           key: ${{ runner.os }}-webclaw-${{ hashFiles('webclaw/Cargo.lock') }}
     
       # ---------------------------------------------------------
-      # Verify ls
-      # ---------------------------------------------------------
-      - name: Verify ls
-        run: |
-          echo "pwd:$PWD"
-          pwd
-          ls -la
-          echo '--- webclaw:'
-          ls -la webclaw
-
-      # ---------------------------------------------------------
       # Install Rust toolchain
       # ---------------------------------------------------------
       - name: Install Rust
@@ -66,19 +55,6 @@ jobs:
           cd webclaw
           cargo build --release
           echo "$PWD/target/release" >> $GITHUB_PATH
-
-      # ---------------------------------------------------------
-      # Verify tools BEFORE touching GCP credentials
-      # ---------------------------------------------------------
-      - name: Verify ls 3
-        run: |
-          echo '--- webclaw:'
-          ls -la webclaw
-          echo '--- webclaw/target'
-          ls -la webclaw/target
-          echo '--- wc/.cargo'
-          ls -la webclaw/.cargo
-          webclaw https://digital-posture.com
 
       # ---------------------------------------------------------
       # Authenticate to Google Cloud (secure ordering)

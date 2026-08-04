@@ -27,6 +27,9 @@ if [[ ! -f "$INPUT_FILE" ]]; then
     exit 1
 fi
 
+echo "Reading $INPUT_FILE..."
+cat "$INPUT_FILE"
+
 # Phases to match
 PHASE_FILTER=("rimborsato" "scaduto")
 
@@ -42,6 +45,7 @@ while IFS=";" read -r isin issuer phase; do
     # Check if phase matches any in PHASE_FILTER
     if [[ "$phase" =~ ^($PHASE_REGEX)$ ]]; then
         issuer_idx=$(normalize_name "$issuer")
+        echo "$issuer_idx from $issuer"
         # Append ISIN to issuer group
         if [[ -z "${issuer_map[$issuer_idx]}" ]]; then
             issuer_map[$issuer_idx]="$isin"
