@@ -1,4 +1,4 @@
-name: BQ Refresh Certificate Status
+name: Refresh Certificate Status
 
 env:
   PROJECT_ID: my-project
@@ -111,7 +111,8 @@ jobs:
           chmod +x ./scripts/*.sh
           chmod +x ./run*.sh
           ls -la ./scripts
-          ./run_2.sh  ${{ env.TABLE_NAME }} new_data.csv
+          cat ./scripts/new_data.csv
+          ./run_2.sh ${{ env.TABLE_NAME }} new_data.csv
 
   rm_isins_from_quotes:
     needs: data_retrieval
@@ -158,4 +159,6 @@ jobs:
         run: |
           chmod +x ./helpers/*.sh
           chmod +x ./*.sh
+          pwd
+          ls -la ./helpers
           ./remove_isins_main.sh new_data.csv

@@ -1,10 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 TABLE_NAME="$1"
 INPUT_FILE="$2"
+OUTPUT_FILE="$3"
 
-if [[ -z "$TABLE_NAME" || -z "$INPUT_FILE" ]]; then
-    echo "Usage: $0 <TABLE_NAME> <input.csv>"
+if [[ -z "$TABLE_NAME" || -z "$INPUT_FILE" || -z "$OUTPUT_FILE" ]]; then
+    echo "Usage: $0 <TABLE_NAME> <input.csv> <output.sql>"
     exit 1
 fi
 
@@ -13,11 +14,14 @@ if [[ ! -f "$INPUT_FILE" ]]; then
     exit 1
 fi
 
-echo "MERGE \`$TABLE_NAME\` T"
-echo "USING ("
-echo "  SELECT * FROM UNNEST(["
+# Open output file once
+exec > "$OUTPUT_FILE"
 
-# Read all rows into an array first
+printf "MERGE \`%s\` T\n" "$TABLE_NAME"
+printf "USING (\n"
+printf "  SELECT * FROM UNNEST([\n"
+
+# Read all rows into an array
 mapfile -t rows < <(tail -n +2 "$INPUT_FILE")
 
 last_index=$(( ${#rows[@]} - 1 ))
@@ -27,16 +31,14 @@ for i in "${!rows[@]}"; do
     [[ -z "$isin" ]] && continue
 
     if [[ "$i" -eq "$last_index" ]]; then
-        # Last row → NO comma
-        echo "    STRUCT('$isin' AS isin, '$phase' AS phase)"
+        printf "    STRUCT('%s' AS isin, '%s' AS phase)\n" "$isin" "$phase"
     else
-        # Other rows → comma
-        echo "    STRUCT('$isin' AS isin, '$phase' AS phase),"
+        printf "    STRUCT('%s' AS isin, '%s' AS phase),\n" "$isin" "$phase"
     fi
 done
 
-echo "  ])"
-echo ") S"
-echo "ON T.isin = S.isin"
-echo "WHEN MATCHED THEN"
-echo "  UPDATE SET T.phase = S.phase;"
+printf "  ])\n"
+printf ") S\n"
+printf "ON T.isin = S.isin\n"
+printf "WHEN MATCHED THEN\n"
+printf "  UPDATE SET T.phase = S.phase;\n"

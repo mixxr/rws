@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 echo "Copying rws/ws/$1 to ./$1 ..."
 pwd
