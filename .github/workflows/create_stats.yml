@@ -82,6 +82,7 @@ jobs:
           ./create_stats.sh
 
       - name: Load file content
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }}
         run: |
           {
             echo "MAIL_BODY<<EOF"
