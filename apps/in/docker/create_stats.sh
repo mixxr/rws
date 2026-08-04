@@ -2,7 +2,7 @@
 echo "Downloading CSV files from GCP and CF to prepare stats"
 
 echo "Downloading from CF..."
-rclone copy r2:rws/ws/* ./helpers/
+rclone copy r2:rws/ws ./helpers/
 
 ls -la ./helpers/
 
