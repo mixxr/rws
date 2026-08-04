@@ -12,10 +12,10 @@ if [[ ! -f "$input_file" ]]; then
     exit 1
 fi
 
-echo "isin;phase" > "$output_file"
+echo "isin;issuer;phase" > "$output_file"
 
 # Skip header and read rows
-tail -n +2 "$input_file" | while IFS=";" read -r isin phase; do
+tail -n +2 "$input_file" | while IFS=";" read -r isin issuer phase; do
 
     # Skip rimborsato
     if [[ "$phase" == "rimborsato" ]]; then
@@ -42,7 +42,7 @@ tail -n +2 "$input_file" | while IFS=";" read -r isin phase; do
 
     # Compare
     if [[ "$new_phase" != "$phase" ]]; then
-        echo "$isin;$new_phase" >> "$output_file"
+        echo "$isin;$issuer;$new_phase" >> "$output_file"
     fi
 
     # Random wait 100–1000 ms

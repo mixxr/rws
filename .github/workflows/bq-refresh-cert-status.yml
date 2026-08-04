@@ -1,14 +1,15 @@
-name: BQ Refresh isin phases
+name: BQ Refresh Certificate Status
 
 env:
   PROJECT_ID: my-project
   DATASET: analytics
   BUCKET_NAME: my-export-bucket
   CMD_SCRIPT_FOLDER: ./apps/bq/wf-update
+  CMD_RM_SCRIPT_FOLDER: ./apps/in/docker
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   ITEM_NAME: details.csv
   TABLE_NAME: ISINs.staging_details
-  COL_NAMES: isin phase
+  COL_NAMES: isin phase issuer
 
 on:
   schedule:
@@ -73,7 +74,7 @@ jobs:
       # ---------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       # ---------------------------------------------------------
       # Authenticate to Google Cloud (secure ordering)
       # ---------------------------------------------------------
@@ -109,4 +110,52 @@ jobs:
         run: |
           chmod +x ./scripts/*.sh
           chmod +x ./run*.sh
+          ls -la ./scripts
           ./run_2.sh  ${{ env.TABLE_NAME }} new_data.csv
+
+  rm_isins_from_quotes:
+    needs: data_retrieval
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---------------------------------------------------------
+      # Checkout main repository
+      # ---------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # ---------------------------------------------------------
+      # Authenticate to Google Cloud (secure ordering)
+      # ---------------------------------------------------------
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/600125851897/locations/global/workloadIdentityPools/github-pool/providers/github
+          service_account: github-actions@invcerts.iam.gserviceaccount.com
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      # ---------------------------------------------------------
+      # Verify GCP tools
+      # ---------------------------------------------------------
+      - name: Verify GCP authentication
+        run: |
+          gcloud auth list
+          gcloud config list
+
+      - name: Download quotes output
+        uses: actions/download-artifact@v4
+        with:
+          name: new_data.csv
+          path: ${{ env.CMD_RM_SCRIPT_FOLDER }}/helpers/new_data.csv
+      
+      # ---------------------------------------------------------
+      # Execute item workflows
+      # ---------------------------------------------------------
+      - name: Remove ISINs from quotes
+        working-directory: ${{ env.CMD_RM_SCRIPT_FOLDER }}
+        run: |
+          chmod +x ./helpers/*.sh
+          chmod +x ./*.sh
+          ./remove_isins_main.sh new_data.csv
