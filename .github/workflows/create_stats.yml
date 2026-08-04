@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  sectors_calculation:
+  stats_calculation:
     runs-on: ubuntu-latest
 
     steps:

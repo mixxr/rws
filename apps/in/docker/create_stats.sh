@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 echo "Downloading CSV files from GCP and CF to prepare stats"
 
-source ./helpers/utils.sh
-
 echo "Downloading from CF..."
-rclone copy r2:rws/ws/* ./helpers
+rclone copy r2:rws/ws/* ./helpers/
 
+ls -la
 
 echo "Downloading from GCP..."
 cd ./helpers
+source ./utils.sh
+
 INPUT_FILE="issuers.csv"
 
 while IFS=";" read -r issuer all; do
