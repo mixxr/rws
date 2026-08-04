@@ -71,9 +71,9 @@ jobs:
         run: |
           {
             echo "MAIL_BODY<<EOF"
-            cat quotes.txt
+            cat quotes.csv
             echo '-----'
-            cat stats.txt
+            cat stats.csv
             echo "EOF"
           } >> $GITHUB_ENV
 
