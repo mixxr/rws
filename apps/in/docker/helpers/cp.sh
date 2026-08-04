@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copy from GCP
 # set -euo pipefail
 set -u 
 

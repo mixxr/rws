@@ -1,0 +1,96 @@
+name: Create Stats
+
+env:
+  PROJECT_ID: my-project
+  DATASET: analytics
+  BUCKET_NAME: my-export-bucket
+  CMD_SCRIPT_FOLDER: ./apps/in/docker
+  CMD_RCLONE_SCRIPT_FOLDER: ./apps/sb/wf
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+on:
+  schedule:
+    - cron: '15 16 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sectors_calculation:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---------------------------------------------------------
+      # Checkout main repository
+      # ---------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ---------------------------------------------------------
+      # Install Node.js (fast, secure)
+      # ---------------------------------------------------------
+      - name: Install Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      
+      - name: Install rclone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+
+      # ---------------------------------------------------------
+      # Verify tools
+      # ---------------------------------------------------------
+      - name: Verify tools
+        run: |
+          node -v
+          npx wrangler -v
+          rclone version
+
+      - name: create rclone cfg
+        working-directory: ${{ env.CMD_RCLONE_SCRIPT_FOLDER }}
+        run: |
+          chmod +x ./run*.sh
+          ./run_rclone_setup.sh
+        env:
+          R2_CLONE_SECRET: ${{ secrets.R2_CLONE_SECRET }}
+
+          # ---------------------------------------------------------
+      # Execute item workflows
+      # ---------------------------------------------------------
+      - name: Execute stats
+        working-directory: ${{ env.CMD_SCRIPT_FOLDER }}
+        run: |
+          chmod +x ./helpers/*.sh
+          chmod +x ./*.sh
+          ./create_stats.sh
+
+      - name: Load file content
+        run: |
+          {
+            echo "MAIL_BODY<<EOF"
+            cat quotes.txt
+            echo '-----'
+            cat stats.txt
+            echo "EOF"
+          } >> $GITHUB_ENV
+
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USER }}
+          password: ${{ secrets.SMTP_PASS }}
+          subject: "Workflow Notification"
+          to: ${{ secrets.SMTP_USER_TO }}
+          from: ${{ secrets.SMTP_USER }}
+          content_type: text/html
+          body: <h2 style="color:#2a7ae2;">Statistics</h2>
+            <p>Quotes and others.</p>
+            <p><strong>Timestamp:</strong> ${{ github.run_started_at }}</p>
+            <hr>
+            <p style="font-size:12px;color:#666;">${{ env.MAIL_BODY }}</p>

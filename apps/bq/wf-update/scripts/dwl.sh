@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copy from CF
 
 echo "Copying rws/ws/$1 to ./$1 ..."
 pwd
