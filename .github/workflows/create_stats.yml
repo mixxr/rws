@@ -86,9 +86,19 @@ jobs:
         run: |
           {
             echo "MAIL_BODY<<EOF"
-            cat quotes.csv
-            echo '-----'
-            cat stats.csv
+            cat quotes.csv \
+              | sed 's/^/<tr><td>/; s/;/<\/td><td>/; s/$/<\/td><\/tr>/' \
+              | sed '1s/<tr><td>/<tr><th>/; 1s/<\/td><td>/<\/th><td>/; 1s/<\/td><\/tr>/<\/th><\/tr>/' \
+              | sed '1s/<td>/<th>/g; 1s/<\/td>/<\/th>/g' \
+              | sed '1i<table border="1">' \
+              | sed '$a</table>'
+            echo  '<HR/>'
+            cat stats.csv \
+              | sed 's/^/<tr><td>/; s/;/<\/td><td>/; s/$/<\/td><\/tr>/' \
+              | sed '1s/<tr><td>/<tr><th>/; 1s/<\/td><td>/<\/th><td>/; 1s/<\/td><\/tr>/<\/th><\/tr>/' \
+              | sed '1s/<td>/<th>/g; 1s/<\/td>/<\/th>/g' \
+              | sed '1i<table border="1">' \
+              | sed '$a</table>'
             echo "EOF"
           } >> $GITHUB_ENV
 
