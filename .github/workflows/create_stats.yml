@@ -103,8 +103,7 @@ jobs:
           subject: "Workflow Notification"
           to: ${{ secrets.SMTP_USER_TO }}
           from: ${{ secrets.SMTP_USER }}
-          content_type: text/html
-          body: <h2 style="color:#2a7ae2;">Statistics</h2>
+          html_body: <h2 style="color:#2a7ae2;">Statistics</h2>
             <p>Quotes and others.</p>
             <p><strong>Timestamp:</strong> ${{ github.run_started_at }}</p>
             <hr>
