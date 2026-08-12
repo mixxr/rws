@@ -1,4 +1,5 @@
-name: Repo Summary with AI inference
+name: Repo Summary with AI
+
 on: workflow_dispatch
 
 jobs:
@@ -6,20 +7,76 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-
-      - name: Install Copilot CLI
-        run: npm install -g @github/copilot
-
-      - name: Run AI Inference via Copilot
-        id: inference
-        uses: actions/ai-inference@v1
         with:
-          prompt: Summarize the latest changes in this repository.
-          model: gpt-4.1
+          fetch-depth: 50   # need history to diff against; increase if you want more commits
+
+      - name: Gather recent repo changes
+        id: gather
+        run: |
+          # Adjust the range as needed — here: last 10 commits on this branch
+          LOG=$(git log -10 --pretty=format:"- %h %s (%an)")
+          DIFF=$(git diff HEAD~10..HEAD --stat)
+
+          {
+            echo "log<<EOF"
+            echo "$LOG"
+            echo "EOF"
+            echo "diffstat<<EOF"
+            echo "$DIFF"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Run AI Inference via Groq
+        id: inference
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_PAT }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          COMMIT_LOG: ${{ steps.gather.outputs.log }}
+          DIFF_STAT: ${{ steps.gather.outputs.diffstat }}
+        run: |
+          PROMPT=$(cat <<PROMPT_EOF
+          Summarize the following recent changes to this repository in a few
+          concise bullet points, aimed at someone who hasn't seen the code.
+
+          Recent commits:
+          ${COMMIT_LOG}
+
+          Files changed:
+          ${DIFF_STAT}
+          PROMPT_EOF
+          )
+
+          payload=$(jq -n --arg prompt "$PROMPT" '{
+            messages: [
+              { role: "user", content: $prompt }
+            ],
+            model: "openai/gpt-oss-120b",
+            temperature: 1,
+            max_completion_tokens: 2048,
+            top_p: 1,
+            stream: false,
+            reasoning_effort: "medium",
+            stop: null
+          }')
+
+          response=$(curl -s "https://api.groq.com/openai/v1/chat/completions" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${GROQ_API_KEY}" \
+            -d "$payload")
+
+          content=$(echo "$response" | jq -r '.choices[0].message.content')
+
+          if [ -z "$content" ] || [ "$content" == "null" ]; then
+            echo "::error::Groq API call failed or returned no content"
+            echo "$response"
+            exit 1
+          fi
+
+          {
+            echo "response<<EOF"
+            echo "$content"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Print output
         run: echo "${{ steps.inference.outputs.response }}"
