@@ -17,8 +17,8 @@ jobs:
         id: gather
         run: |
           # Adjust COMMIT_COUNT above to change how many commits are considered
-          LOG=$(git log -"${env.COMMIT_COUNT}" --pretty=format:"- %h %s (%an)")
-          DIFF=$(git diff "HEAD~${env.COMMIT_COUNT}..HEAD" --stat)
+          LOG=$(git log -"${{env.COMMIT_COUNT}}" --pretty=format:"- %h %s (%an)")
+          DIFF=$(git diff "HEAD~${{env.COMMIT_COUNT}}..HEAD" --stat)
 
           {
             echo "log<<EOF"
