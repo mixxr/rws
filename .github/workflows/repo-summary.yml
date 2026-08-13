@@ -1,6 +1,9 @@
 name: Repo Summary with AI
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '15 16 * * 1-5'
 
 env:
   COMMIT_COUNT: 10
@@ -17,8 +20,8 @@ jobs:
         id: gather
         run: |
           # Adjust COMMIT_COUNT above to change how many commits are considered
-          LOG=$(git log -"${env.COMMIT_COUNT}" --pretty=format:"- %h %s (%an)")
-          DIFF=$(git diff "HEAD~${env.COMMIT_COUNT}..HEAD" --stat)
+          LOG=$(git log -"${{env.COMMIT_COUNT}}" --pretty=format:"- %h %s (%an)")
+          DIFF=$(git diff "HEAD~${{env.COMMIT_COUNT}}..HEAD" --stat)
 
           {
             echo "log<<EOF"
@@ -39,6 +42,11 @@ jobs:
           PROMPT=$(cat <<PROMPT_EOF
           Summarize the following recent changes to this repository in a few
           concise bullet points, aimed at someone who hasn't seen the code.
+
+          Respond with a valid HTML fragment only — no markdown, no code fences,
+          no <html>/<head>/<body> tags. Use a <ul> with <li> items, and wrap any
+          file or function names in <code> tags. Do not include any commentary
+          outside the HTML.
 
           Recent commits:
           ${COMMIT_LOG}
@@ -74,6 +82,9 @@ jobs:
             echo "$response"
             exit 1
           fi
+          
+          # Strip accidental ```html / ``` fences in case the model adds them anyway
+          content=$(echo "$content" | sed -e '/^```html$/d' -e '/^```$/d')
 
           {
             echo "response<<EOF"

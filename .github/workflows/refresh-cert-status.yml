@@ -150,7 +150,7 @@ jobs:
           path: ${{ env.CMD_RM_SCRIPT_FOLDER }}/helpers
       
       # ---------------------------------------------------------
-      # Execute item workflows
+      # Execute item workflows and send email
       # ---------------------------------------------------------
       - name: Remove ISINs from quotes
         working-directory: ${{ env.CMD_RM_SCRIPT_FOLDER }}
@@ -158,3 +158,29 @@ jobs:
           chmod +x ./helpers/*.sh
           chmod +x ./*.sh
           ./remove_isins_main.sh new_data.csv
+      
+      - name: Load file content
+        working-directory: ${{ env.CMD_RM_SCRIPT_FOLDER }}/helpers
+        run: |
+          {
+            echo "MAIL_BODY<<EOF"
+            echo '<table border="1" cellpadding="6" cellspacing="0">'
+            echo '<tr><th>ISIN</th><th>Issuer</th><th>Phase</th></tr>'
+            tail -n +2 new_data.csv \
+              | awk -F';' '{ printf "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n", $1, $2, $3 }'
+            echo '</table>'
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USER }}
+          password: ${{ secrets.SMTP_PASS }}
+          subject: "${{ github.workflow }}"
+          to: ${{ secrets.SMTP_USER_TO }}
+          from: ${{ secrets.SMTP_USER }}
+          html_body: <h2 style="color:#2a7ae2;">Check latest status</h2>
+            <p style="font-size:12px;color:#666;">${{ env.MAIL_BODY }}</p>
