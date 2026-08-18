@@ -2,8 +2,8 @@ name: Repo Summary with AI
 
 on: 
   workflow_dispatch:
-  schedule:
-    - cron: '15 16 * * 1-5'
+#  schedule:
+#    - cron: '15 16 * * 1-5'
 
 env:
   COMMIT_COUNT: 10
