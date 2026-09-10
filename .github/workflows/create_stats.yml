@@ -1,4 +1,5 @@
-name: Create Stats
+name: Create Statistics
+# Create statistics about monitored issuers, certificates and other data.
 
 env:
   PROJECT_ID: my-project
@@ -10,7 +11,7 @@ env:
 
 on:
   schedule:
-    - cron: '15 16 * * 1-5'
+    - cron: '15 16 * * 2'
   workflow_dispatch:
 
 permissions:

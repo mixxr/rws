@@ -67,3 +67,13 @@ insert into `ISINs.staging_issuer` values (
   '2026-07-08',
   'https://investimenti.bnpparibas.it/'
   )
+
+    insert into `ISINs.staging_issuer` values (
+  'Natixis Structured Issuance S.A.',
+  'Financial Services and Structured Products',
+  'FR',
+  'Rating S&P: A+',
+  'A+',
+  '2026-09-09',
+  'https://cib.natixis.com/'
+  )
