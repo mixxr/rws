@@ -18,6 +18,7 @@ CREATE TABLE `invcerts.ISINs.staging_tickers` (
   stock_industry STRING,
   stock_tags STRING,
   stock_specializations STRING,
+  strike_value FLOAT64,
   -- Compound Primary Key definition
   PRIMARY KEY (certificate_isin, stock_isin) NOT ENFORCED,
   -- optional metadata (recommended)
